@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов» [![Build status][travis-image]][travis-url]
 
 * Студент: [Кирилл Потехин](https://up.htmlacademy.ru/react/5/user/370503).
-* Наставник: `Неизвестно`.
+* Наставник: [Александр Колодько](https://htmlacademy.ru/profile/id109264).
 
 ---
 
