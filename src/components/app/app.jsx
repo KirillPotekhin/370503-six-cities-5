@@ -12,7 +12,9 @@ const App = (props) => {
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <WelcomeScreen rentalOffers={rentalOffers} />
+          <WelcomeScreen
+            rentalOffers={rentalOffers}
+          />
         </Route>
         <Route exact path="/login">
           <AuthScreen />
@@ -39,6 +41,33 @@ const App = (props) => {
 
 App.propTypes = {
   rentalOffers: PropTypes.number.isRequired,
+  offers: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    city: PropTypes.string.isRequired,
+    isMark: PropTypes.bool.isRequired,
+    images: PropTypes.arrayOf(PropTypes.shape({
+      src: PropTypes.string.isRequired,
+    })).isRequired,
+    name: PropTypes.string.isRequired,
+    rating: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    bedrooms: PropTypes.string.isRequired,
+    adults: PropTypes.string.isRequired,
+    price: PropTypes.string.isRequired,
+    inside: PropTypes.arrayOf(PropTypes.string).isRequired,
+    host: PropTypes.string.isRequired,
+    avatar: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    isFavorite: PropTypes.bool.isRequired,
+  }).isRequired,
+  reviews: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    rating: PropTypes.string.isRequired,
+    avatar: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    date: PropTypes.object.isRequired,
+  }).isRequired,
 };
 
 export default App;
