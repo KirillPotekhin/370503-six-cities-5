@@ -8,13 +8,21 @@ class PlaceCard extends PureComponent {
 
     this.handlerMouseEnter = this.props.handlerMouseEnter.bind(this);
     this.handlerMouseLeave = this.props.handlerMouseLeave.bind(this);
+    this.onClickCard = this.onClickCard.bind(this);
+  }
+
+  onClickCard(id) {
+    const {history} = this.props;
+    return function () {
+      history.push(`/offer/${id}`);
+    };
   }
 
   render() {
-    const {history, offer} = this.props;
+    const {offer} = this.props;
     const {id, isPremium, images, name, price, type, isFavorite} = offer;
     return (
-      <article id={id} className="cities__place-card place-card" onClick={() => history.push(`/offer/${id}`)} onMouseEnter={this.handlerMouseEnter} onMouseLeave={this.handlerMouseLeave}>
+      <article id={id} className="cities__place-card place-card" onClick={this.onClickCard(id)} onMouseEnter={this.handlerMouseEnter} onMouseLeave={this.handlerMouseLeave}>
         {isPremium ?
           <div className="place-card__mark">
             <span>Premium</span>
