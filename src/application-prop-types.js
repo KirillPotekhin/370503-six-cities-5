@@ -4,7 +4,14 @@ const applicationPropTypes = {
   rentalOffers: PropTypes.number.isRequired,
   offer: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    city: PropTypes.string.isRequired,
+    city: PropTypes.shape({
+      location: PropTypes.shape({
+        latitude: PropTypes.number.isRequired,
+        longitude: PropTypes.number.isRequired,
+        zoom: PropTypes.number.isRequired,
+      }).isRequired,
+      city: PropTypes.string.isRequired,
+    }).isRequired,
     isPremium: PropTypes.bool.isRequired,
     images: PropTypes.arrayOf(PropTypes.shape({
       src: PropTypes.string.isRequired,
