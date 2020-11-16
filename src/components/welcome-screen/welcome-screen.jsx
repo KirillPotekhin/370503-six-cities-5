@@ -1,4 +1,4 @@
-import React, {createRef} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import PlacesList from "../places-list/places-list";
 import applicationPropTypes from "../../application-prop-types";
