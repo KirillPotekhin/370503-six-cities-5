@@ -1,7 +1,8 @@
-import React from "react";
+import React, {createRef} from "react";
 import PropTypes from "prop-types";
 import PlacesList from "../places-list/places-list";
 import applicationPropTypes from "../../application-prop-types";
+import Map from "../map-container/map-container";
 
 const WelcomeScreen = (props) => {
   const {location, history, rentalOffers, offers} = props;
@@ -94,7 +95,9 @@ const WelcomeScreen = (props) => {
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map offers={offers} cityName={`Amsterdam`} />
+              </section>
             </div>
           </div>
         </div>

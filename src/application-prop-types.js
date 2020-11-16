@@ -10,7 +10,7 @@ const applicationPropTypes = {
         longitude: PropTypes.number.isRequired,
         zoom: PropTypes.number.isRequired,
       }).isRequired,
-      city: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
     }).isRequired,
     isPremium: PropTypes.bool.isRequired,
     images: PropTypes.arrayOf(PropTypes.shape({

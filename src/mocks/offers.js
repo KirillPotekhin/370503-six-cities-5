@@ -171,7 +171,7 @@ export default [
         longitude: 4.939309666406198,
         zoom: 10,
       },
-      name: `New York`,
+      name: `Amsterdam`,
     },
     rating: `${getRandomInt(1, 5)}`,
     bedrooms: `${getRandomInt(1, 5)}`,

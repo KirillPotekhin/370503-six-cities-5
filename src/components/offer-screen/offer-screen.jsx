@@ -154,7 +154,8 @@ class OfferScreen extends PureComponent {
                 </section>
               </div>
             </div>
-            <section className="property__map map"></section>
+            <section className="property__map map">
+            </section>
           </section>
           <div className="container">
             <section className="near-places places">
