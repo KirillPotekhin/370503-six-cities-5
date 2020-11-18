@@ -1,6 +1,7 @@
 import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 import applicationPropTypes from "../../application-prop-types";
+import getStarValue from "../../getStarValue";
 
 class PlaceCard extends PureComponent {
   constructor(props) {
@@ -8,47 +9,41 @@ class PlaceCard extends PureComponent {
 
     this.handlerMouseEnter = this.props.handlerMouseEnter.bind(this);
     this.handlerMouseLeave = this.props.handlerMouseLeave.bind(this);
-    this.onClickCard = this.onClickCard.bind(this);
-  }
-
-  onClickCard(id) {
-    const {history} = this.props;
-    return function () {
-      history.push(`/offer/${id}`);
-    };
+    this.onClickCard = this.props.onClickCard.bind(this);
   }
 
   render() {
-    const {offer} = this.props;
-    const {id, isPremium, images, name, price, type, isFavorite} = offer;
+    const {classNameHeaderCard = ``, classNameInfoCard = ``, offer, widthPreview = `260`, heightPreview = `220`} = this.props;
+    const {id, isPremium, images, name, price, type, isFavorite, rating} = offer;
+    const pretext = isFavorite ? `In` : `To`;
     return (
-      <article id={id} className="cities__place-card place-card" onClick={this.onClickCard(id)} onMouseEnter={this.handlerMouseEnter} onMouseLeave={this.handlerMouseLeave}>
+      <article id={id} className={`${classNameHeaderCard && `${classNameHeaderCard}__card`} ${!classNameHeaderCard && `cities__place-card`} place-card`} onClick={this.onClickCard(id)} onMouseEnter={this.handlerMouseEnter} onMouseLeave={this.handlerMouseLeave}>
         {isPremium ?
           <div className="place-card__mark">
             <span>Premium</span>
           </div> : ``
         }
-        <div className="cities__image-wrapper place-card__image-wrapper">
+        <div className={`${classNameHeaderCard}__image-wrapper place-card__image-wrapper`}>
           <a href="#">
-            <img className="place-card__image" src={images[0].src} width="260" height="200" alt={`${name} image`} />
+            <img className="place-card__image" src={images[0].src} width={widthPreview} height={heightPreview} alt={`${name} image`} />
           </a>
         </div>
-        <div className="place-card__info">
+        <div className={`${classNameInfoCard} place-card__info`}>
           <div className="place-card__price-wrapper">
             <div className="place-card__price">
               <b className="place-card__price-value">&euro;{price}</b>
               <span className="place-card__price-text">&#47;&nbsp;night</span>
             </div>
-            <button className={`place-card__bookmark-button ${isFavorite ? `place-card__bookmark-button--active` : ``} button`} type="button">
+            <button className={`place-card__bookmark-button ${isFavorite && `place-card__bookmark-button--active`} button`} type="button">
               <svg className="place-card__bookmark-icon" width="18" height="19">
                 <use xlinkHref="#icon-bookmark"></use>
               </svg>
-              <span className="visually-hidden">To bookmarks</span>
+              <span className="visually-hidden">{`${pretext} bookmarks`}</span>
             </button>
           </div>
           <div className="place-card__rating rating">
             <div className="place-card__stars rating__stars">
-              <span style={{width: `80%`}}></span>
+              <span style={{width: `${getStarValue(rating)}%`}}></span>
               <span className="visually-hidden">Rating</span>
             </div>
           </div>
@@ -64,7 +59,18 @@ class PlaceCard extends PureComponent {
 
 PlaceCard.propTypes = {
   history: PropTypes.any,
+  classNameHeaderCard: PropTypes.string,
+  classNameInfoCard: PropTypes.string,
+  widthPreview: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  heightPreview: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   offer: applicationPropTypes.offer,
+  onClickCard: PropTypes.func.isRequired,
   handlerMouseEnter: PropTypes.func.isRequired,
   handlerMouseLeave: PropTypes.func.isRequired,
 };
