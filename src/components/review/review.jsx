@@ -1,6 +1,6 @@
 import React, {PureComponent, Fragment} from "react";
 import applicationPropTypes from "../../application-prop-types";
-import getStarValue from "../../getStarValue";
+import getStarValue from "../../utils";
 
 class Review extends PureComponent {
   constructor(props) {

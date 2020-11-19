@@ -1,7 +1,7 @@
 import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 import applicationPropTypes from "../../application-prop-types";
-import getStarValue from "../../getStarValue";
+import getStarValue from "../../utils";
 
 class PlaceCard extends PureComponent {
   constructor(props) {
