@@ -7,7 +7,10 @@ import App from "./components/app/app";
 import offers from "./mocks/offers";
 import reviews from "./mocks/reviews";
 
-const store = createStore(reducer);
+const store = createStore(
+    reducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : (f) => f
+);
 
 ReactDom.render(
     <Provider store={store}>
