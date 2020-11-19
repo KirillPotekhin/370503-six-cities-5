@@ -1,9 +1,12 @@
 import React, {PureComponent} from "react";
 import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
+import ReviewsList from "../reviews-list/reviews-list";
 import FeedbackForm from "../feedback-form/feedback-form";
-import PlaceCard from "../place-card/place-card";
+import PlacesList from "../places-list/places-list";
 import applicationPropTypes from "../../application-prop-types";
+import getStarValue from "../../getStarValue";
+import Map from "../map/map";
 
 class OfferScreen extends PureComponent {
   constructor(props) {
@@ -18,9 +21,10 @@ class OfferScreen extends PureComponent {
     const {location, history, offers, reviews} = this.props;
     const path = location.pathname.split(`/`);
     const offer = offers.find((it) => it.id === path[path.length - 1]);
-    const {id, isPremium, images, name, price, type, isFavorite, rating, bedrooms, adults, goods, host, avatar, description} = offer;
-    const getStarValue = (value) => Math.floor(value * 100 / 5);
+    const {id, isPremium, images, name, price, type, isFavorite, rating, bedrooms, adults, goods, host, avatar, description, city} = offer;
     const actualReviews = reviews.filter((review) => review.id === id).sort((a, b) => b.date - a.date);
+    const actualOffers = offers.filter((it) => it.city.name === city.name && it.id !== id);
+
     return (
       <div className="page">
         <header className="header">
@@ -125,45 +129,27 @@ class OfferScreen extends PureComponent {
                 <section className="property__reviews reviews">
                   <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{actualReviews.length}</span></h2>
                   <ul className="reviews__list">
-                    {actualReviews.slice(0, 10).map((actualReview) => (
-                      <li key={actualReview.avatar} className="reviews__item">
-                        <div className="reviews__user user">
-                          <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                            <img className="reviews__avatar user__avatar" src={actualReview.avatar} width="54" height="54" alt={`${actualReview.name} avatar`} />
-                          </div>
-                          <span className="reviews__user-name">
-                            {actualReview.name}
-                          </span>
-                        </div>
-                        <div className="reviews__info">
-                          <div className="reviews__rating rating">
-                            <div className="reviews__stars rating__stars">
-                              <span style={{width: `${getStarValue(actualReview.rating)}%`}}></span>
-                              <span className="visually-hidden">Rating</span>
-                            </div>
-                          </div>
-                          <p className="reviews__text">
-                            {actualReview.text}
-                          </p>
-                          <time className="reviews__time" dateTime="2019-04-24">{new Date(actualReview.date).getDay()} {new Date(actualReview.date).toLocaleString(`en-US`, {month: `long`})} {new Date(actualReview.date).getFullYear()}</time>
-                        </div>
-                      </li>
-                    ))}
+                    <ReviewsList reviews={actualReviews} />
                   </ul>
                   <FeedbackForm />
                 </section>
               </div>
             </div>
             <section className="property__map map">
+              <Map offers={actualOffers} cityName={city.name} active={this.state.active} activeOffer={offer}/>
             </section>
           </section>
           <div className="container">
             <section className="near-places places">
               <h2 className="near-places__title">Other places in the neighbourhood</h2>
               <div className="near-places__list places__list">
-                <PlaceCard
-                  history={history}
-                  offer={offers[1]}
+                <PlacesList
+                  offers={actualOffers.slice(0, 3)}
+                  onClickCard={(offerId) => {
+                    return function () {
+                      history.push(`/offer/${offerId}`);
+                    };
+                  }}
                   handlerMouseEnter={(evt) => {
                     evt.preventDefault();
                     const activeId = evt.currentTarget.id;
@@ -171,24 +157,6 @@ class OfferScreen extends PureComponent {
                   }}
                   handlerMouseLeave={() => this.setState({active: ``})}
                 />
-                <PlaceCard
-                  history={history}
-                  offer={offers[2]}
-                  handlerMouseEnter={(evt) => {
-                    evt.preventDefault();
-                    const activeId = evt.currentTarget.id;
-                    this.setState({active: activeId});
-                  }}
-                  handlerMouseLeave={() => this.setState({active: ``})} />
-                <PlaceCard
-                  history={history}
-                  offer={offers[3]}
-                  handlerMouseEnter={(evt) => {
-                    evt.preventDefault();
-                    const activeId = evt.currentTarget.id;
-                    this.setState({active: activeId});
-                  }}
-                  handlerMouseLeave={() => this.setState({active: ``})} />
               </div>
             </section>
           </div>
@@ -202,7 +170,7 @@ OfferScreen.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
-  reviews: applicationPropTypes.reviews,
+  reviews: PropTypes.arrayOf(applicationPropTypes.review).isRequired,
 };
 
 export default OfferScreen;
