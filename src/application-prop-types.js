@@ -35,6 +35,13 @@ const applicationPropTypes = {
     text: PropTypes.string.isRequired,
     date: PropTypes.number.isRequired,
   }).isRequired,
+  cities: PropTypes.array.isRequired,
+  city: PropTypes.object,
+  getCities: PropTypes.func.isRequired,
+  getOffers: PropTypes.func.isRequired,
+  cityChange: PropTypes.func.isRequired,
+  getActiveOfferId: PropTypes.func.isRequired,
+  active: PropTypes.any,
 };
 
 export default applicationPropTypes;

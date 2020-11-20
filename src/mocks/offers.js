@@ -206,11 +206,11 @@ export default [
     isFavorite: true,
     city: {
       location: {
-        latitude: 54.3809553943508,
-        longitude: 5.939309666406198,
+        latitude: 48.851162,
+        longitude: 2.312317,
         zoom: 10,
       },
-      name: `London`,
+      name: `Paris`,
     },
     rating: `${getRandomInt(1, 5)}`,
     bedrooms: `${getRandomInt(1, 5)}`,

@@ -5,7 +5,7 @@ import ReviewsList from "../reviews-list/reviews-list";
 import FeedbackForm from "../feedback-form/feedback-form";
 import PlacesList from "../places-list/places-list";
 import applicationPropTypes from "../../application-prop-types";
-import getStarValue from "../../getStarValue";
+import getStarValue from "../../utils";
 import Map from "../map/map";
 
 class OfferScreen extends PureComponent {

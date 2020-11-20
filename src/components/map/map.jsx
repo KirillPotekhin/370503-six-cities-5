@@ -3,59 +3,63 @@ import PropTypes from "prop-types";
 import applicationPropTypes from "../../application-prop-types";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-
-const icon = L.icon({
-  iconUrl: `/img/pin.svg`,
-  iconSize: [30, 30]
-});
-
-const iconActive = L.icon({
-  iconUrl: `/img/pin-active.svg`,
-  iconSize: [30, 30]
-});
+import {connect} from "react-redux";
+import {ActionCreator} from "../../store/action";
+import {getFilteredOffers} from "../../utils";
 
 class Map extends Component {
   constructor(props) {
     super(props);
     this.ref = createRef();
     this.marker = {};
+    this.icon = L.icon({
+      iconUrl: `/img/pin.svg`,
+      iconSize: [30, 30]
+    });
+    this.iconActive = L.icon({
+      iconUrl: `/img/pin-active.svg`,
+      iconSize: [30, 30]
+    });
   }
 
   componentDidMount() {
-    const {offers, cityName, activeOffer = ``} = this.props;
+    this.props.getOffers();
 
-    const city = [52.38333, 4.9];
+    const cityCoordinate = [this.props.city.location.latitude, this.props.city.location.longitude];
 
-    const zoom = 12;
+    const zoom = this.props.city.location.zoom;
 
-    const map = L.map(this.ref.current, {
-      center: city,
+    this.map = L.map(this.ref.current, {
+      center: cityCoordinate,
       zoom,
       zoomControl: false,
       marker: true
     });
 
-    map.setView(city, zoom);
+    this.map.setView(cityCoordinate, zoom);
 
     L.tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`,
-        {attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`}).addTo(map);
+        {attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`}).addTo(this.map);
 
-    const filteredOffers = offers.filter((it) => it.city.name === cityName);
+  }
+
+  render() {
+    const {offers, city, activeOffer = ``} = this.props;
+
+    const filteredOffers = getFilteredOffers(offers, city);
 
     if (activeOffer !== ``) {
       this.marker[activeOffer.id] = L.marker([activeOffer.city.location.latitude, activeOffer.city.location.longitude]);
-      this.marker[activeOffer.id].setIcon(iconActive);
-      this.marker[activeOffer.id].addTo(map);
+      this.marker[activeOffer.id].setIcon(this.iconActive);
+      this.marker[activeOffer.id].addTo(this.map);
     }
 
     filteredOffers.map((filteredOffer) => {
       this.marker[filteredOffer.id] = L.marker([filteredOffer.city.location.latitude, filteredOffer.city.location.longitude]);
-      this.marker[filteredOffer.id].setIcon(icon);
-      this.marker[filteredOffer.id].addTo(map);
+      this.marker[filteredOffer.id].setIcon(this.icon);
+      this.marker[filteredOffer.id].addTo(this.map);
     });
-  }
 
-  render() {
     return (
       <div id="map" ref={this.ref} style={{height: `100%`}}></div>
     );
@@ -63,19 +67,41 @@ class Map extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.active !== ``) {
-      this.marker[this.props.active].setIcon(iconActive);
+      this.marker[this.props.active].setIcon(this.iconActive);
     }
     if (prevProps.active !== ``) {
-      this.marker[prevProps.active].setIcon(icon);
+      this.marker[prevProps.active].setIcon(this.icon);
+    }
+    if (this.props.city !== prevProps.city) {
+      const cityCoordinate = [this.props.city.location.latitude, this.props.city.location.longitude];
+      const zoom = this.props.city.location.zoom;
+      this.map.setView(cityCoordinate, zoom);
     }
   }
 }
 
 Map.propTypes = {
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
-  cityName: PropTypes.string.isRequired,
-  active: PropTypes.any,
+  getOffers: applicationPropTypes.getOffers,
+  city: PropTypes.object,
+  active: applicationPropTypes.active,
   activeOffer: PropTypes.object,
 };
 
-export default Map;
+const mapStateToProps = (state) => ({
+  city: state.city,
+  offers: state.offers,
+  active: state.active,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getActiveOfferId(value) {
+    dispatch(ActionCreator.getActiveOfferId(value));
+  },
+  getOffers() {
+    dispatch(ActionCreator.getOffers());
+  },
+});
+
+export {Map};
+export default connect(mapStateToProps, mapDispatchToProps)(Map);
