@@ -8,3 +8,5 @@ export default function getStarValue(value) {
 export const extend = (a, b) => {
   return Object.assign({}, a, b);
 };
+
+export const getFilteredOffers = (offers, city) => offers.filter((it) => it.city.name === city.name);

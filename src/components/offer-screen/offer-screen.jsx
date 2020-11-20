@@ -136,7 +136,7 @@ class OfferScreen extends PureComponent {
               </div>
             </div>
             <section className="property__map map">
-              <Map offers={actualOffers} cityName={city.name} active={this.state.active} activeOffer={offer}/>
+              {/* <Map offers={actualOffers} cityName={city.name} active={this.state.active} activeOffer={offer}/> */}
             </section>
           </section>
           <div className="container">

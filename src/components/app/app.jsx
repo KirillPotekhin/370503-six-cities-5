@@ -17,7 +17,6 @@ const App = (props) => {
             <WelcomeScreen
               location={location}
               history={history}
-              offers={offers}
             />
           }
         />
