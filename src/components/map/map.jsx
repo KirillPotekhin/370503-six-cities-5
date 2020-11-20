@@ -24,7 +24,6 @@ class Map extends Component {
 
   componentDidMount() {
     this.props.getOffers();
-    console.log(`city`, this.props.city);
 
     const cityCoordinate = [this.props.city.location.latitude, this.props.city.location.longitude];
 
@@ -46,7 +45,6 @@ class Map extends Component {
 
   render() {
     const {offers, city, activeOffer = ``} = this.props;
-    
 
     const filteredOffers = getFilteredOffers(offers, city);
 
