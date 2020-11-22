@@ -4,9 +4,11 @@ import PlacesList from "../places-list/places-list";
 import applicationPropTypes from "../../application-prop-types";
 import Map from "../map/map";
 import CitiesList from "../cities-list/cities-list";
+import Sorting from "../sorting/sorting";
 import {connect} from "react-redux";
 import {ActionCreator} from "../../store/action";
 import {getFilteredOffers} from "../../utils";
+import {SortingOption} from "../../const";
 
 class WelcomeScreen extends PureComponent {
   constructor(props) {
@@ -19,8 +21,21 @@ class WelcomeScreen extends PureComponent {
   }
 
   render() {
-    const {history, offers, city, getActiveOfferId} = this.props;
-    const filteredOffers = getFilteredOffers(offers, city);
+    const {history, offers, city, getActiveOfferId, sortingOption} = this.props;
+    switch (sortingOption) {
+      case SortingOption[0].method:
+        this.filteredOffers = getFilteredOffers(offers, city);
+        break;
+      case SortingOption[1].method:
+        this.filteredOffers.sort((a, b) => a.price - b.price);
+        break;
+      case SortingOption[2].method:
+        this.filteredOffers.sort((a, b) => b.price - a.price);
+        break;
+      case SortingOption[3].method:
+        this.filteredOffers.sort((a, b) => b.rating - a.rating);
+        break;
+    }
     return (
       <div className="page page--gray page--main">
         <header className="header">
@@ -57,25 +72,11 @@ class WelcomeScreen extends PureComponent {
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                {city && <b className="places__found">{filteredOffers.length} places to stay in {city.name}</b>}
-                <form className="places__sorting" action="#" method="get">
-                  <span className="places__sorting-caption">Sort by</span>
-                  <span className="places__sorting-type" tabIndex="0">
-                    Popular
-                    <svg className="places__sorting-arrow" width="7" height="4">
-                      <use xlinkHref="#icon-arrow-select"></use>
-                    </svg>
-                  </span>
-                  <ul className="places__options places__options--custom places__options--opened">
-                    <li className="places__option places__option--active" tabIndex="0">Popular</li>
-                    <li className="places__option" tabIndex="0">Price: low to high</li>
-                    <li className="places__option" tabIndex="0">Price: high to low</li>
-                    <li className="places__option" tabIndex="0">Top rated first</li>
-                  </ul>
-                </form>
+                {city && <b className="places__found">{this.filteredOffers.length} places to stay in {city.name}</b>}
+                <Sorting />
                 <div className="cities__places-list places__list tabs__content">
                   <PlacesList
-                    offers={filteredOffers}
+                    offers={this.filteredOffers}
                     onClickCard={(offerId) => {
                       return function () {
                         history.push(`/offer/${offerId}`);
@@ -106,6 +107,7 @@ class WelcomeScreen extends PureComponent {
 WelcomeScreen.propTypes = {
   history: PropTypes.object.isRequired,
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
+  sortingOption: applicationPropTypes.sortingOption,
   getOffers: applicationPropTypes.getOffers,
   getActiveOfferId: applicationPropTypes.getActiveOfferId,
   city: applicationPropTypes.city,
@@ -116,6 +118,7 @@ const mapStateToProps = (state) => ({
   city: state.city,
   offers: state.offers,
   active: state.active,
+  sortingOption: state.sortingOption,
 });
 
 const mapDispatchToProps = (dispatch) => ({

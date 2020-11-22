@@ -23,7 +23,7 @@ export default [
       },
     ],
     name: `Beautiful & luxurious studio at great location`,
-    price: `100`,
+    price: `195`,
     type: `Apartment`,
     isFavorite: true,
     city: {
@@ -73,7 +73,7 @@ export default [
       },
     ],
     name: `Beautiful & luxurious`,
-    price: `200`,
+    price: `231`,
     type: `Private room`,
     isFavorite: false,
     city: {
@@ -118,7 +118,7 @@ export default [
       },
     ],
     name: `Beautiful studio at great location`,
-    price: `300`,
+    price: `356`,
     type: `Apartment`,
     isFavorite: true,
     city: {
@@ -162,7 +162,7 @@ export default [
       },
     ],
     name: `Luxurious studio at great location`,
-    price: `400`,
+    price: `471`,
     type: `Fridge box`,
     isFavorite: true,
     city: {

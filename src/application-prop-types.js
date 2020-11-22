@@ -42,6 +42,10 @@ const applicationPropTypes = {
   cityChange: PropTypes.func.isRequired,
   getActiveOfferId: PropTypes.func.isRequired,
   active: PropTypes.any,
+  sortingOption: PropTypes.string.isRequired,
+  getSortingOption: PropTypes.func.isRequired,
+  isOptionOpened: PropTypes.bool.isRequired,
+  dropDownMenuOptionChange: PropTypes.func.isRequired,
 };
 
 export default applicationPropTypes;
