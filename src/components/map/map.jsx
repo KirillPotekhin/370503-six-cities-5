@@ -43,7 +43,7 @@ class Map extends Component {
 
   }
 
-  render() {
+  componentDidUpdate(prevProps) {
     const {offers, city, activeOffer = ``} = this.props;
 
     const filteredOffers = getFilteredOffers(offers, city);
@@ -60,12 +60,6 @@ class Map extends Component {
       this.marker[filteredOffer.id].addTo(this.map);
     });
 
-    return (
-      <div id="map" ref={this.ref} style={{height: `100%`}}></div>
-    );
-  }
-
-  componentDidUpdate(prevProps) {
     if (this.props.active !== ``) {
       this.marker[this.props.active].setIcon(this.iconActive);
     }
@@ -77,6 +71,12 @@ class Map extends Component {
       const zoom = this.props.city.location.zoom;
       this.map.setView(cityCoordinate, zoom);
     }
+  }
+
+  render() {
+    return (
+      <div id="map" ref={this.ref} style={{height: `100%`}}></div>
+    );
   }
 }
 
