@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
 import applicationPropTypes from "../../application-prop-types";
 import PlacesList from "../places-list/places-list";
+import {SizePreviewImage} from "../../const";
 
 class FavoritesOfferScreen extends PureComponent {
   constructor(props) {
@@ -63,8 +64,8 @@ class FavoritesOfferScreen extends PureComponent {
                       <PlacesList
                         offers={filteredFavorites[i]}
                         classNameHeaderCard={`favorites`}
-                        widthPreview={150}
-                        heightPreview={110}
+                        widthPreview={SizePreviewImage.WIDTH_PREVIEW_FOR_FAVORITES}
+                        heightPreview={SizePreviewImage.HEIGHT_PREVIEW_FOR_FAVORITES}
                         classNameInfoCard={`favorites__card-info`}
                         onClickCard={(offerId) => {
                           return function () {

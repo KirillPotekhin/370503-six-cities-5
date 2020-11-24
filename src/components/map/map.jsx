@@ -22,12 +22,42 @@ class Map extends Component {
     });
   }
 
+
+  componentDidUpdate(prevProps) {
+    // const {offers, city, activeOffer = ``} = this.props;
+    // const filteredOffers = getFilteredOffers(offers, city);
+
+    // if (activeOffer !== ``) {
+    //   this.marker[activeOffer.id] = L.marker([activeOffer.city.location.latitude, activeOffer.city.location.longitude]);
+    //   this.marker[activeOffer.id].setIcon(this.iconActive);
+    //   this.marker[activeOffer.id].addTo(this.map);
+    // }
+
+    // filteredOffers.map((filteredOffer) => {
+    //   this.marker[filteredOffer.id] = L.marker([filteredOffer.city.location.latitude, filteredOffer.city.location.longitude]);
+    //   this.marker[filteredOffer.id].setIcon(this.icon);
+    //   this.marker[filteredOffer.id].addTo(this.map);
+    // });
+    if (prevProps.active !== ``) {
+      this.marker[prevProps.active].setIcon(this.icon);
+    }
+    if (this.props.active !== ``) {
+      this.marker[this.props.active].setIcon(this.iconActive);
+    }
+    if (this.props.city !== prevProps.city) {
+      const cityCoordinate = [this.props.city.location.latitude, this.props.city.location.longitude];
+      const zoom = this.props.city.location.zoom;
+      this.map.setView(cityCoordinate, zoom);
+    }
+  }
+
   componentDidMount() {
-    this.props.getOffers();
+    const {offers, city, getOffers} = this.props;
+    getOffers();
 
-    const cityCoordinate = [this.props.city.location.latitude, this.props.city.location.longitude];
+    const cityCoordinate = [city.location.latitude, city.location.longitude];
 
-    const zoom = this.props.city.location.zoom;
+    const zoom = city.location.zoom;
 
     this.map = L.map(this.ref.current, {
       center: cityCoordinate,
@@ -41,35 +71,19 @@ class Map extends Component {
     L.tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`,
         {attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`}).addTo(this.map);
 
-  }
+    // const filteredOffers = getFilteredOffers(offers, city);
+    // const activeOffer = offers.find((offer) => `${this.props.active}` === `${offer.id}`);
 
-  componentDidUpdate(prevProps) {
-    const {offers, city, activeOffer = ``} = this.props;
-
-    const filteredOffers = getFilteredOffers(offers, city);
-
-    if (activeOffer !== ``) {
-      this.marker[activeOffer.id] = L.marker([activeOffer.city.location.latitude, activeOffer.city.location.longitude]);
-      this.marker[activeOffer.id].setIcon(this.iconActive);
-      this.marker[activeOffer.id].addTo(this.map);
-    }
-
-    filteredOffers.map((filteredOffer) => {
-      this.marker[filteredOffer.id] = L.marker([filteredOffer.city.location.latitude, filteredOffer.city.location.longitude]);
-      this.marker[filteredOffer.id].setIcon(this.icon);
-      this.marker[filteredOffer.id].addTo(this.map);
+    offers.map((offer) => {
+      this.marker[offer.id] = L.marker([offer.city.location.latitude, offer.city.location.longitude]);
+      this.marker[offer.id].setIcon(this.icon);
+      this.marker[offer.id].addTo(this.map);
     });
 
     if (this.props.active !== ``) {
-      this.marker[this.props.active].setIcon(this.iconActive);
-    }
-    if (prevProps.active !== ``) {
-      this.marker[prevProps.active].setIcon(this.icon);
-    }
-    if (this.props.city !== prevProps.city) {
-      const cityCoordinate = [this.props.city.location.latitude, this.props.city.location.longitude];
-      const zoom = this.props.city.location.zoom;
-      this.map.setView(cityCoordinate, zoom);
+      // this.marker[activeOffer.id] = L.marker([activeOffer.city.location.latitude, activeOffer.city.location.longitude]);
+      // this.marker[this.props.active].setIcon(this.iconActive);
+      // this.marker[activeOffer.id].addTo(this.map);
     }
   }
 

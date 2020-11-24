@@ -6,6 +6,7 @@ import {reducer} from "./store/reducer";
 import App from "./components/app/app";
 import offers from "./mocks/offers";
 import reviews from "./mocks/reviews";
+import {SortingOption} from "./const";
 
 const store = createStore(
     reducer,
@@ -17,6 +18,7 @@ ReactDom.render(
       <App
         offers={offers}
         reviews={reviews}
+        // sortingOption={SortingOption.POPULAR}
       />
     </Provider>,
     document.querySelector(`#root`)

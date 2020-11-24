@@ -17,6 +17,7 @@ const App = (props) => {
             <WelcomeScreen
               location={location}
               history={history}
+              // sortingOption={this.props.sortingOption}
             />
           }
         />
@@ -39,6 +40,7 @@ const App = (props) => {
               history={history}
               offers={offers}
               reviews={reviews}
+              // sortingOption={sortingOption}
             />
           }
         />
@@ -62,6 +64,7 @@ const App = (props) => {
 App.propTypes = {
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
   reviews: PropTypes.arrayOf(applicationPropTypes.review).isRequired,
+  // sortingOption: applicationPropTypes.sortingOption,
 };
 
 export default App;

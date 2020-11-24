@@ -9,35 +9,59 @@ import {connect} from "react-redux";
 import {ActionCreator} from "../../store/action";
 import {getFilteredOffers} from "../../utils";
 import {SortingOption} from "../../const";
+import withActiveFlag from "../../hocs/with-active-flag";
 
 class WelcomeScreen extends PureComponent {
   constructor(props) {
     super(props);
 
+    this.state = {
+      // sortingOption: this.props.sortingOption,
+    };
   }
 
   componentDidMount() {
     this.props.getOffers();
   }
 
-  render() {
-    const {history, offers, city, getActiveOfferId, sortingOption} = this.props;
+  getSortingOption(sortingOption) {
+    const {offers, city} = this.props;
+    const filteredOffers = getFilteredOffers(offers, city);
+    let sortedOffers = [];
     switch (sortingOption) {
-      case SortingOption[0].method:
-        this.filteredOffers = getFilteredOffers(offers, city);
+      case SortingOption.POPULAR:
+        sortedOffers = filteredOffers;
         break;
-      case SortingOption[1].method:
-        this.filteredOffers.sort((a, b) => a.price - b.price);
+      case SortingOption.PRICE_LOW_TO_HIGH:
+        sortedOffers = filteredOffers.slice().sort((a, b) => a.price - b.price);
         break;
-      case SortingOption[2].method:
-        this.filteredOffers.sort((a, b) => b.price - a.price);
+      case SortingOption.PRICE_HIGH_TO_LOW:
+        sortedOffers = filteredOffers.slice().sort((a, b) => b.price - a.price);
         break;
-      case SortingOption[3].method:
-        this.filteredOffers.sort((a, b) => b.rating - a.rating);
+      case SortingOption.TOP_RATED_FIRST:
+        sortedOffers = filteredOffers.slice().sort((a, b) => b.rating - a.rating);
         break;
+      default:
+        sortedOffers = [];
     }
+    return sortedOffers;
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log(this.props);
+    // if (prevProps.city !== this.props.city) {
+    //   this.setState(() => ({
+    //     sortingOption: this.props.sortingOption,
+    //   }));
+    // }
+  }
+
+  render() {
+    const {history, city, getActiveOfferId, isActive, sortingOption} = this.props;
+    // const sortingOption = this.state.sortingOption;
+    const sortedOffers = this.getSortingOption(sortingOption);
     return (
-      <div className="page page--gray page--main">
+      <div className={`page page--gray page--main ${!sortedOffers.length && `page__main--index-empty`}`}>
         <header className="header">
           <div className="container">
             <div className="header__wrapper">
@@ -69,32 +93,47 @@ class WelcomeScreen extends PureComponent {
             </section>
           </div>
           <div className="cities">
-            <div className="cities__places-container container">
-              <section className="cities__places places">
-                <h2 className="visually-hidden">Places</h2>
-                {city && <b className="places__found">{this.filteredOffers.length} places to stay in {city.name}</b>}
-                <Sorting />
-                <div className="cities__places-list places__list tabs__content">
-                  <PlacesList
-                    offers={this.filteredOffers}
-                    onClickCard={(offerId) => {
-                      return function () {
-                        history.push(`/offer/${offerId}`);
-                      };
-                    }}
-                    handlerMouseEnter={(evt) => {
-                      evt.preventDefault();
-                      const activeId = evt.currentTarget.id;
-                      getActiveOfferId(activeId);
-                    }}
-                    handlerMouseLeave={() => getActiveOfferId(``)}
+            <div className={`cities__places-container ${!sortedOffers.length && `cities__places-container--empty`} container`}>
+              {sortedOffers.length ?
+                <section className="cities__places places">
+                  <h2 className="visually-hidden">Places</h2>
+                  {city && <b className="places__found">{sortedOffers.length} places to stay in {city.name}</b>}
+                  <Sorting
+                    // sortingOption={sortingOption}
+                    // onChangeSortingOption={
+                    //   (value) => this.setState(() => ({
+                    //     sortingOption: value,
+                    //   }))
+                    // }
                   />
-                </div>
-              </section>
+                  <div className="cities__places-list places__list tabs__content">
+                    <PlacesList
+                      offers={sortedOffers}
+                      onClickCard={(offerId) => {
+                        return function () {
+                          history.push(`/offer/${offerId}`);
+                        };
+                      }}
+                      handlerMouseEnter={(evt) => {
+                        evt.preventDefault();
+                        const activeId = evt.currentTarget.id;
+                        getActiveOfferId(activeId);
+                      }}
+                      handlerMouseLeave={() => getActiveOfferId(``)}
+                    />
+                  </div>
+                </section> :
+                <section className="cities__no-places">
+                  <div className="cities__status-wrapper tabs__content">
+                    <b className="cities__status">No places to stay available</b>
+                    <p className="cities__status-description">We could not find any property available at the moment in Dusseldorf</p>
+                  </div>
+                </section>}
               <div className="cities__right-section">
+                {!!sortedOffers.length &&
                 <section className="cities__map map">
                   {city && <Map />}
-                </section>
+                </section>}
               </div>
             </div>
           </div>
@@ -118,7 +157,6 @@ const mapStateToProps = (state) => ({
   city: state.city,
   offers: state.offers,
   active: state.active,
-  sortingOption: state.sortingOption,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -131,4 +169,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export {WelcomeScreen};
-export default connect(mapStateToProps, mapDispatchToProps)(WelcomeScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(withActiveFlag(WelcomeScreen));

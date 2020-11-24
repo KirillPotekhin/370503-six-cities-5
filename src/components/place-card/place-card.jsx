@@ -2,6 +2,7 @@ import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 import applicationPropTypes from "../../application-prop-types";
 import getStarValue from "../../utils";
+import {SizePreviewImage} from "../../const";
 
 class PlaceCard extends PureComponent {
   constructor(props) {
@@ -13,7 +14,7 @@ class PlaceCard extends PureComponent {
   }
 
   render() {
-    const {classNameHeaderCard = ``, classNameInfoCard = ``, offer, widthPreview = `260`, heightPreview = `220`} = this.props;
+    const {classNameHeaderCard = ``, classNameInfoCard = ``, offer, widthPreview = SizePreviewImage.WIDTH_PREVIEW_DEFAULT, heightPreview = SizePreviewImage.HEIGHT_PREVIEW_DEFAULT} = this.props;
     const {id, isPremium, images, name, price, type, isFavorite, rating} = offer;
     const pretext = isFavorite ? `In` : `To`;
     return (

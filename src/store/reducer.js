@@ -3,7 +3,7 @@ import {ActionType} from "./action";
 import offers from "../mocks/offers";
 import reviews from "../mocks/reviews";
 import cities from "../mocks/cities";
-import {SortingOption} from "../const";
+// import {SortingOption} from "../const";
 
 const initialState = {
   offers: [],
@@ -18,8 +18,8 @@ const initialState = {
   },
   cities: [],
   active: ``,
-  sortingOption: SortingOption[0].method,
-  isOptionOpened: false,
+  // sortingOption: SortingOption.POPULAR,
+  // isOptionOpened: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -45,15 +45,15 @@ const reducer = (state = initialState, action) => {
         active: action.payload,
       });
 
-    case ActionType.GET_SORTING_METHOD:
-      return extend(state, {
-        sortingOption: action.payload,
-        isOptionOpened: !state.isOptionOpened,
-      });
-    case ActionType.DROP_DOWN_MENU_OPTION_CHANGE:
-      return extend(state, {
-        isOptionOpened: !state.isOptionOpened,
-      });
+    // case ActionType.GET_SORTING_OPTION:
+    //   return extend(state, {
+    //     sortingOption: action.payload,
+    //     isOptionOpened: !state.isOptionOpened,
+    //   });
+    // case ActionType.DROP_DOWN_MENU_OPTION_CHANGE:
+    //   return extend(state, {
+    //     isOptionOpened: !state.isOptionOpened,
+    //   });
   }
 
   return state;
