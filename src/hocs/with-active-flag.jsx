@@ -1,6 +1,5 @@
 import React, {PureComponent} from "react";
 import applicationPropTypes from "../application-prop-types";
-import {SortingOption} from "../const";
 
 const withActiveFlag = (Component) => {
   class WithActiveFlag extends PureComponent {
@@ -9,7 +8,6 @@ const withActiveFlag = (Component) => {
 
       this.state = {
         isActive: false,
-        sortingOption: SortingOption.POPULAR,
       };
 
       this.handleActiveChange = this.handleActiveChange.bind(this);
@@ -22,10 +20,7 @@ const withActiveFlag = (Component) => {
 
     getSortingOption(value) {
       return () => {
-        this.setState(() => ({
-          sortingOption: value,
-        }));
-        // this.props.onChangeSortingOption(value);
+        this.props.onChangeSortingOption(value);
         this.handleActiveChange();
       };
     }
@@ -35,7 +30,6 @@ const withActiveFlag = (Component) => {
         <Component
           {...this.props}
           isActive={this.state.isActive}
-          sortingOption={this.state.sortingOption}
           onActiveChange={() => this.handleActiveChange}
           onClickSortingOption={this.getSortingOption}
         />
@@ -44,7 +38,7 @@ const withActiveFlag = (Component) => {
   }
 
   WithActiveFlag.propTypes = {
-    // onChangeSortingOption: applicationPropTypes.onChangeSortingOption,
+    onChangeSortingOption: applicationPropTypes.onChangeSortingOption,
   };
 
   return WithActiveFlag;

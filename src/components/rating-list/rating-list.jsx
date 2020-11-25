@@ -1,6 +1,4 @@
 import React, {Fragment} from "react";
-// import PropTypes from "prop-types";
-// import applicationPropTypes from "../../application-prop-types";
 import {ReviewRatingTitle} from "../../const";
 import RatingItem from "../rating-item/rating-item";
 
@@ -10,7 +8,7 @@ const RatingList = (props) => {
     <Fragment>
       {reviewRatingTitleList.map((ratingTitle, i) => (
         <RatingItem
-          key={`${ReviewRatingTitle.ratingTitle}${i}`}
+          key={`${ReviewRatingTitle[ratingTitle]}${i}`}
           ratingTitle={ReviewRatingTitle[ratingTitle]}
           value={reviewRatingTitleList.length - i}
           {...props}
@@ -20,8 +18,6 @@ const RatingList = (props) => {
   );
 };
 
-RatingList.propTypes = {
-  // ratingTitles: PropTypes.arrayOf(applicationPropTypes.ratingTitle).isRequired,
-};
+RatingList.propTypes = {};
 
 export default RatingList;

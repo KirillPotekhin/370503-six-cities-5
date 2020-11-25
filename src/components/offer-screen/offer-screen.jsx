@@ -7,23 +7,43 @@ import PlacesList from "../places-list/places-list";
 import applicationPropTypes from "../../application-prop-types";
 import getStarValue from "../../utils";
 import Map from "../map/map";
+import {connect} from "react-redux";
+import {ActionCreator} from "../../store/action";
 
 class OfferScreen extends PureComponent {
   constructor(props) {
     super(props);
+  }
 
-    this.state = {
-      active: ``,
-    };
+  getActualOffer() {
+    const path = this.props.location.pathname.split(`/`);
+    const offer = this.props.offers.find((it) => it.id === path[path.length - 1]);
+    return offer;
+  }
+
+  componentDidMount() {
+    this.props.getOffers();
+    this.props.getReviews();
+    this.props.getCities();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.offers !== this.props.offers || this.props.city.name === ``) {
+      const offer = this.getActualOffer();
+      const actualCity = this.props.cities.find((it) => it.name === offer.city.name);
+      this.props.cityChange(actualCity);
+    }
   }
 
   render() {
-    const {location, history, offers, reviews} = this.props;
-    const path = location.pathname.split(`/`);
-    const offer = offers.find((it) => it.id === path[path.length - 1]);
+    const {history, offers, reviews, getActiveOfferId} = this.props;
+    const offer = this.getActualOffer();
+    if (!offer) {
+      return null;
+    }
     const {id, isPremium, images, name, price, type, isFavorite, rating, bedrooms, adults, goods, host, avatar, description, city} = offer;
     const actualReviews = reviews.filter((review) => review.id === id).sort((a, b) => b.date - a.date);
-    const actualOffers = offers.filter((it) => it.city.name === city.name && it.id !== id);
+    const actualOffers = offers.filter((it) => it.city.name === city.name && it.id !== id).slice(0, 3);
 
     return (
       <div className="page">
@@ -136,7 +156,7 @@ class OfferScreen extends PureComponent {
               </div>
             </div>
             <section className="property__map map">
-              <Map offers={actualOffers} cityName={city.name} active={this.state.active} activeOffer={offer}/>
+              {true && <Map offers={actualOffers} actualOffer={offer}/>}
             </section>
           </section>
           <div className="container">
@@ -144,7 +164,7 @@ class OfferScreen extends PureComponent {
               <h2 className="near-places__title">Other places in the neighbourhood</h2>
               <div className="near-places__list places__list">
                 <PlacesList
-                  offers={actualOffers.slice(0, 3)}
+                  offers={actualOffers}
                   onClickCard={(offerId) => {
                     return function () {
                       history.push(`/offer/${offerId}`);
@@ -153,9 +173,9 @@ class OfferScreen extends PureComponent {
                   handlerMouseEnter={(evt) => {
                     evt.preventDefault();
                     const activeId = evt.currentTarget.id;
-                    this.setState({active: activeId});
+                    getActiveOfferId(activeId);
                   }}
-                  handlerMouseLeave={() => this.setState({active: ``})}
+                  handlerMouseLeave={() => getActiveOfferId(``)}
                 />
               </div>
             </section>
@@ -170,7 +190,41 @@ OfferScreen.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
-  reviews: PropTypes.arrayOf(applicationPropTypes.review).isRequired,
+  reviews: PropTypes.arrayOf(applicationPropTypes.reviewItem).isRequired,
+  getActiveOfferId: applicationPropTypes.getActiveOfferId,
+  getOffers: applicationPropTypes.getOffers,
+  getReviews: applicationPropTypes.getReviews,
+  getCities: applicationPropTypes.getCities,
+  cities: applicationPropTypes.cities,
+  cityChange: applicationPropTypes.cityChange,
+  city: applicationPropTypes.city,
 };
 
-export default OfferScreen;
+const mapStateToProps = (state) => ({
+  offers: state.offers,
+  reviews: state.reviews,
+  active: state.active,
+  cities: state.cities,
+  city: state.city,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getActiveOfferId(value) {
+    dispatch(ActionCreator.getActiveOfferId(value));
+  },
+  getOffers() {
+    dispatch(ActionCreator.getOffers());
+  },
+  getReviews() {
+    dispatch(ActionCreator.getReviews());
+  },
+  cityChange(city) {
+    dispatch(ActionCreator.cityChange(city));
+  },
+  getCities() {
+    dispatch(ActionCreator.getCities());
+  },
+});
+
+export {OfferScreen};
+export default connect(mapStateToProps, mapDispatchToProps)(OfferScreen);

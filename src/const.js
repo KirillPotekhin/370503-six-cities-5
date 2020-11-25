@@ -19,15 +19,3 @@ export const ReviewRatingTitle = {
   BEADLY: `beadly`,
   TERRIBLY: `terribly`,
 };
-
-// export const SortingOption = [
-//   {
-//     method: `Popular`,
-//   }, {
-//     method: `Price: low to high`,
-//   }, {
-//     method: `Price: high to low`,
-//   }, {
-//     method: `Top rated first`,
-//   },
-// ];

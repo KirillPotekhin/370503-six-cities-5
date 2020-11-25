@@ -4,25 +4,25 @@ import PropTypes from "prop-types";
 import applicationPropTypes from "../../application-prop-types";
 import PlacesList from "../places-list/places-list";
 import {SizePreviewImage} from "../../const";
+import {connect} from "react-redux";
+import {ActionCreator} from "../../store/action";
 
 class FavoritesOfferScreen extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {
-      active: ``,
-    };
   }
 
   render() {
-    const {offers, history} = this.props;
+    const {offers, history, getActiveOfferId, getOffers} = this.props;
+    getOffers();
     const favorites = offers.filter((it) => it.isFavorite);
     const cities = new Set();
     favorites.forEach((it) => cities.add(it.city.name));
     const filteredFavorites = [];
     Array.from(cities).forEach((it) => filteredFavorites.push(favorites.filter((favorite) => favorite.city.name === it)));
     return (
-      <div className="page">
+      <div className={`page ${!favorites.length && `page--favorites-empty`}`}>
         <header className="header">
           <div className="container">
             <div className="header__wrapper">
@@ -46,44 +46,52 @@ class FavoritesOfferScreen extends PureComponent {
           </div>
         </header>
 
-        <main className="page__main page__main--favorites">
+        <main className={`page__main page__main--favorites ${!favorites.length && `page__main--favorites-empty`}`}>
           <div className="page__favorites-container container">
-            <section className="favorites">
-              <h1 className="favorites__title">Saved listing</h1>
-              <ul className="favorites__list">
-                {Array.from(cities).map((city, i) => (
-                  <li key={`${city}${i}`} className="favorites__locations-items">
-                    <div className="favorites__locations locations locations--current">
-                      <div className="locations__item">
-                        <a className="locations__item-link" href="#">
-                          <span>{city}</span>
-                        </a>
+            {favorites.length ?
+              <section className="favorites">
+                <h1 className="favorites__title">Saved listing</h1>
+                <ul className="favorites__list">
+                  {Array.from(cities).map((city, i) => (
+                    <li key={`${city}${i}`} className="favorites__locations-items">
+                      <div className="favorites__locations locations locations--current">
+                        <div className="locations__item">
+                          <a className="locations__item-link" href="#">
+                            <span>{city}</span>
+                          </a>
+                        </div>
                       </div>
-                    </div>
-                    <div className="favorites__places">
-                      <PlacesList
-                        offers={filteredFavorites[i]}
-                        classNameHeaderCard={`favorites`}
-                        widthPreview={SizePreviewImage.WIDTH_PREVIEW_FOR_FAVORITES}
-                        heightPreview={SizePreviewImage.HEIGHT_PREVIEW_FOR_FAVORITES}
-                        classNameInfoCard={`favorites__card-info`}
-                        onClickCard={(offerId) => {
-                          return function () {
-                            history.push(`/offer/${offerId}`);
-                          };
-                        }}
-                        handlerMouseEnter={(evt) => {
-                          evt.preventDefault();
-                          const activeId = evt.currentTarget.id;
-                          this.setState({active: activeId});
-                        }}
-                        handlerMouseLeave={() => this.setState({active: ``})}
-                      />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </section>
+                      <div className="favorites__places">
+                        <PlacesList
+                          offers={filteredFavorites[i]}
+                          classNameHeaderCard={`favorites`}
+                          widthPreview={SizePreviewImage.WIDTH_PREVIEW_FOR_FAVORITES}
+                          heightPreview={SizePreviewImage.HEIGHT_PREVIEW_FOR_FAVORITES}
+                          classNameInfoCard={`favorites__card-info`}
+                          onClickCard={(offerId) => {
+                            return function () {
+                              history.push(`/offer/${offerId}`);
+                            };
+                          }}
+                          handlerMouseEnter={(evt) => {
+                            evt.preventDefault();
+                            const activeId = evt.currentTarget.id;
+                            getActiveOfferId(activeId);
+                          }}
+                          handlerMouseLeave={() => getActiveOfferId(``)}
+                        />
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </section> :
+              <section className="favorites favorites--empty">
+                <h1 className="visually-hidden">Favorites (empty)</h1>
+                <div className="favorites__status-wrapper">
+                  <b className="favorites__status">Nothing yet saved.</b>
+                  <p className="favorites__status-description">Save properties to narrow down search or plan yor future trips.</p>
+                </div>
+              </section>}
           </div>
         </main>
         <footer className="footer container">
@@ -99,6 +107,25 @@ class FavoritesOfferScreen extends PureComponent {
 FavoritesOfferScreen.propTypes = {
   history: PropTypes.any,
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
+  getActiveOfferId: applicationPropTypes.getActiveOfferId,
+  getOffers: applicationPropTypes.getOffers,
 };
 
-export default FavoritesOfferScreen;
+
+const mapStateToProps = (state) => ({
+  offers: state.offers,
+  getActiveOfferId: applicationPropTypes.getActiveOfferId,
+  getOffers: applicationPropTypes.getOffers,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getActiveOfferId(value) {
+    dispatch(ActionCreator.getActiveOfferId(value));
+  },
+  getOffers() {
+    dispatch(ActionCreator.getOffers());
+  },
+});
+
+export {FavoritesOfferScreen};
+export default connect(mapStateToProps, mapDispatchToProps)(FavoritesOfferScreen);
