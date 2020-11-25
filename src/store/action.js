@@ -3,8 +3,8 @@ export const ActionType = {
   GET_OFFERS: `GET_OFFERS`,
   GET_CITIES: `GET_CITIES`,
   GET_ACTIVE_OFFER_ID: `GET_ACTIVE_OFFER_ID`,
-  GET_SORTING_METHOD: `GET_SORTING_METHOD`,
-  DROP_DOWN_MENU_OPTION_CHANGE: `DROP_DOWN_MENU_OPTION_CHANGE`,
+  GET_REVIEWS: `GET_REVIEWS`,
+  GET_DEFAULT_CITY: `GET_DEFAULT_CITY`,
 };
 
 export const ActionCreator = {
@@ -22,11 +22,10 @@ export const ActionCreator = {
     type: ActionType.GET_ACTIVE_OFFER_ID,
     payload: string,
   }),
-  getSortingOption: (string) => ({
-    type: ActionType.GET_SORTING_METHOD,
-    payload: string,
+  getReviews: () => ({
+    type: ActionType.GET_REVIEWS,
   }),
-  dropDownMenuOptionChange: () => ({
-    type: ActionType.DROP_DOWN_MENU_OPTION_CHANGE,
+  getDefaultCity: () => ({
+    type: ActionType.GET_DEFAULT_CITY,
   }),
 };

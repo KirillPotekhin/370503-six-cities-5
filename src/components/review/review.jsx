@@ -9,8 +9,8 @@ class Review extends PureComponent {
   }
 
   render() {
-    const {review} = this.props;
-    const {name, rating, avatar, text, date} = review;
+    const {reviewItem} = this.props;
+    const {name, rating, avatar, text, date} = reviewItem;
     return (
       <Fragment>
         <div className="reviews__user user">
@@ -39,7 +39,7 @@ class Review extends PureComponent {
 }
 
 Review.propTypes = {
-  review: applicationPropTypes.review,
+  reviewItem: applicationPropTypes.reviewItem,
 };
 
 export default Review;

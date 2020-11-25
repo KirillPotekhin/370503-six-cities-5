@@ -27,7 +27,7 @@ const applicationPropTypes = {
     description: PropTypes.string.isRequired,
     isFavorite: PropTypes.bool.isRequired,
   }).isRequired,
-  review: PropTypes.shape({
+  reviewItem: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     rating: PropTypes.string.isRequired,
@@ -43,9 +43,19 @@ const applicationPropTypes = {
   getActiveOfferId: PropTypes.func.isRequired,
   active: PropTypes.any,
   sortingOption: PropTypes.string.isRequired,
-  getSortingOption: PropTypes.func.isRequired,
-  isOptionOpened: PropTypes.bool.isRequired,
-  dropDownMenuOptionChange: PropTypes.func.isRequired,
+  onClickSortingOption: PropTypes.func.isRequired,
+  onActiveChange: PropTypes.func.isRequired,
+  isActive: PropTypes.bool.isRequired,
+  onChangeSortingOption: PropTypes.func.isRequired,
+  ratingTitle: PropTypes.string.isRequired,
+  value: PropTypes.number.isRequired,
+  onSubmitReview: PropTypes.func.isRequired,
+  rating: PropTypes.string.isRequired,
+  review: PropTypes.string.isRequired,
+  onRatingChange: PropTypes.func.isRequired,
+  onTextareaChange: PropTypes.func.isRequired,
+  getReviews: PropTypes.func.isRequired,
+  getDefaultCity: PropTypes.func.isRequired,
 };
 
 export default applicationPropTypes;

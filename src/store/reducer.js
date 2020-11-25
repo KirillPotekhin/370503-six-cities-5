@@ -3,11 +3,10 @@ import {ActionType} from "./action";
 import offers from "../mocks/offers";
 import reviews from "../mocks/reviews";
 import cities from "../mocks/cities";
-import {SortingOption} from "../const";
 
 const initialState = {
   offers: [],
-  reviews,
+  reviews: [],
   city: {
     location: {
       latitude: ``,
@@ -18,8 +17,6 @@ const initialState = {
   },
   cities: [],
   active: ``,
-  sortingOption: SortingOption[0].method,
-  isOptionOpened: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -37,7 +34,6 @@ const reducer = (state = initialState, action) => {
     case ActionType.GET_CITIES:
       return extend(state, {
         cities,
-        city: cities[0],
       });
 
     case ActionType.GET_ACTIVE_OFFER_ID:
@@ -45,14 +41,14 @@ const reducer = (state = initialState, action) => {
         active: action.payload,
       });
 
-    case ActionType.GET_SORTING_METHOD:
+    case ActionType.GET_REVIEWS:
       return extend(state, {
-        sortingOption: action.payload,
-        isOptionOpened: !state.isOptionOpened,
+        reviews,
       });
-    case ActionType.DROP_DOWN_MENU_OPTION_CHANGE:
+
+    case ActionType.GET_DEFAULT_CITY:
       return extend(state, {
-        isOptionOpened: !state.isOptionOpened,
+        city: cities[0],
       });
   }
 

@@ -15,6 +15,7 @@ class CitiesList extends PureComponent {
 
   componentDidMount() {
     this.props.getCities();
+    this.props.getDefaultCity();
   }
 
   render() {
@@ -39,6 +40,7 @@ CitiesList.propTypes = {
   city: applicationPropTypes.city,
   getCities: applicationPropTypes.getCities,
   cityChange: applicationPropTypes.cityChange,
+  getDefaultCity: applicationPropTypes.getDefaultCity,
 };
 
 const mapStateToProps = (state) => ({
@@ -53,6 +55,9 @@ const mapDispatchToProps = (dispatch) => ({
   getCities() {
     dispatch(ActionCreator.getCities());
   },
+  getDefaultCity() {
+    dispatch(ActionCreator.getDefaultCity());
+  }
 });
 
 export {CitiesList};

@@ -7,10 +7,10 @@ const ReviewsList = (props) => {
   const {reviews} = props;
   return (
     <Fragment>
-      {reviews.slice(0, 10).map((review, i) => (
-        <li key={`${review.text}${i}`} className="reviews__item">
+      {reviews.slice(0, 10).map((reviewItem, i) => (
+        <li key={`${reviewItem.text}${i}`} className="reviews__item">
           <Review
-            review={review}
+            reviewItem={reviewItem}
           />
         </li>
       ))}
@@ -19,7 +19,7 @@ const ReviewsList = (props) => {
 };
 
 ReviewsList.propTypes = {
-  reviews: PropTypes.arrayOf(applicationPropTypes.review).isRequired,
+  reviews: PropTypes.arrayOf(applicationPropTypes.reviewItem).isRequired,
 };
 
 export default ReviewsList;

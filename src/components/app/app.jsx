@@ -1,14 +1,11 @@
 import React, {Fragment} from "react";
 import WelcomeScreen from "../welcome-screen/welcome-screen";
-import PropTypes from "prop-types";
 import {Route, Switch, BrowserRouter, Link} from "react-router-dom";
 import AuthScreen from "../auth-screen/auth-screen";
 import FavoritesOfferScreen from "../favorites-offer-screen/favorites-offer-screen";
 import OfferScreen from "../offer-screen/offer-screen";
-import applicationPropTypes from "../../application-prop-types";
 
-const App = (props) => {
-  const {offers, reviews} = props;
+const App = () => {
   return (
     <BrowserRouter>
       <Switch>
@@ -26,7 +23,6 @@ const App = (props) => {
         <Route exact path="/favorites"
           render={({location, history}) =>
             <FavoritesOfferScreen
-              offers={offers}
               location={location}
               history={history}
             />
@@ -37,8 +33,6 @@ const App = (props) => {
             <OfferScreen
               location={location}
               history={history}
-              offers={offers}
-              reviews={reviews}
             />
           }
         />
@@ -59,9 +53,6 @@ const App = (props) => {
   );
 };
 
-App.propTypes = {
-  offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
-  reviews: PropTypes.arrayOf(applicationPropTypes.review).isRequired,
-};
+App.propTypes = {};
 
 export default App;
