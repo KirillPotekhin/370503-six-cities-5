@@ -156,7 +156,7 @@ class OfferScreen extends PureComponent {
               </div>
             </div>
             <section className="property__map map">
-              {true && <Map offers={actualOffers} actualOffer={offer}/>}
+              <Map offers={actualOffers} actualOffer={offer}/>
             </section>
           </section>
           <div className="container">

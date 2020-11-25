@@ -10,6 +10,7 @@ import {ActionCreator} from "../../store/action";
 import {getFilteredOffers} from "../../utils";
 import {SortingOption} from "../../const";
 import withSortingOption from "../../hocs/with-sorting-option";
+import PlacesListEmpty from "../places-list-empty/places-list-empty";
 
 class WelcomeScreen extends PureComponent {
   constructor(props) {
@@ -110,12 +111,7 @@ class WelcomeScreen extends PureComponent {
                     />
                   </div>
                 </section> :
-                <section className="cities__no-places">
-                  <div className="cities__status-wrapper tabs__content">
-                    <b className="cities__status">No places to stay available</b>
-                    <p className="cities__status-description">We could not find any property available at the moment in Dusseldorf</p>
-                  </div>
-                </section>}
+                <PlacesListEmpty city={city}/>}
               <div className="cities__right-section">
                 {!!sortedOffers.length &&
                 <section className="cities__map map">

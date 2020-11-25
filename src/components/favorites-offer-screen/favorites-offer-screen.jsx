@@ -6,6 +6,7 @@ import PlacesList from "../places-list/places-list";
 import {SizePreviewImage} from "../../const";
 import {connect} from "react-redux";
 import {ActionCreator} from "../../store/action";
+import FavoritesEmpty from "../favorites-empty/favorites-empty";
 
 class FavoritesOfferScreen extends PureComponent {
   constructor(props) {
@@ -85,13 +86,7 @@ class FavoritesOfferScreen extends PureComponent {
                   ))}
                 </ul>
               </section> :
-              <section className="favorites favorites--empty">
-                <h1 className="visually-hidden">Favorites (empty)</h1>
-                <div className="favorites__status-wrapper">
-                  <b className="favorites__status">Nothing yet saved.</b>
-                  <p className="favorites__status-description">Save properties to narrow down search or plan yor future trips.</p>
-                </div>
-              </section>}
+              <FavoritesEmpty />}
           </div>
         </main>
         <footer className="footer container">
