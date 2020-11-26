@@ -37,10 +37,6 @@ const applicationPropTypes = {
   }).isRequired,
   cities: PropTypes.array.isRequired,
   city: PropTypes.object,
-  getCities: PropTypes.func.isRequired,
-  getOffers: PropTypes.func.isRequired,
-  cityChange: PropTypes.func.isRequired,
-  getActiveOfferId: PropTypes.func.isRequired,
   active: PropTypes.any,
   sortingOption: PropTypes.string.isRequired,
   onClickSortingOption: PropTypes.func.isRequired,
@@ -54,8 +50,15 @@ const applicationPropTypes = {
   review: PropTypes.string.isRequired,
   onRatingChange: PropTypes.func.isRequired,
   onTextareaChange: PropTypes.func.isRequired,
-  getReviews: PropTypes.func.isRequired,
-  getDefaultCity: PropTypes.func.isRequired,
+  getCitiesAction: PropTypes.func.isRequired,
+  getOffersAction: PropTypes.func.isRequired,
+  cityChangeAction: PropTypes.func.isRequired,
+  getActiveOfferIdAction: PropTypes.func.isRequired,
+  getReviewsAction: PropTypes.func.isRequired,
+  getDefaultCityAction: PropTypes.func.isRequired,
+  loadOffersAction: PropTypes.func.isRequired,
+  loadReviewsAction: PropTypes.func.isRequired,
+
 };
 
 export default applicationPropTypes;

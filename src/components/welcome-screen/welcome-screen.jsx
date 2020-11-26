@@ -6,7 +6,7 @@ import Map from "../map/map";
 import CitiesList from "../cities-list/cities-list";
 import Sorting from "../sorting/sorting";
 import {connect} from "react-redux";
-import {ActionCreator} from "../../store/action";
+import {getActiveOfferId, getOffers} from "../../store/action";
 import {getFilteredOffers} from "../../utils";
 import {SortingOption} from "../../const";
 import withSortingOption from "../../hocs/with-sorting-option";
@@ -19,7 +19,7 @@ class WelcomeScreen extends PureComponent {
   }
 
   componentDidMount() {
-    this.props.getOffers();
+    this.props.getOffersAction();
   }
 
   getSortingOption(sortingOption, filteredOffers) {
@@ -50,7 +50,7 @@ class WelcomeScreen extends PureComponent {
   }
 
   render() {
-    const {history, offers, city, getActiveOfferId, sortingOption} = this.props;
+    const {history, offers, city, getActiveOfferIdAction, sortingOption} = this.props;
     const filteredOffers = getFilteredOffers(offers, city);
     const sortedOffers = this.getSortingOption(sortingOption, filteredOffers);
     return (
@@ -105,9 +105,9 @@ class WelcomeScreen extends PureComponent {
                       handlerMouseEnter={(evt) => {
                         evt.preventDefault();
                         const activeId = evt.currentTarget.id;
-                        getActiveOfferId(activeId);
+                        getActiveOfferIdAction(activeId);
                       }}
-                      handlerMouseLeave={() => getActiveOfferId(``)}
+                      handlerMouseLeave={() => getActiveOfferIdAction(``)}
                     />
                   </div>
                 </section> :
@@ -130,8 +130,8 @@ WelcomeScreen.propTypes = {
   history: PropTypes.object.isRequired,
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
   sortingOption: applicationPropTypes.sortingOption,
-  getOffers: applicationPropTypes.getOffers,
-  getActiveOfferId: applicationPropTypes.getActiveOfferId,
+  getOffersAction: applicationPropTypes.getOffersAction,
+  getActiveOfferIdAction: applicationPropTypes.getActiveOfferIdAction,
   city: applicationPropTypes.city,
   active: applicationPropTypes.active,
   onChangeSortingOption: applicationPropTypes.onChangeSortingOption,
@@ -144,11 +144,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getActiveOfferId(value) {
-    dispatch(ActionCreator.getActiveOfferId(value));
+  getActiveOfferIdAction(value) {
+    dispatch(getActiveOfferId(value));
   },
-  getOffers() {
-    dispatch(ActionCreator.getOffers());
+  getOffersAction() {
+    dispatch(getOffers());
   },
 });
 

@@ -8,7 +8,7 @@ import applicationPropTypes from "../../application-prop-types";
 import getStarValue from "../../utils";
 import Map from "../map/map";
 import {connect} from "react-redux";
-import {ActionCreator} from "../../store/action";
+import {getActiveOfferId, getOffers, getReviews, cityChange, getCities} from "../../store/action";
 
 class OfferScreen extends PureComponent {
   constructor(props) {
@@ -22,21 +22,21 @@ class OfferScreen extends PureComponent {
   }
 
   componentDidMount() {
-    this.props.getOffers();
-    this.props.getReviews();
-    this.props.getCities();
+    this.props.getOffersAction();
+    this.props.getReviewsAction();
+    this.props.getCitiesAction();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.offers !== this.props.offers || this.props.city.name === ``) {
       const offer = this.getActualOffer();
       const actualCity = this.props.cities.find((it) => it.name === offer.city.name);
-      this.props.cityChange(actualCity);
+      this.props.cityChangeAction(actualCity);
     }
   }
 
   render() {
-    const {history, offers, reviews, getActiveOfferId} = this.props;
+    const {history, offers, reviews, getActiveOfferIdAction} = this.props;
     const offer = this.getActualOffer();
     if (!offer) {
       return null;
@@ -173,9 +173,9 @@ class OfferScreen extends PureComponent {
                   handlerMouseEnter={(evt) => {
                     evt.preventDefault();
                     const activeId = evt.currentTarget.id;
-                    getActiveOfferId(activeId);
+                    getActiveOfferIdAction(activeId);
                   }}
-                  handlerMouseLeave={() => getActiveOfferId(``)}
+                  handlerMouseLeave={() => getActiveOfferIdAction(``)}
                 />
               </div>
             </section>
@@ -191,12 +191,12 @@ OfferScreen.propTypes = {
   history: PropTypes.object.isRequired,
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
   reviews: PropTypes.arrayOf(applicationPropTypes.reviewItem).isRequired,
-  getActiveOfferId: applicationPropTypes.getActiveOfferId,
-  getOffers: applicationPropTypes.getOffers,
-  getReviews: applicationPropTypes.getReviews,
-  getCities: applicationPropTypes.getCities,
+  getActiveOfferIdAction: applicationPropTypes.getActiveOfferIdAction,
+  getOffersAction: applicationPropTypes.getOffersAction,
+  getReviewsAction: applicationPropTypes.getReviewsAction,
+  getCitiesAction: applicationPropTypes.getCitiesAction,
   cities: applicationPropTypes.cities,
-  cityChange: applicationPropTypes.cityChange,
+  cityChangeAction: applicationPropTypes.cityChangeAction,
   city: applicationPropTypes.city,
 };
 
@@ -209,20 +209,20 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getActiveOfferId(value) {
-    dispatch(ActionCreator.getActiveOfferId(value));
+  getActiveOfferIdAction(value) {
+    dispatch(getActiveOfferId(value));
   },
-  getOffers() {
-    dispatch(ActionCreator.getOffers());
+  getOffersAction() {
+    dispatch(getOffers());
   },
-  getReviews() {
-    dispatch(ActionCreator.getReviews());
+  getReviewsAction() {
+    dispatch(getReviews());
   },
-  cityChange(city) {
-    dispatch(ActionCreator.cityChange(city));
+  cityChangeAction(city) {
+    dispatch(cityChange(city));
   },
-  getCities() {
-    dispatch(ActionCreator.getCities());
+  getCitiesAction() {
+    dispatch(getCities());
   },
 });
 

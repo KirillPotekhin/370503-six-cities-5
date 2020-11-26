@@ -1,6 +1,6 @@
 import React, {Fragment} from "react";
-import WelcomeScreen from "../welcome-screen/welcome-screen";
 import {Route, Switch, BrowserRouter, Link} from "react-router-dom";
+import WelcomeScreen from "../welcome-screen/welcome-screen";
 import AuthScreen from "../auth-screen/auth-screen";
 import FavoritesOfferScreen from "../favorites-offer-screen/favorites-offer-screen";
 import OfferScreen from "../offer-screen/offer-screen";

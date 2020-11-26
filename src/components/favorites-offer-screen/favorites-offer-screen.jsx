@@ -5,7 +5,7 @@ import applicationPropTypes from "../../application-prop-types";
 import PlacesList from "../places-list/places-list";
 import {SizePreviewImage} from "../../const";
 import {connect} from "react-redux";
-import {ActionCreator} from "../../store/action";
+import {getOffers, getActiveOfferId} from "../../store/action";
 import FavoritesEmpty from "../favorites-empty/favorites-empty";
 
 class FavoritesOfferScreen extends PureComponent {
@@ -15,8 +15,8 @@ class FavoritesOfferScreen extends PureComponent {
   }
 
   render() {
-    const {offers, history, getActiveOfferId, getOffers} = this.props;
-    getOffers();
+    const {offers, history, getActiveOfferIdAction, getOffersAction} = this.props;
+    getOffersAction();
     const favorites = offers.filter((it) => it.isFavorite);
     const cities = new Set();
     favorites.forEach((it) => cities.add(it.city.name));
@@ -77,9 +77,9 @@ class FavoritesOfferScreen extends PureComponent {
                           handlerMouseEnter={(evt) => {
                             evt.preventDefault();
                             const activeId = evt.currentTarget.id;
-                            getActiveOfferId(activeId);
+                            getActiveOfferIdAction(activeId);
                           }}
-                          handlerMouseLeave={() => getActiveOfferId(``)}
+                          handlerMouseLeave={() => getActiveOfferIdAction(``)}
                         />
                       </div>
                     </li>
@@ -102,23 +102,21 @@ class FavoritesOfferScreen extends PureComponent {
 FavoritesOfferScreen.propTypes = {
   history: PropTypes.any,
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
-  getActiveOfferId: applicationPropTypes.getActiveOfferId,
-  getOffers: applicationPropTypes.getOffers,
+  getActiveOfferIdAction: applicationPropTypes.getActiveOfferIdAction,
+  getOffersAction: applicationPropTypes.getOffersAction,
 };
 
 
 const mapStateToProps = (state) => ({
   offers: state.offers,
-  getActiveOfferId: applicationPropTypes.getActiveOfferId,
-  getOffers: applicationPropTypes.getOffers,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getActiveOfferId(value) {
-    dispatch(ActionCreator.getActiveOfferId(value));
+  getActiveOfferIdAction(value) {
+    dispatch(getActiveOfferId(value));
   },
-  getOffers() {
-    dispatch(ActionCreator.getOffers());
+  getOffersAction() {
+    dispatch(getOffers());
   },
 });
 
