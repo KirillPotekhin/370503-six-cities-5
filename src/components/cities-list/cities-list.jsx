@@ -14,12 +14,13 @@ class CitiesList extends PureComponent {
   }
 
   componentDidMount() {
-    this.props.getCitiesAction();
-    this.props.getDefaultCityAction();
+    // this.props.getCitiesAction();
+    // this.props.getDefaultCityAction();
   }
 
   render() {
     const {cities, city} = this.props;
+    console.log(cities);
 
     return (
       <ul className="locations__list tabs__list">
@@ -38,9 +39,9 @@ class CitiesList extends PureComponent {
 CitiesList.propTypes = {
   cities: applicationPropTypes.cities,
   city: applicationPropTypes.city,
-  getCitiesAction: applicationPropTypes.getCitiesAction,
+  // getCitiesAction: applicationPropTypes.getCitiesAction,
   cityChangeAction: applicationPropTypes.cityChangeAction,
-  getDefaultCityAction: applicationPropTypes.getDefaultCityAction,
+  // getDefaultCityAction: applicationPropTypes.getDefaultCityAction,
 };
 
 const mapStateToProps = ({DATA, STATE}) => ({
@@ -52,12 +53,12 @@ const mapDispatchToProps = (dispatch) => ({
   cityChangeAction(cityValue) {
     dispatch(cityChange(cityValue));
   },
-  getCitiesAction() {
-    dispatch(getCities());
-  },
-  getDefaultCityAction() {
-    dispatch(getDefaultCity());
-  }
+  // getCitiesAction() {
+  //   dispatch(getCities());
+  // },
+  // getDefaultCityAction() {
+  //   dispatch(getDefaultCity());
+  // }
 });
 
 export {CitiesList};

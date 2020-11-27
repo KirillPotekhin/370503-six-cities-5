@@ -19,7 +19,7 @@ class WelcomeScreen extends PureComponent {
   }
 
   componentDidMount() {
-    this.props.getOffersAction();
+    // this.props.getOffersAction();
   }
 
   getSortingOption(sortingOption, filteredOffers) {
@@ -105,7 +105,7 @@ class WelcomeScreen extends PureComponent {
                       handlerMouseEnter={(evt) => {
                         evt.preventDefault();
                         const activeId = evt.currentTarget.id;
-                        getActiveOfferIdAction(activeId);
+                        getActiveOfferIdAction(+activeId);
                       }}
                       handlerMouseLeave={() => getActiveOfferIdAction(``)}
                     />

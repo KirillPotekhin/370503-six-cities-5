@@ -1,9 +1,15 @@
 import {loadOffers, loadReviews, requireAuthorization} from "./action";
 import {AuthorizationStatus} from "../const";
+import {adapterData, getDefaultCity} from "../store/action";
 
 export const fetchOffersList = () => (dispatch, _getState, api) => (
   api.get(`/hotels`)
-    .then(({data}) => dispatch(loadOffers(data)))
+    .then(({data}) => {
+      const information = adapterData(data);
+      console.log(information);
+      dispatch(getDefaultCity(information.cities[0]));
+      dispatch(loadOffers(information));
+    })
 );
 
 export const checkAuth = () => (dispatch, _getState, api) => (

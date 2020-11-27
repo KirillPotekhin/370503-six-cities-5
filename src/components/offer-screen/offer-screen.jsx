@@ -17,14 +17,14 @@ class OfferScreen extends PureComponent {
 
   getActualOffer() {
     const path = this.props.location.pathname.split(`/`);
-    const offer = this.props.offers.find((it) => it.id === path[path.length - 1]);
+    const offer = this.props.offers.find((it) => it.id === +path[path.length - 1]);
     return offer;
   }
 
   componentDidMount() {
-    this.props.getOffersAction();
+    // this.props.getOffersAction();
     this.props.getReviewsAction();
-    this.props.getCitiesAction();
+    // this.props.getCitiesAction();
   }
 
   componentDidUpdate(prevProps) {
@@ -41,7 +41,7 @@ class OfferScreen extends PureComponent {
     if (!offer) {
       return null;
     }
-    const {id, isPremium, images, name, price, type, isFavorite, rating, bedrooms, adults, goods, host, avatar, description, city} = offer;
+    const {id, isPremium, images, title, price, type, isFavorite, rating, bedrooms, maxGuestsNumber, goods, host, description, city} = offer;
     const actualReviews = reviews.filter((review) => review.id === id).sort((a, b) => b.date - a.date);
     const actualOffers = offers.filter((it) => it.city.name === city.name && it.id !== id).slice(0, 3);
 
@@ -75,8 +75,8 @@ class OfferScreen extends PureComponent {
             <div className="property__gallery-container container">
               <div className="property__gallery">
                 {images.map((image, i) => (
-                  <div key={`${image.src}${i}offerscreen`} className="property__image-wrapper">
-                    <img className="property__image" src={image.src} alt={`${name} ${i}`} />
+                  <div key={`${image}${i}offerscreen`} className="property__image-wrapper">
+                    <img className="property__image" src={image} alt={`${title} ${i}`} />
                   </div>
                 ))}
               </div>
@@ -113,7 +113,7 @@ class OfferScreen extends PureComponent {
                     {bedrooms} Bedrooms
                   </li>
                   <li className="property__feature property__feature--adults">
-                    Max {adults} adults
+                    Max {maxGuestsNumber} adults
                   </li>
                 </ul>
                 <div className="property__price">
@@ -134,10 +134,10 @@ class OfferScreen extends PureComponent {
                   <h2 className="property__host-title">Meet the host</h2>
                   <div className="property__host-user user">
                     <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                      <img className="property__avatar user__avatar" src={avatar} width="74" height="74" alt={`${host} avatar`} />
+                      <img className="property__avatar user__avatar" src={`/${host.avatar}`} width="74" height="74" alt={`${host.name} avatar`} />
                     </div>
                     <span className="property__user-name">
-                      {host}
+                      {host.name}
                     </span>
                   </div>
                   <div className="property__description">
@@ -173,7 +173,7 @@ class OfferScreen extends PureComponent {
                   handlerMouseEnter={(evt) => {
                     evt.preventDefault();
                     const activeId = evt.currentTarget.id;
-                    getActiveOfferIdAction(activeId);
+                    getActiveOfferIdAction(+activeId);
                   }}
                   handlerMouseLeave={() => getActiveOfferIdAction(``)}
                 />
@@ -192,9 +192,9 @@ OfferScreen.propTypes = {
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
   reviews: PropTypes.arrayOf(applicationPropTypes.reviewItem).isRequired,
   getActiveOfferIdAction: applicationPropTypes.getActiveOfferIdAction,
-  getOffersAction: applicationPropTypes.getOffersAction,
+  // getOffersAction: applicationPropTypes.getOffersAction,
   getReviewsAction: applicationPropTypes.getReviewsAction,
-  getCitiesAction: applicationPropTypes.getCitiesAction,
+  // getCitiesAction: applicationPropTypes.getCitiesAction,
   cities: applicationPropTypes.cities,
   cityChangeAction: applicationPropTypes.cityChangeAction,
   city: applicationPropTypes.city,
@@ -212,18 +212,18 @@ const mapDispatchToProps = (dispatch) => ({
   getActiveOfferIdAction(value) {
     dispatch(getActiveOfferId(value));
   },
-  getOffersAction() {
-    dispatch(getOffers());
-  },
+  // getOffersAction() {
+  //   dispatch(getOffers());
+  // },
   getReviewsAction() {
     dispatch(getReviews());
   },
   cityChangeAction(city) {
     dispatch(cityChange(city));
   },
-  getCitiesAction() {
-    dispatch(getCities());
-  },
+  // getCitiesAction() {
+  //   dispatch(getCities());
+  // },
 });
 
 export {OfferScreen};

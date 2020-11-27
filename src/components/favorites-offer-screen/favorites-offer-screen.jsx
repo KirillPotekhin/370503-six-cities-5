@@ -16,7 +16,7 @@ class FavoritesOfferScreen extends PureComponent {
 
   render() {
     const {offers, history, getActiveOfferIdAction, getOffersAction} = this.props;
-    getOffersAction();
+    // getOffersAction();
     const favorites = offers.filter((it) => it.isFavorite);
     const cities = new Set();
     favorites.forEach((it) => cities.add(it.city.name));
@@ -77,7 +77,7 @@ class FavoritesOfferScreen extends PureComponent {
                           handlerMouseEnter={(evt) => {
                             evt.preventDefault();
                             const activeId = evt.currentTarget.id;
-                            getActiveOfferIdAction(activeId);
+                            getActiveOfferIdAction(+activeId);
                           }}
                           handlerMouseLeave={() => getActiveOfferIdAction(``)}
                         />
@@ -103,7 +103,7 @@ FavoritesOfferScreen.propTypes = {
   history: PropTypes.any,
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
   getActiveOfferIdAction: applicationPropTypes.getActiveOfferIdAction,
-  getOffersAction: applicationPropTypes.getOffersAction,
+  // getOffersAction: applicationPropTypes.getOffersAction,
 };
 
 
@@ -114,9 +114,6 @@ const mapStateToProps = ({DATA}) => ({
 const mapDispatchToProps = (dispatch) => ({
   getActiveOfferIdAction(value) {
     dispatch(getActiveOfferId(value));
-  },
-  getOffersAction() {
-    dispatch(getOffers());
   },
 });
 

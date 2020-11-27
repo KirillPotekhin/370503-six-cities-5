@@ -32,7 +32,7 @@ class Map extends Component {
 
   renderPin(offers, actualOffer) {
     offers.map((offer) => {
-      this.marker[offer.id] = L.marker([offer.city.location.latitude, offer.city.location.longitude]);
+      this.marker[offer.id] = L.marker([offer.location.latitude, offer.location.longitude]);
       this.marker[offer.id].setIcon(this.icon);
       this.marker[offer.id].addTo(this.map);
     });

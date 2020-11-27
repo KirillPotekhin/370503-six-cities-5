@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 const applicationPropTypes = {
   offer: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     city: PropTypes.shape({
       location: PropTypes.shape({
         latitude: PropTypes.number.isRequired,
@@ -12,18 +12,15 @@ const applicationPropTypes = {
       name: PropTypes.string.isRequired,
     }).isRequired,
     isPremium: PropTypes.bool.isRequired,
-    images: PropTypes.arrayOf(PropTypes.shape({
-      src: PropTypes.string.isRequired,
-    })).isRequired,
-    name: PropTypes.string.isRequired,
-    rating: PropTypes.string.isRequired,
+    images: PropTypes.array.isRequired,
+    title: PropTypes.string,
+    rating: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
-    bedrooms: PropTypes.string.isRequired,
-    adults: PropTypes.string.isRequired,
-    price: PropTypes.string.isRequired,
+    bedrooms: PropTypes.number.isRequired,
+    maxGuestsNumber: PropTypes.number.isRequired,
+    price: PropTypes.number.isRequired,
     goods: PropTypes.arrayOf(PropTypes.string).isRequired,
-    host: PropTypes.string.isRequired,
-    avatar: PropTypes.string.isRequired,
+    host: PropTypes.object.isRequired,
     description: PropTypes.string.isRequired,
     isFavorite: PropTypes.bool.isRequired,
   }).isRequired,
@@ -46,11 +43,11 @@ const applicationPropTypes = {
   ratingTitle: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,
   onSubmitReview: PropTypes.func.isRequired,
-  rating: PropTypes.string.isRequired,
+  // rating: PropTypes.string.isRequired,
   review: PropTypes.string.isRequired,
   onRatingChange: PropTypes.func.isRequired,
   onTextareaChange: PropTypes.func.isRequired,
-  getCitiesAction: PropTypes.func.isRequired,
+  // getCitiesAction: PropTypes.func.isRequired,
   getOffersAction: PropTypes.func.isRequired,
   cityChangeAction: PropTypes.func.isRequired,
   getActiveOfferIdAction: PropTypes.func.isRequired,

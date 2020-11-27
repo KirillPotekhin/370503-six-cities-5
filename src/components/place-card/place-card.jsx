@@ -15,7 +15,7 @@ class PlaceCard extends PureComponent {
 
   render() {
     const {classNameHeaderCard = ``, classNameInfoCard = ``, offer, widthPreview = SizePreviewImage.WIDTH_PREVIEW_DEFAULT, heightPreview = SizePreviewImage.HEIGHT_PREVIEW_DEFAULT} = this.props;
-    const {id, isPremium, images, name, price, type, isFavorite, rating} = offer;
+    const {id, title, price, type, rating, isFavorite, previewImage, isPremium} = offer;
     const pretext = isFavorite ? `In` : `To`;
     return (
       <article id={id} className={`${classNameHeaderCard && `${classNameHeaderCard}__card`} ${!classNameHeaderCard && `cities__place-card`} place-card`} onClick={this.onClickCard(id)} onMouseEnter={this.handlerMouseEnter} onMouseLeave={this.handlerMouseLeave}>
@@ -26,7 +26,7 @@ class PlaceCard extends PureComponent {
         }
         <div className={`${classNameHeaderCard}__image-wrapper place-card__image-wrapper`}>
           <a href="#">
-            <img className="place-card__image" src={images[0].src} width={widthPreview} height={heightPreview} alt={`${name} image`} />
+            <img className="place-card__image" src={previewImage} width={widthPreview} height={heightPreview} alt={`${name} image`} />
           </a>
         </div>
         <div className={`${classNameInfoCard} place-card__info`}>
@@ -49,7 +49,7 @@ class PlaceCard extends PureComponent {
             </div>
           </div>
           <h2 className="place-card__name">
-            <a href="#">{name}</a>
+            <a href="#">{title}</a>
           </h2>
           <p className="place-card__type">{type}</p>
         </div>

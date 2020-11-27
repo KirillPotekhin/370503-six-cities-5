@@ -1,6 +1,6 @@
 import {extend} from "../../../utils";
 import {ActionType} from "../../action";
-import cities from "../../../mocks/cities";
+// import cities from "../../../mocks/cities";
 import {AuthorizationStatus} from "../../../const";
 
 const initialState = {
@@ -29,9 +29,9 @@ const applicationState = (state = initialState, action) => {
       });
 
     case ActionType.GET_DEFAULT_CITY:
+      console.log(action.payload);
       return extend(state, {
-        city: cities[0],
-        // city: state.cities[0],
+        city: action.payload,
       });
 
     case ActionType.REQUIRED_AUTHORIZATION:
