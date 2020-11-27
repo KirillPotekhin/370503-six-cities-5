@@ -1,7 +1,6 @@
 import {extend} from "../../../utils";
 import {ActionType} from "../../action";
 import reviews from "../../../mocks/reviews";
-import {adapterData} from "../../action";
 
 const initialState = {
   offers: [],
@@ -12,10 +11,9 @@ const initialState = {
 const applicationData = (state = initialState, action) => {
   switch (action.type) {
     case ActionType.LOAD_OFFERS:
-      const information = adapterData(action.payload);
       return extend(state, {
-        offers: information.offers,
-        cities: information.cities,
+        offers: action.payload.offers,
+        cities: action.payload.cities,
       });
 
     case ActionType.LOAD_REVIEWS:
