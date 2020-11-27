@@ -43,9 +43,9 @@ CitiesList.propTypes = {
   getDefaultCityAction: applicationPropTypes.getDefaultCityAction,
 };
 
-const mapStateToProps = (state) => ({
-  cities: state.cities,
-  city: state.city,
+const mapStateToProps = ({DATA, STATE}) => ({
+  cities: DATA.cities,
+  city: STATE.city,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -106,9 +106,9 @@ Map.propTypes = {
   actualOffer: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-  city: state.city,
-  active: state.active,
+const mapStateToProps = ({STATE}) => ({
+  city: STATE.city,
+  active: STATE.active,
 });
 
 // const mapDispatchToProps = (dispatch) => ({

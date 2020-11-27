@@ -137,10 +137,10 @@ WelcomeScreen.propTypes = {
   onChangeSortingOption: applicationPropTypes.onChangeSortingOption,
 };
 
-const mapStateToProps = (state) => ({
-  city: state.city,
-  offers: state.offers,
-  active: state.active,
+const mapStateToProps = ({DATA, STATE}) => ({
+  offers: DATA.offers,
+  city: STATE.city,
+  active: STATE.active,
 });
 
 const mapDispatchToProps = (dispatch) => ({

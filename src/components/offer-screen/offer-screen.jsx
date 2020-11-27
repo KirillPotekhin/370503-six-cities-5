@@ -200,12 +200,12 @@ OfferScreen.propTypes = {
   city: applicationPropTypes.city,
 };
 
-const mapStateToProps = (state) => ({
-  offers: state.offers,
-  reviews: state.reviews,
-  active: state.active,
-  cities: state.cities,
-  city: state.city,
+const mapStateToProps = ({DATA, STATE}) => ({
+  offers: DATA.offers,
+  reviews: DATA.reviews,
+  cities: DATA.cities,
+  city: STATE.city,
+  active: STATE.active,
 });
 
 const mapDispatchToProps = (dispatch) => ({

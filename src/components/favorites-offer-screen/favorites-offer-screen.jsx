@@ -107,8 +107,8 @@ FavoritesOfferScreen.propTypes = {
 };
 
 
-const mapStateToProps = (state) => ({
-  offers: state.offers,
+const mapStateToProps = ({DATA}) => ({
+  offers: DATA.offers,
 });
 
 const mapDispatchToProps = (dispatch) => ({

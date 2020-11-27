@@ -1,5 +1,6 @@
-import {extend} from "../utils";
-import {ActionType} from "./action";
+import {extend} from "../../../utils";
+import {ActionType} from "../../action";
+import cities from "../../../mocks/cities";
 
 const initialState = {
   city: {
@@ -27,7 +28,8 @@ const applicationState = (state = initialState, action) => {
 
     case ActionType.GET_DEFAULT_CITY:
       return extend(state, {
-        city: state.cities[0],
+        city: cities[0],
+        // city: state.cities[0],
       });
   }
 
