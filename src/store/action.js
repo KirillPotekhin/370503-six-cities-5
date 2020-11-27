@@ -7,6 +7,7 @@ export const ActionType = {
   GET_DEFAULT_CITY: `GET_DEFAULT_CITY`,
   LOAD_OFFERS: `LOAD_OFFERS`,
   LOAD_REVIEWS: `LOAD_REVIEWS`,
+  REQUIRED_AUTHORIZATION: `REQUIRED_AUTHORIZATION`,
 };
 
 // export const ActionCreator = {
@@ -66,4 +67,9 @@ export const loadOffers = (offers) => ({
 export const loadReviews = (reviews) => ({
   type: ActionType.LOAD_REVIEWS,
   payload: reviews,
+});
+
+export const requireAuthorization = (status) => ({
+  type: ActionType.REQUIRED_AUTHORIZATION,
+  payload: status
 });

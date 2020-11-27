@@ -1,6 +1,7 @@
 import {extend} from "../../../utils";
 import {ActionType} from "../../action";
 import cities from "../../../mocks/cities";
+import {AuthorizationStatus} from "../../../const/AuthorizationStatus";
 
 const initialState = {
   city: {
@@ -12,6 +13,7 @@ const initialState = {
     name: ``
   },
   active: ``,
+  authorizationStatus: AuthorizationStatus.NO_AUTH,
 };
 
 const applicationState = (state = initialState, action) => {
@@ -30,6 +32,11 @@ const applicationState = (state = initialState, action) => {
       return extend(state, {
         city: cities[0],
         // city: state.cities[0],
+      });
+
+    case ActionType.REQUIRED_AUTHORIZATION:
+      return extend(state, {
+        authorizationStatus: action.payload,
       });
   }
 
