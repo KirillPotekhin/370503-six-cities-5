@@ -1,7 +1,7 @@
 import {extend} from "../../../utils";
 import {ActionType} from "../../action";
 import cities from "../../../mocks/cities";
-import {AuthorizationStatus} from "../../../const/AuthorizationStatus";
+import {AuthorizationStatus} from "../../../const";
 
 const initialState = {
   city: {
