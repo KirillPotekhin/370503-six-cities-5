@@ -43,11 +43,9 @@ const applicationPropTypes = {
   ratingTitle: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,
   onSubmitReview: PropTypes.func.isRequired,
-  // rating: PropTypes.string.isRequired,
   review: PropTypes.string.isRequired,
   onRatingChange: PropTypes.func.isRequired,
   onTextareaChange: PropTypes.func.isRequired,
-  // getCitiesAction: PropTypes.func.isRequired,
   getOffersAction: PropTypes.func.isRequired,
   cityChangeAction: PropTypes.func.isRequired,
   getActiveOfferIdAction: PropTypes.func.isRequired,
@@ -55,6 +53,8 @@ const applicationPropTypes = {
   getDefaultCityAction: PropTypes.func.isRequired,
   loadOffersAction: PropTypes.func.isRequired,
   loadReviewsAction: PropTypes.func.isRequired,
+  setSortingOptionAction: PropTypes.func.isRequired,
+  setSortingOptionDefaultAction: PropTypes.func.isRequired
 
 };
 

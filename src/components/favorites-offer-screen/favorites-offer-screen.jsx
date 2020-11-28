@@ -5,7 +5,7 @@ import applicationPropTypes from "../../application-prop-types";
 import PlacesList from "../places-list/places-list";
 import {SizePreviewImage} from "../../const";
 import {connect} from "react-redux";
-import {getOffers, getActiveOfferId} from "../../store/action";
+import {getActiveOfferId} from "../../store/action";
 import FavoritesEmpty from "../favorites-empty/favorites-empty";
 
 class FavoritesOfferScreen extends PureComponent {
@@ -15,8 +15,7 @@ class FavoritesOfferScreen extends PureComponent {
   }
 
   render() {
-    const {offers, history, getActiveOfferIdAction, getOffersAction} = this.props;
-    // getOffersAction();
+    const {offers, history, getActiveOfferIdAction} = this.props;
     const favorites = offers.filter((it) => it.isFavorite);
     const cities = new Set();
     favorites.forEach((it) => cities.add(it.city.name));
@@ -103,7 +102,6 @@ FavoritesOfferScreen.propTypes = {
   history: PropTypes.any,
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
   getActiveOfferIdAction: applicationPropTypes.getActiveOfferIdAction,
-  // getOffersAction: applicationPropTypes.getOffersAction,
 };
 
 

@@ -8,7 +8,7 @@ import applicationPropTypes from "../../application-prop-types";
 import getStarValue from "../../utils";
 import Map from "../map/map";
 import {connect} from "react-redux";
-import {getActiveOfferId, getOffers, getReviews, cityChange, getCities} from "../../store/action";
+import {getActiveOfferId, getReviews, cityChange} from "../../store/action";
 
 class OfferScreen extends PureComponent {
   constructor(props) {
@@ -22,9 +22,7 @@ class OfferScreen extends PureComponent {
   }
 
   componentDidMount() {
-    // this.props.getOffersAction();
     this.props.getReviewsAction();
-    // this.props.getCitiesAction();
   }
 
   componentDidUpdate(prevProps) {
@@ -192,9 +190,7 @@ OfferScreen.propTypes = {
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
   reviews: PropTypes.arrayOf(applicationPropTypes.reviewItem).isRequired,
   getActiveOfferIdAction: applicationPropTypes.getActiveOfferIdAction,
-  // getOffersAction: applicationPropTypes.getOffersAction,
   getReviewsAction: applicationPropTypes.getReviewsAction,
-  // getCitiesAction: applicationPropTypes.getCitiesAction,
   cities: applicationPropTypes.cities,
   cityChangeAction: applicationPropTypes.cityChangeAction,
   city: applicationPropTypes.city,
@@ -212,18 +208,12 @@ const mapDispatchToProps = (dispatch) => ({
   getActiveOfferIdAction(value) {
     dispatch(getActiveOfferId(value));
   },
-  // getOffersAction() {
-  //   dispatch(getOffers());
-  // },
   getReviewsAction() {
     dispatch(getReviews());
   },
   cityChangeAction(city) {
     dispatch(cityChange(city));
   },
-  // getCitiesAction() {
-  //   dispatch(getCities());
-  // },
 });
 
 export {OfferScreen};

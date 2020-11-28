@@ -1,7 +1,7 @@
 import React, {PureComponent} from "react";
 import applicationPropTypes from "../../application-prop-types";
 import {connect} from "react-redux";
-import {cityChange, getCities, getDefaultCity} from "../../store/action";
+import {cityChange} from "../../store/action";
 
 class CitiesList extends PureComponent {
   constructor(props) {
@@ -13,14 +13,8 @@ class CitiesList extends PureComponent {
     return () => this.props.cityChangeAction(value);
   }
 
-  componentDidMount() {
-    // this.props.getCitiesAction();
-    // this.props.getDefaultCityAction();
-  }
-
   render() {
     const {cities, city} = this.props;
-    console.log(cities);
 
     return (
       <ul className="locations__list tabs__list">
@@ -39,9 +33,7 @@ class CitiesList extends PureComponent {
 CitiesList.propTypes = {
   cities: applicationPropTypes.cities,
   city: applicationPropTypes.city,
-  // getCitiesAction: applicationPropTypes.getCitiesAction,
   cityChangeAction: applicationPropTypes.cityChangeAction,
-  // getDefaultCityAction: applicationPropTypes.getDefaultCityAction,
 };
 
 const mapStateToProps = ({DATA, STATE}) => ({
@@ -53,12 +45,6 @@ const mapDispatchToProps = (dispatch) => ({
   cityChangeAction(cityValue) {
     dispatch(cityChange(cityValue));
   },
-  // getCitiesAction() {
-  //   dispatch(getCities());
-  // },
-  // getDefaultCityAction() {
-  //   dispatch(getDefaultCity());
-  // }
 });
 
 export {CitiesList};

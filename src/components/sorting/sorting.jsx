@@ -2,6 +2,7 @@ import React from "react";
 import {SortingOption} from "../../const";
 import applicationPropTypes from "../../application-prop-types";
 import withActiveFlag from "../../hocs/with-active-flag";
+import {connect} from "react-redux";
 
 const Sorting = (props) => {
   const {isActive, sortingOption, onActiveChange, onClickSortingOption} = props;
@@ -30,4 +31,8 @@ Sorting.propTypes = {
   onClickSortingOption: applicationPropTypes.onClickSortingOption,
 };
 
-export default withActiveFlag(Sorting);
+const mapStateToProps = ({STATE}) => ({
+  sortingOption: STATE.sortingOption,
+});
+
+export default connect(mapStateToProps, null)(withActiveFlag(Sorting));

@@ -4,7 +4,6 @@ import applicationPropTypes from "../../application-prop-types";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import {connect} from "react-redux";
-// import {getActiveOfferId} from "../../store/action";
 
 class Map extends Component {
   constructor(props) {
@@ -110,12 +109,6 @@ const mapStateToProps = ({STATE}) => ({
   city: STATE.city,
   active: STATE.active,
 });
-
-// const mapDispatchToProps = (dispatch) => ({
-//   getActiveOfferIdAction(value) {
-//     dispatch(getActiveOfferId(value));
-//   },
-// });
 
 export {Map};
 export default connect(mapStateToProps, null)(Map);

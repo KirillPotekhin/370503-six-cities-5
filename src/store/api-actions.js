@@ -6,7 +6,6 @@ export const fetchOffersList = () => (dispatch, _getState, api) => (
   api.get(`/hotels`)
     .then(({data}) => {
       const information = adapterData(data);
-      console.log(information);
       dispatch(getDefaultCity(information.cities[0]));
       dispatch(loadOffers(information));
     })

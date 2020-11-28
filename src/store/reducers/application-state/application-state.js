@@ -1,7 +1,7 @@
 import {extend} from "../../../utils";
 import {ActionType} from "../../action";
-// import cities from "../../../mocks/cities";
 import {AuthorizationStatus} from "../../../const";
+import {SortingOption} from "../../../const";
 
 const initialState = {
   city: {
@@ -14,6 +14,7 @@ const initialState = {
   },
   active: ``,
   authorizationStatus: AuthorizationStatus.NO_AUTH,
+  sortingOption: SortingOption.POPULAR,
 };
 
 const applicationState = (state = initialState, action) => {
@@ -29,7 +30,6 @@ const applicationState = (state = initialState, action) => {
       });
 
     case ActionType.GET_DEFAULT_CITY:
-      console.log(action.payload);
       return extend(state, {
         city: action.payload,
       });
@@ -37,6 +37,21 @@ const applicationState = (state = initialState, action) => {
     case ActionType.REQUIRED_AUTHORIZATION:
       return extend(state, {
         authorizationStatus: action.payload,
+      });
+
+    case ActionType.GET_ACTIVE_CITY:
+      return extend(state, {
+        city: state.city,
+      });
+
+    case ActionType.SET_SORTING_OPTION:
+      return extend(state, {
+        sortingOption: action.payload,
+      });
+
+    case ActionType.SET_SORTING_OPTION_DEFAULT:
+      return extend(state, {
+        sortingOption: SortingOption.POPULAR,
       });
   }
 

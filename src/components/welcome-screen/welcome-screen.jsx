@@ -7,10 +7,9 @@ import CitiesList from "../cities-list/cities-list";
 import Sorting from "../sorting/sorting";
 import {connect} from "react-redux";
 import {getActiveOfferId, getOffers} from "../../store/action";
-import {getFilteredOffers} from "../../utils";
-import {SortingOption} from "../../const";
-import withSortingOption from "../../hocs/with-sorting-option";
 import PlacesListEmpty from "../places-list-empty/places-list-empty";
+import {getSortingOption} from "../../store/selectors/offers/sorted-offers";
+import {setSortingOptionDefault} from "../../store/action";
 
 class WelcomeScreen extends PureComponent {
   constructor(props) {
@@ -18,43 +17,16 @@ class WelcomeScreen extends PureComponent {
 
   }
 
-  componentDidMount() {
-    // this.props.getOffersAction();
-  }
-
-  getSortingOption(sortingOption, filteredOffers) {
-    let sortedOffers = [];
-    switch (sortingOption) {
-      case SortingOption.POPULAR:
-        sortedOffers = filteredOffers;
-        break;
-      case SortingOption.PRICE_LOW_TO_HIGH:
-        sortedOffers = filteredOffers.slice().sort((a, b) => a.price - b.price);
-        break;
-      case SortingOption.PRICE_HIGH_TO_LOW:
-        sortedOffers = filteredOffers.slice().sort((a, b) => b.price - a.price);
-        break;
-      case SortingOption.TOP_RATED_FIRST:
-        sortedOffers = filteredOffers.slice().sort((a, b) => b.rating - a.rating);
-        break;
-      default:
-        sortedOffers = [];
-    }
-    return sortedOffers;
-  }
-
   componentDidUpdate(prevProps) {
     if (prevProps.city !== this.props.city) {
-      this.props.onChangeSortingOption(SortingOption.POPULAR);
+      this.props.setSortingOptionDefaultAction();
     }
   }
 
   render() {
-    const {history, offers, city, getActiveOfferIdAction, sortingOption} = this.props;
-    const filteredOffers = getFilteredOffers(offers, city);
-    const sortedOffers = this.getSortingOption(sortingOption, filteredOffers);
+    const {history, offers, city, getActiveOfferIdAction} = this.props;
     return (
-      <div className={`page page--gray page--main ${!sortedOffers.length && `page__main--index-empty`}`}>
+      <div className={`page page--gray page--main ${!offers.length && `page__main--index-empty`}`}>
         <header className="header">
           <div className="container">
             <div className="header__wrapper">
@@ -86,17 +58,17 @@ class WelcomeScreen extends PureComponent {
             </section>
           </div>
           <div className="cities">
-            <div className={`cities__places-container ${!sortedOffers.length && `cities__places-container--empty`} container`}>
-              {sortedOffers.length ?
+            <div className={`cities__places-container ${!offers.length && `cities__places-container--empty`} container`}>
+              {offers.length ?
                 <section className="cities__places places">
                   <h2 className="visually-hidden">Places</h2>
-                  {city && <b className="places__found">{sortedOffers.length} places to stay in {city.name}</b>}
+                  {city && <b className="places__found">{offers.length} places to stay in {city.name}</b>}
                   <Sorting
                     {...this.props}
                   />
                   <div className="cities__places-list places__list tabs__content">
                     <PlacesList
-                      offers={sortedOffers}
+                      offers={offers}
                       onClickCard={(offerId) => {
                         return function () {
                           history.push(`/offer/${offerId}`);
@@ -113,9 +85,9 @@ class WelcomeScreen extends PureComponent {
                 </section> :
                 <PlacesListEmpty city={city}/>}
               <div className="cities__right-section">
-                {!!sortedOffers.length &&
+                {!!offers.length &&
                 <section className="cities__map map">
-                  {city && <Map offers={filteredOffers}/>}
+                  {city && <Map offers={offers}/>}
                 </section>}
               </div>
             </div>
@@ -129,16 +101,17 @@ class WelcomeScreen extends PureComponent {
 WelcomeScreen.propTypes = {
   history: PropTypes.object.isRequired,
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
-  sortingOption: applicationPropTypes.sortingOption,
+  // sortingOption: applicationPropTypes.sortingOption,
   getOffersAction: applicationPropTypes.getOffersAction,
   getActiveOfferIdAction: applicationPropTypes.getActiveOfferIdAction,
   city: applicationPropTypes.city,
   active: applicationPropTypes.active,
-  onChangeSortingOption: applicationPropTypes.onChangeSortingOption,
+  setSortingOptionDefaultAction: applicationPropTypes.setSortingOptionDefaultAction,
+  // onChangeSortingOption: applicationPropTypes.onChangeSortingOption,
 };
 
 const mapStateToProps = ({DATA, STATE}) => ({
-  offers: DATA.offers,
+  offers: getSortingOption({DATA, STATE}),
   city: STATE.city,
   active: STATE.active,
 });
@@ -150,7 +123,10 @@ const mapDispatchToProps = (dispatch) => ({
   getOffersAction() {
     dispatch(getOffers());
   },
+  setSortingOptionDefaultAction() {
+    dispatch(setSortingOptionDefault());
+  },
 });
 
 export {WelcomeScreen};
-export default connect(mapStateToProps, mapDispatchToProps)(withSortingOption(WelcomeScreen));
+export default connect(mapStateToProps, mapDispatchToProps)(WelcomeScreen);

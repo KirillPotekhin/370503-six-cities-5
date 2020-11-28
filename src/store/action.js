@@ -8,6 +8,9 @@ export const ActionType = {
   LOAD_OFFERS: `LOAD_OFFERS`,
   LOAD_REVIEWS: `LOAD_REVIEWS`,
   REQUIRED_AUTHORIZATION: `REQUIRED_AUTHORIZATION`,
+  GET_ACTIVE_CITY: `GET_ACTIVE_CITY`,
+  SET_SORTING_OPTION: `SET_SORTING_OPTION`,
+  SET_SORTING_OPTION_DEFAULT: `SET_SORTING_OPTION_DEFAULT`,
 };
 
 // export const ActionCreator = {
@@ -60,6 +63,10 @@ export const getDefaultCity = (city) => ({
   payload: city,
 });
 
+export const getActiveCity = () => ({
+  type: ActionType.GET_ACTIVE_CITY,
+});
+
 export const loadOffers = (offers) => ({
   type: ActionType.LOAD_OFFERS,
   payload: offers,
@@ -72,7 +79,16 @@ export const loadReviews = (reviews) => ({
 
 export const requireAuthorization = (status) => ({
   type: ActionType.REQUIRED_AUTHORIZATION,
-  payload: status
+  payload: status,
+});
+
+export const setSortingOption = (option) => ({
+  type: ActionType.SET_SORTING_OPTION,
+  payload: option,
+});
+
+export const setSortingOptionDefault = () => ({
+  type: ActionType.SET_SORTING_OPTION_DEFAULT,
 });
 
 export const adapterData = (data) => {
