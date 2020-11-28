@@ -54,8 +54,9 @@ const applicationPropTypes = {
   loadOffersAction: PropTypes.func.isRequired,
   loadReviewsAction: PropTypes.func.isRequired,
   setSortingOptionAction: PropTypes.func.isRequired,
-  setSortingOptionDefaultAction: PropTypes.func.isRequired
-
+  setSortingOptionDefaultAction: PropTypes.func.isRequired,
+  email: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default applicationPropTypes;

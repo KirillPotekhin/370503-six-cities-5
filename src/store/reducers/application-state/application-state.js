@@ -1,6 +1,5 @@
 import {extend} from "../../../utils";
 import {ActionType} from "../../action";
-import {AuthorizationStatus} from "../../../const";
 import {SortingOption} from "../../../const";
 
 const initialState = {
@@ -13,7 +12,6 @@ const initialState = {
     name: ``
   },
   active: ``,
-  authorizationStatus: AuthorizationStatus.NO_AUTH,
   sortingOption: SortingOption.POPULAR,
 };
 
@@ -32,11 +30,6 @@ const applicationState = (state = initialState, action) => {
     case ActionType.GET_DEFAULT_CITY:
       return extend(state, {
         city: action.payload,
-      });
-
-    case ActionType.REQUIRED_AUTHORIZATION:
-      return extend(state, {
-        authorizationStatus: action.payload,
       });
 
     case ActionType.GET_ACTIVE_CITY:

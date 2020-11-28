@@ -34,7 +34,7 @@ class OfferScreen extends PureComponent {
   }
 
   render() {
-    const {history, offers, reviews, getActiveOfferIdAction} = this.props;
+    const {history, offers, reviews, getActiveOfferIdAction, email} = this.props;
     const offer = this.getActualOffer();
     if (!offer) {
       return null;
@@ -56,11 +56,11 @@ class OfferScreen extends PureComponent {
               <nav className="header__nav">
                 <ul className="header__nav-list">
                   <li className="header__nav-item user">
-                    <a className="header__nav-link header__nav-link--profile" href="#">
+                    <Link to="/favorites" className="header__nav-link header__nav-link--profile" href="#">
                       <div className="header__avatar-wrapper user__avatar-wrapper">
                       </div>
-                      <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    </a>
+                      {email !== `` ? <span className="header__user-name user__name">{email}</span> : <span className="header__login">Sign in</span>}
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -72,7 +72,7 @@ class OfferScreen extends PureComponent {
           <section className="property">
             <div className="property__gallery-container container">
               <div className="property__gallery">
-                {images.map((image, i) => (
+                {images.slice(0, 6).map((image, i) => (
                   <div key={`${image}${i}offerscreen`} className="property__image-wrapper">
                     <img className="property__image" src={image} alt={`${title} ${i}`} />
                   </div>
@@ -165,7 +165,7 @@ class OfferScreen extends PureComponent {
                   offers={actualOffers}
                   onClickCard={(offerId) => {
                     return function () {
-                      history.push(`/offer/${offerId}`);
+                      history.push(`/hotels/${offerId}`);
                     };
                   }}
                   handlerMouseEnter={(evt) => {
@@ -194,14 +194,16 @@ OfferScreen.propTypes = {
   cities: applicationPropTypes.cities,
   cityChangeAction: applicationPropTypes.cityChangeAction,
   city: applicationPropTypes.city,
+  email: applicationPropTypes.email,
 };
 
-const mapStateToProps = ({DATA, STATE}) => ({
+const mapStateToProps = ({DATA, STATE, USER}) => ({
   offers: DATA.offers,
   reviews: DATA.reviews,
   cities: DATA.cities,
   city: STATE.city,
   active: STATE.active,
+  email: USER.email,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -15,7 +15,7 @@ class FavoritesOfferScreen extends PureComponent {
   }
 
   render() {
-    const {offers, history, getActiveOfferIdAction} = this.props;
+    const {offers, history, getActiveOfferIdAction, email} = this.props;
     const favorites = offers.filter((it) => it.isFavorite);
     const cities = new Set();
     favorites.forEach((it) => cities.add(it.city.name));
@@ -37,7 +37,7 @@ class FavoritesOfferScreen extends PureComponent {
                     <a className="header__nav-link header__nav-link--profile" href="#">
                       <div className="header__avatar-wrapper user__avatar-wrapper">
                       </div>
-                      <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+                      <span className="header__user-name user__name">{email}</span>
                     </a>
                   </li>
                 </ul>
@@ -70,7 +70,7 @@ class FavoritesOfferScreen extends PureComponent {
                           classNameInfoCard={`favorites__card-info`}
                           onClickCard={(offerId) => {
                             return function () {
-                              history.push(`/offer/${offerId}`);
+                              history.push(`/hotels/${offerId}`);
                             };
                           }}
                           handlerMouseEnter={(evt) => {
@@ -102,11 +102,13 @@ FavoritesOfferScreen.propTypes = {
   history: PropTypes.any,
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
   getActiveOfferIdAction: applicationPropTypes.getActiveOfferIdAction,
+  email: applicationPropTypes.email,
 };
 
 
-const mapStateToProps = ({DATA}) => ({
+const mapStateToProps = ({DATA, USER}) => ({
   offers: DATA.offers,
+  email: USER.email,
 });
 
 const mapDispatchToProps = (dispatch) => ({

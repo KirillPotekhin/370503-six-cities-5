@@ -1,4 +1,5 @@
 import React, {PureComponent} from "react";
+import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
 import PlacesList from "../places-list/places-list";
 import applicationPropTypes from "../../application-prop-types";
@@ -24,7 +25,7 @@ class WelcomeScreen extends PureComponent {
   }
 
   render() {
-    const {history, offers, city, getActiveOfferIdAction} = this.props;
+    const {history, offers, city, getActiveOfferIdAction, email} = this.props;
     return (
       <div className={`page page--gray page--main ${!offers.length && `page__main--index-empty`}`}>
         <header className="header">
@@ -38,11 +39,11 @@ class WelcomeScreen extends PureComponent {
               <nav className="header__nav">
                 <ul className="header__nav-list">
                   <li className="header__nav-item user">
-                    <a className="header__nav-link header__nav-link--profile" href="#">
+                    <Link to="/favorites" className="header__nav-link header__nav-link--profile" href="#">
                       <div className="header__avatar-wrapper user__avatar-wrapper">
                       </div>
-                      <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    </a>
+                      {email !== `` ? <span className="header__user-name user__name">{email}</span> : <span className="header__login">Sign in</span>}
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -71,7 +72,7 @@ class WelcomeScreen extends PureComponent {
                       offers={offers}
                       onClickCard={(offerId) => {
                         return function () {
-                          history.push(`/offer/${offerId}`);
+                          history.push(`/hotels/${offerId}`);
                         };
                       }}
                       handlerMouseEnter={(evt) => {
@@ -107,13 +108,15 @@ WelcomeScreen.propTypes = {
   city: applicationPropTypes.city,
   active: applicationPropTypes.active,
   setSortingOptionDefaultAction: applicationPropTypes.setSortingOptionDefaultAction,
+  email: applicationPropTypes.email,
   // onChangeSortingOption: applicationPropTypes.onChangeSortingOption,
 };
 
-const mapStateToProps = ({DATA, STATE}) => ({
+const mapStateToProps = ({DATA, STATE, USER}) => ({
   offers: getSortingOption({DATA, STATE}),
   city: STATE.city,
   active: STATE.active,
+  email: USER.email,
 });
 
 const mapDispatchToProps = (dispatch) => ({

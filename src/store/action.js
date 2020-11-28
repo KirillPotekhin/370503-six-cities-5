@@ -11,6 +11,8 @@ export const ActionType = {
   GET_ACTIVE_CITY: `GET_ACTIVE_CITY`,
   SET_SORTING_OPTION: `SET_SORTING_OPTION`,
   SET_SORTING_OPTION_DEFAULT: `SET_SORTING_OPTION_DEFAULT`,
+  REDIRECT_TO_ROUTE: `REDIRECT_TO_ROUTE`,
+  GET_USER_EMAIL: `GET_USER_EMAIL`,
 };
 
 export const cityChange = (string) => ({
@@ -66,6 +68,16 @@ export const setSortingOption = (option) => ({
 
 export const setSortingOptionDefault = () => ({
   type: ActionType.SET_SORTING_OPTION_DEFAULT,
+});
+
+export const redirectToRoute = (url) => ({
+  type: ActionType.REDIRECT_TO_ROUTE,
+  payload: url,
+});
+
+export const getUserEmail = (data) => ({
+  type: ActionType.GET_USER_EMAIL,
+  payload: data,
 });
 
 export const adapterData = (data) => {

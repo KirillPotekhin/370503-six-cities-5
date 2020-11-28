@@ -1,13 +1,15 @@
 import React, {Fragment} from "react";
-import {Route, Switch, BrowserRouter, Link} from "react-router-dom";
+import {Route, Switch, Router as BrowserRouter, Link} from "react-router-dom";
 import WelcomeScreen from "../welcome-screen/welcome-screen";
 import AuthScreen from "../auth-screen/auth-screen";
 import FavoritesOfferScreen from "../favorites-offer-screen/favorites-offer-screen";
 import OfferScreen from "../offer-screen/offer-screen";
+import PrivateRoute from "../privat-route/privat-route";
+import browserHistory from "../../browser-history";
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter history={browserHistory}>
       <Switch>
         <Route exact path="/"
           render={({location, history}) =>
@@ -20,7 +22,7 @@ const App = () => {
         <Route exact path="/login">
           <AuthScreen />
         </Route>
-        <Route exact path="/favorites"
+        <PrivateRoute exact path="/favorites"
           render={({location, history}) =>
             <FavoritesOfferScreen
               location={location}
@@ -28,7 +30,7 @@ const App = () => {
             />
           }
         />
-        <Route exact path="/offer/:id"
+        <Route exact path="/hotels/:id"
           render={({location, history}) =>
             <OfferScreen
               location={location}

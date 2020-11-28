@@ -1,4 +1,4 @@
-import {loadOffers, loadReviews, requireAuthorization} from "./action";
+import {loadOffers, loadReviews, requireAuthorization, redirectToRoute, getUserEmail} from "./action";
 import {AuthorizationStatus} from "../const";
 import {adapterData, getDefaultCity} from "../store/action";
 
@@ -9,6 +9,7 @@ export const fetchOffersList = () => (dispatch, _getState, api) => (
       dispatch(getDefaultCity(information.cities[0]));
       dispatch(loadOffers(information));
     })
+    .then(() => dispatch(requireAuthorization(AuthorizationStatus.NO_AUTH)))
 );
 
 export const checkAuth = () => (dispatch, _getState, api) => (
@@ -19,7 +20,11 @@ export const checkAuth = () => (dispatch, _getState, api) => (
 
 export const login = ({login: email, password}) => (dispatch, _getState, api) => (
   api.post(`/login`, {email, password})
-    .then(() => dispatch(requireAuthorization(AuthorizationStatus.AUTH)))
+    .then(({data}) => {
+      dispatch(requireAuthorization(AuthorizationStatus.AUTH));
+      dispatch(getUserEmail(data));
+    })
+    .then(() => dispatch(redirectToRoute(`/`)))
 );
 
 export const fetchReviewList = () => (dispatch, _getState, api) => (
