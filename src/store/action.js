@@ -13,29 +13,6 @@ export const ActionType = {
   SET_SORTING_OPTION_DEFAULT: `SET_SORTING_OPTION_DEFAULT`,
 };
 
-// export const ActionCreator = {
-//   cityChange: (string) => ({
-//     type: ActionType.CITY_CHANGE,
-//     payload: string,
-//   }),
-//   getOffers: () => ({
-//     type: ActionType.GET_OFFERS,
-//   }),
-//   getCities: () => ({
-//     type: ActionType.GET_CITIES,
-//   }),
-//   getActiveOfferId: (string) => ({
-//     type: ActionType.GET_ACTIVE_OFFER_ID,
-//     payload: string,
-//   }),
-//   getReviews: () => ({
-//     type: ActionType.GET_REVIEWS,
-//   }),
-//   getDefaultCity: () => ({
-//     type: ActionType.GET_DEFAULT_CITY,
-//   }),
-// };
-
 export const cityChange = (string) => ({
   type: ActionType.CITY_CHANGE,
   payload: string,
