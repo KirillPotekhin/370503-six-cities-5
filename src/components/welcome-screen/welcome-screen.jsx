@@ -102,14 +102,12 @@ class WelcomeScreen extends PureComponent {
 WelcomeScreen.propTypes = {
   history: PropTypes.object.isRequired,
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
-  // sortingOption: applicationPropTypes.sortingOption,
   getOffersAction: applicationPropTypes.getOffersAction,
   getActiveOfferIdAction: applicationPropTypes.getActiveOfferIdAction,
   city: applicationPropTypes.city,
   active: applicationPropTypes.active,
   setSortingOptionDefaultAction: applicationPropTypes.setSortingOptionDefaultAction,
   email: applicationPropTypes.email,
-  // onChangeSortingOption: applicationPropTypes.onChangeSortingOption,
 };
 
 const mapStateToProps = ({DATA, STATE, USER}) => ({

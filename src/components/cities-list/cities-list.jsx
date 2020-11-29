@@ -1,4 +1,5 @@
 import React, {PureComponent} from "react";
+import PropTypes from "prop-types";
 import applicationPropTypes from "../../application-prop-types";
 import {connect} from "react-redux";
 import {cityChange} from "../../store/action";
@@ -31,7 +32,7 @@ class CitiesList extends PureComponent {
 }
 
 CitiesList.propTypes = {
-  cities: applicationPropTypes.cities,
+  cities: PropTypes.arrayOf(applicationPropTypes.city).isRequired,
   city: applicationPropTypes.city,
   cityChangeAction: applicationPropTypes.cityChangeAction,
 };

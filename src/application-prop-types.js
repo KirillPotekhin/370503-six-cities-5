@@ -32,9 +32,18 @@ const applicationPropTypes = {
     text: PropTypes.string.isRequired,
     date: PropTypes.number.isRequired,
   }).isRequired,
-  cities: PropTypes.array.isRequired,
-  city: PropTypes.object,
-  active: PropTypes.any,
+  city: PropTypes.shape({
+    location: PropTypes.shape({
+      latitude: PropTypes.number.isRequired,
+      longitude: PropTypes.number.isRequired,
+      zoom: PropTypes.number.isRequired,
+    }).isRequired,
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+  active: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   sortingOption: PropTypes.string.isRequired,
   onClickSortingOption: PropTypes.func.isRequired,
   onActiveChange: PropTypes.func.isRequired,
