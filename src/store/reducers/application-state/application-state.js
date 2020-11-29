@@ -13,6 +13,9 @@ const initialState = {
   },
   active: ``,
   sortingOption: SortingOption.POPULAR,
+  openedHotel: null,
+  postReviewLoading: false,
+  postReviewLoaded: false,
 };
 
 const applicationState = (state = initialState, action) => {
@@ -45,6 +48,28 @@ const applicationState = (state = initialState, action) => {
     case ActionType.SET_SORTING_OPTION_DEFAULT:
       return extend(state, {
         sortingOption: SortingOption.POPULAR,
+      });
+
+    case ActionType.GET_OPENED_HOTEL:
+      return extend(state, {
+        openedHotel: action.payload,
+      });
+
+    case ActionType.POST_REVIEW_START:
+      return extend(state, {
+        postReviewLoading: true,
+        postReviewLoaded: false,
+      });
+
+    case ActionType.POST_REVIEW_SUCCES:
+      return extend(state, {
+        postReviewLoading: false,
+        postReviewLoaded: true,
+      });
+
+    case ActionType.POST_REVIEW_FAILED:
+      return extend(state, {
+        postReviewLoading: false,
       });
   }
 

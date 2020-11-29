@@ -38,14 +38,14 @@ export const AppRoute = {
   ROOT: `/`,
   LOGIN: `/login`,
   FAVORITES: `/favorites`,
-  HOTELS: `/hotels/`,
   HOTELS_ID: `/hotels/:id`,
   HOTELS_NEARBY: `/hotels/:hotel_id/nearby`,
-  REVIEWS: `/comments/:hotel_id`
 
 };
 
 export const APIRoute = {
   HOTELS: `/hotels`,
   LOGIN: `/login`,
+  REVIEWS: `/comments`,
+  NEARBY: `nearby`,
 };

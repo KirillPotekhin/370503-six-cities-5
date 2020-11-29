@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
 import applicationPropTypes from "../../application-prop-types";
 import PlacesList from "../places-list/places-list";
-import {SizePreviewImage, AppRoute} from "../../const";
+import {SizePreviewImage, APIRoute} from "../../const";
 import {connect} from "react-redux";
 import {getActiveOfferId} from "../../store/action";
 import FavoritesEmpty from "../favorites-empty/favorites-empty";
@@ -70,7 +70,7 @@ class FavoritesOfferScreen extends PureComponent {
                           classNameInfoCard={`favorites__card-info`}
                           onClickCard={(offerId) => {
                             return function () {
-                              history.push(`${AppRoute.HOTELS}${offerId}`);
+                              history.push(`${APIRoute.HOTELS}/${offerId}`);
                             };
                           }}
                           handlerMouseEnter={(evt) => {

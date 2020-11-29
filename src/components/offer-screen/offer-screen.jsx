@@ -8,8 +8,9 @@ import applicationPropTypes from "../../application-prop-types";
 import getStarValue from "../../utils";
 import Map from "../map/map";
 import {connect} from "react-redux";
-import {getActiveOfferId, getReviews, cityChange} from "../../store/action";
-import {AppRoute} from "../../const";
+import {getActiveOfferId, cityChange} from "../../store/action";
+import {APIRoute, AuthorizationStatus} from "../../const";
+import {fetchReviewList, fetchOffersNearby, fetchOffer} from "../../store/api-actions";
 
 class OfferScreen extends PureComponent {
   constructor(props) {
@@ -17,33 +18,48 @@ class OfferScreen extends PureComponent {
   }
 
   getActualOffer() {
-    const path = this.props.location.pathname.split(`/`);
+    const path = this.getPath();
     const offer = this.props.offers.find((it) => it.id === +path[path.length - 1]);
     return offer;
   }
 
+  getPath() {
+    const path = this.props.location.pathname.split(`/`);
+    return path[path.length - 1];
+  }
+
   componentDidMount() {
-    this.props.getReviewsAction();
+    const path = this.getPath();
+    this.props.getReviewsAction(path);
+    this.props.fetchOffersNearbyAction(path);
+    this.props.fetchOfferAction(path);
   }
 
   componentDidUpdate(prevProps) {
+    const path = this.getPath();
+
     if (prevProps.offers !== this.props.offers || this.props.city.name === ``) {
       const offer = this.getActualOffer();
       const actualCity = this.props.cities.find((it) => it.name === offer.city.name);
       this.props.cityChangeAction(actualCity);
     }
+    if (prevProps.openedHotel && prevProps.openedHotel.id !== +path) {
+      this.props.getReviewsAction(path);
+      this.props.fetchOffersNearbyAction(path);
+      this.props.fetchOfferAction(path);
+    }
   }
 
   render() {
-    const {history, offers, reviews, getActiveOfferIdAction, email} = this.props;
-    const offer = this.getActualOffer();
-    if (!offer) {
+    const {history, openedHotel, reviews, getActiveOfferIdAction, email, offersNearby, authorizationStatus} = this.props;
+    if (openedHotel === null) {
       return null;
     }
-    const {id, isPremium, images, title, price, type, isFavorite, rating, bedrooms, maxGuestsNumber, goods, host, description, city} = offer;
-    const actualReviews = reviews.filter((review) => review.id === id).sort((a, b) => b.date - a.date);
-    const actualOffers = offers.filter((it) => it.city.name === city.name && it.id !== id).slice(0, 3);
-
+    console.log(`zzzzzz`, this.props.postReviewLoaded);
+    // const {id, isPremium, images, title, price, type, isFavorite, rating, bedrooms, maxGuestsNumber, goods, host, description, city} = offer;
+    const {id, isPremium, images, title, price, type, isFavorite, rating, bedrooms, maxGuestsNumber, goods, host, description} = openedHotel;
+    const sortedReviews = reviews.sort((a, b) => +new Date(b) - +new Date(a));
+    const actualOffers = offersNearby.slice(0, 3);
     return (
       <div className="page">
         <header className="header">
@@ -146,16 +162,16 @@ class OfferScreen extends PureComponent {
                   </div>
                 </div>
                 <section className="property__reviews reviews">
-                  <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{actualReviews.length}</span></h2>
+                  <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{sortedReviews.length}</span></h2>
                   <ul className="reviews__list">
-                    <ReviewsList reviews={actualReviews} />
+                    <ReviewsList reviews={sortedReviews} />
                   </ul>
-                  <FeedbackForm />
+                  {authorizationStatus === AuthorizationStatus.AUTH && <FeedbackForm id={id}/>}
                 </section>
               </div>
             </div>
             <section className="property__map map">
-              <Map offers={actualOffers} actualOffer={offer}/>
+              <Map offers={actualOffers} actualOffer={openedHotel}/>
             </section>
           </section>
           <div className="container">
@@ -166,7 +182,7 @@ class OfferScreen extends PureComponent {
                   offers={actualOffers}
                   onClickCard={(offerId) => {
                     return function () {
-                      history.push(`${AppRoute.HOTELS}${offerId}`);
+                      history.push(`${APIRoute.HOTELS}/${offerId}`);
                     };
                   }}
                   handlerMouseEnter={(evt) => {
@@ -192,10 +208,15 @@ OfferScreen.propTypes = {
   reviews: PropTypes.arrayOf(applicationPropTypes.reviewItem).isRequired,
   getActiveOfferIdAction: applicationPropTypes.getActiveOfferIdAction,
   getReviewsAction: applicationPropTypes.getReviewsAction,
-  cities: applicationPropTypes.cities,
+  cities: PropTypes.arrayOf(applicationPropTypes.city),
   cityChangeAction: applicationPropTypes.cityChangeAction,
   city: applicationPropTypes.city,
   email: applicationPropTypes.email,
+  fetchOffersNearbyAction: applicationPropTypes.fetchOffersNearbyAction,
+  offersNearby: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
+  fetchOfferAction: applicationPropTypes.fetchOfferAction,
+  openedHotel: PropTypes.any,
+  authorizationStatus: applicationPropTypes.authorizationStatus,
 };
 
 const mapStateToProps = ({DATA, STATE, USER}) => ({
@@ -205,18 +226,28 @@ const mapStateToProps = ({DATA, STATE, USER}) => ({
   city: STATE.city,
   active: STATE.active,
   email: USER.email,
+  offersNearby: DATA.offersNearby,
+  openedHotel: STATE.openedHotel,
+  authorizationStatus: USER.authorizationStatus,
+  postReviewLoaded: STATE.postReviewLoaded,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getActiveOfferIdAction(value) {
     dispatch(getActiveOfferId(value));
   },
-  getReviewsAction() {
-    dispatch(getReviews());
+  getReviewsAction(id) {
+    dispatch(fetchReviewList(id));
   },
   cityChangeAction(city) {
     dispatch(cityChange(city));
   },
+  fetchOffersNearbyAction(id) {
+    dispatch(fetchOffersNearby(id));
+  },
+  fetchOfferAction(id) {
+    dispatch(fetchOffer(id));
+  }
 });
 
 export {OfferScreen};

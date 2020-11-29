@@ -1,11 +1,12 @@
 import {extend} from "../../../utils";
 import {ActionType} from "../../action";
-import reviews from "../../../mocks/reviews";
+// import reviews from "../../../mocks/reviews";
 
 const initialState = {
   offers: [],
   reviews: [],
   cities: [],
+  offersNearby: [],
 };
 
 const applicationData = (state = initialState, action) => {
@@ -21,9 +22,14 @@ const applicationData = (state = initialState, action) => {
         reviews: action.payload,
       });
 
-    case ActionType.GET_REVIEWS:
+    case ActionType.LOAD_OFFERS_NEARBY:
       return extend(state, {
-        reviews,
+        offersNearby: action.payload.offers,
+      });
+
+    case ActionType.POST_REVIEW_SUCCES:
+      return extend(state, {
+        reviews: action.payload,
       });
   }
 
