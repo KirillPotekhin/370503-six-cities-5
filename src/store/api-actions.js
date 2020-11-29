@@ -1,9 +1,9 @@
 import {loadOffers, loadReviews, requireAuthorization, redirectToRoute, getUserEmail} from "./action";
-import {AuthorizationStatus} from "../const";
+import {AuthorizationStatus, AppRoute, APIRoute} from "../const";
 import {adapterData, getDefaultCity} from "../store/action";
 
 export const fetchOffersList = () => (dispatch, _getState, api) => (
-  api.get(`/hotels`)
+  api.get(APIRoute.HOTELS)
     .then(({data}) => {
       const information = adapterData(data);
       dispatch(getDefaultCity(information.cities[0]));
@@ -13,21 +13,21 @@ export const fetchOffersList = () => (dispatch, _getState, api) => (
 );
 
 export const checkAuth = () => (dispatch, _getState, api) => (
-  api.get(`/login`)
+  api.get(APIRoute.LOGIN)
     .then(() => dispatch(requireAuthorization(AuthorizationStatus.AUTH)))
     .catch(() => {})
 );
 
 export const login = ({login: email, password}) => (dispatch, _getState, api) => (
-  api.post(`/login`, {email, password})
+  api.post(APIRoute.LOGIN, {email, password})
     .then(({data}) => {
       dispatch(requireAuthorization(AuthorizationStatus.AUTH));
       dispatch(getUserEmail(data));
     })
-    .then(() => dispatch(redirectToRoute(`/`)))
+    .then(() => dispatch(redirectToRoute(AppRoute.ROOT)))
 );
 
 export const fetchReviewList = () => (dispatch, _getState, api) => (
-  api.get(`/comments/:hotel_id`)
+  api.get(APIRoute.REVIEWS)
     .then(({data}) => dispatch(loadReviews(data)))
 );

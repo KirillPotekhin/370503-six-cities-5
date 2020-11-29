@@ -11,6 +11,7 @@ import {getActiveOfferId, getOffers} from "../../store/action";
 import PlacesListEmpty from "../places-list-empty/places-list-empty";
 import {getSortingOption} from "../../store/selectors/offers/sorted-offers";
 import {setSortingOptionDefault} from "../../store/action";
+import {AppRoute} from "../../const";
 
 class WelcomeScreen extends PureComponent {
   constructor(props) {
@@ -72,7 +73,7 @@ class WelcomeScreen extends PureComponent {
                       offers={offers}
                       onClickCard={(offerId) => {
                         return function () {
-                          history.push(`/hotels/${offerId}`);
+                          history.push(`${AppRoute.HOTELS}${offerId}`);
                         };
                       }}
                       handlerMouseEnter={(evt) => {
