@@ -6,12 +6,13 @@ import FavoritesOfferScreen from "../favorites-offer-screen/favorites-offer-scre
 import OfferScreen from "../offer-screen/offer-screen";
 import PrivateRoute from "../privat-route/privat-route";
 import browserHistory from "../../browser-history";
+import {AppRoute} from "../../const";
 
 const App = () => {
   return (
     <BrowserRouter history={browserHistory}>
       <Switch>
-        <Route exact path="/"
+        <Route exact path={AppRoute.ROOT}
           render={({location, history}) =>
             <WelcomeScreen
               location={location}
@@ -19,10 +20,10 @@ const App = () => {
             />
           }
         />
-        <Route exact path="/login">
+        <Route exact path={AppRoute.LOGIN}>
           <AuthScreen />
         </Route>
-        <PrivateRoute exact path="/favorites"
+        <PrivateRoute exact path={AppRoute.FAVORITES}
           render={({location, history}) =>
             <FavoritesOfferScreen
               location={location}
@@ -30,7 +31,7 @@ const App = () => {
             />
           }
         />
-        <Route exact path="/hotels/:id"
+        <Route exact path={AppRoute.HOTELS_ID}
           render={({location, history}) =>
             <OfferScreen
               location={location}
@@ -46,7 +47,7 @@ const App = () => {
                 <br />
                 <small>Page not found</small>
               </h1>
-              <Link to="/">Go to main page</Link>
+              <Link to={AppRoute.ROOT}>Go to main page</Link>
             </Fragment>
           )}
         />

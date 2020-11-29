@@ -9,6 +9,7 @@ import getStarValue from "../../utils";
 import Map from "../map/map";
 import {connect} from "react-redux";
 import {getActiveOfferId, getReviews, cityChange} from "../../store/action";
+import {AppRoute} from "../../const";
 
 class OfferScreen extends PureComponent {
   constructor(props) {
@@ -165,7 +166,7 @@ class OfferScreen extends PureComponent {
                   offers={actualOffers}
                   onClickCard={(offerId) => {
                     return function () {
-                      history.push(`/hotels/${offerId}`);
+                      history.push(`${AppRoute.HOTELS}${offerId}`);
                     };
                   }}
                   handlerMouseEnter={(evt) => {

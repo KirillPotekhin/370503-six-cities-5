@@ -4,6 +4,7 @@ import applicationPropTypes from "../../application-prop-types";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import {connect} from "react-redux";
+import {SizeMap, IconUrl} from "../../const";
 
 class Map extends Component {
   constructor(props) {
@@ -11,11 +12,11 @@ class Map extends Component {
     this.ref = createRef();
     this.marker = {};
     this.icon = L.icon({
-      iconUrl: `/img/pin.svg`,
+      iconUrl: `${IconUrl.DEFAULT_ICON}`,
       iconSize: [30, 30]
     });
     this.iconActive = L.icon({
-      iconUrl: `/img/pin-active.svg`,
+      iconUrl: `${IconUrl.ACTIVE_ICON}`,
       iconSize: [30, 30]
     });
   }
@@ -93,7 +94,7 @@ class Map extends Component {
 
   render() {
     return (
-      <div id="map" ref={this.ref} style={{height: `100%`}}></div>
+      <div id="map" ref={this.ref} style={{height: SizeMap.HEIGHT_MAP}}></div>
     );
   }
 }

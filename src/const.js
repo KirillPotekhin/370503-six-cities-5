@@ -12,6 +12,15 @@ export const SizePreviewImage = {
   HEIGHT_PREVIEW_FOR_FAVORITES: `110`,
 };
 
+export const SizeMap = {
+  HEIGHT_MAP: `100%`,
+};
+
+export const IconUrl = {
+  DEFAULT_ICON: `/img/pin.svg`,
+  ACTIVE_ICON: `/img/pin-active.svg`,
+};
+
 export const ReviewRatingTitle = {
   PERFECT: `perfect`,
   GOOD: `good`,
@@ -32,6 +41,7 @@ export const AppRoute = {
   HOTELS: `/hotels/`,
   HOTELS_ID: `/hotels/:id`,
   HOTELS_NEARBY: `/hotels/:hotel_id/nearby`,
+  REVIEWS: `/comments/:hotel_id`
 
 };
 
