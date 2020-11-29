@@ -50,6 +50,11 @@ const reducer = (state = initialState, action) => {
       return extend(state, {
         city: cities[0],
       });
+
+    case ActionType.LOAD_OFFERS:
+      return extend(state, {
+        offers: action.payload,
+      });
   }
 
   return state;

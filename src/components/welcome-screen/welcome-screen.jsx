@@ -1,4 +1,5 @@
 import React, {PureComponent} from "react";
+import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
 import PlacesList from "../places-list/places-list";
 import applicationPropTypes from "../../application-prop-types";
@@ -6,11 +7,10 @@ import Map from "../map/map";
 import CitiesList from "../cities-list/cities-list";
 import Sorting from "../sorting/sorting";
 import {connect} from "react-redux";
-import {ActionCreator} from "../../store/action";
-import {getFilteredOffers} from "../../utils";
-import {SortingOption} from "../../const";
-import withSortingOption from "../../hocs/with-sorting-option";
+import {getActiveOfferId, getOffers} from "../../store/action";
 import PlacesListEmpty from "../places-list-empty/places-list-empty";
+import {getSortingOption} from "../../store/selectors/offers/sorted-offers";
+import {setSortingOptionDefault} from "../../store/action";
 
 class WelcomeScreen extends PureComponent {
   constructor(props) {
@@ -18,43 +18,16 @@ class WelcomeScreen extends PureComponent {
 
   }
 
-  componentDidMount() {
-    this.props.getOffers();
-  }
-
-  getSortingOption(sortingOption, filteredOffers) {
-    let sortedOffers = [];
-    switch (sortingOption) {
-      case SortingOption.POPULAR:
-        sortedOffers = filteredOffers;
-        break;
-      case SortingOption.PRICE_LOW_TO_HIGH:
-        sortedOffers = filteredOffers.slice().sort((a, b) => a.price - b.price);
-        break;
-      case SortingOption.PRICE_HIGH_TO_LOW:
-        sortedOffers = filteredOffers.slice().sort((a, b) => b.price - a.price);
-        break;
-      case SortingOption.TOP_RATED_FIRST:
-        sortedOffers = filteredOffers.slice().sort((a, b) => b.rating - a.rating);
-        break;
-      default:
-        sortedOffers = [];
-    }
-    return sortedOffers;
-  }
-
   componentDidUpdate(prevProps) {
     if (prevProps.city !== this.props.city) {
-      this.props.onChangeSortingOption(SortingOption.POPULAR);
+      this.props.setSortingOptionDefaultAction();
     }
   }
 
   render() {
-    const {history, offers, city, getActiveOfferId, sortingOption} = this.props;
-    const filteredOffers = getFilteredOffers(offers, city);
-    const sortedOffers = this.getSortingOption(sortingOption, filteredOffers);
+    const {history, offers, city, getActiveOfferIdAction, email} = this.props;
     return (
-      <div className={`page page--gray page--main ${!sortedOffers.length && `page__main--index-empty`}`}>
+      <div className={`page page--gray page--main ${!offers.length && `page__main--index-empty`}`}>
         <header className="header">
           <div className="container">
             <div className="header__wrapper">
@@ -66,11 +39,11 @@ class WelcomeScreen extends PureComponent {
               <nav className="header__nav">
                 <ul className="header__nav-list">
                   <li className="header__nav-item user">
-                    <a className="header__nav-link header__nav-link--profile" href="#">
+                    <Link to="/favorites" className="header__nav-link header__nav-link--profile" href="#">
                       <div className="header__avatar-wrapper user__avatar-wrapper">
                       </div>
-                      <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    </a>
+                      {email !== `` ? <span className="header__user-name user__name">{email}</span> : <span className="header__login">Sign in</span>}
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -86,36 +59,36 @@ class WelcomeScreen extends PureComponent {
             </section>
           </div>
           <div className="cities">
-            <div className={`cities__places-container ${!sortedOffers.length && `cities__places-container--empty`} container`}>
-              {sortedOffers.length ?
+            <div className={`cities__places-container ${!offers.length && `cities__places-container--empty`} container`}>
+              {offers.length ?
                 <section className="cities__places places">
                   <h2 className="visually-hidden">Places</h2>
-                  {city && <b className="places__found">{sortedOffers.length} places to stay in {city.name}</b>}
+                  {city && <b className="places__found">{offers.length} places to stay in {city.name}</b>}
                   <Sorting
                     {...this.props}
                   />
                   <div className="cities__places-list places__list tabs__content">
                     <PlacesList
-                      offers={sortedOffers}
+                      offers={offers}
                       onClickCard={(offerId) => {
                         return function () {
-                          history.push(`/offer/${offerId}`);
+                          history.push(`/hotels/${offerId}`);
                         };
                       }}
                       handlerMouseEnter={(evt) => {
                         evt.preventDefault();
                         const activeId = evt.currentTarget.id;
-                        getActiveOfferId(activeId);
+                        getActiveOfferIdAction(+activeId);
                       }}
-                      handlerMouseLeave={() => getActiveOfferId(``)}
+                      handlerMouseLeave={() => getActiveOfferIdAction(``)}
                     />
                   </div>
                 </section> :
                 <PlacesListEmpty city={city}/>}
               <div className="cities__right-section">
-                {!!sortedOffers.length &&
+                {!!offers.length &&
                 <section className="cities__map map">
-                  {city && <Map offers={filteredOffers}/>}
+                  {city && <Map offers={offers}/>}
                 </section>}
               </div>
             </div>
@@ -129,28 +102,32 @@ class WelcomeScreen extends PureComponent {
 WelcomeScreen.propTypes = {
   history: PropTypes.object.isRequired,
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
-  sortingOption: applicationPropTypes.sortingOption,
-  getOffers: applicationPropTypes.getOffers,
-  getActiveOfferId: applicationPropTypes.getActiveOfferId,
+  getOffersAction: applicationPropTypes.getOffersAction,
+  getActiveOfferIdAction: applicationPropTypes.getActiveOfferIdAction,
   city: applicationPropTypes.city,
   active: applicationPropTypes.active,
-  onChangeSortingOption: applicationPropTypes.onChangeSortingOption,
+  setSortingOptionDefaultAction: applicationPropTypes.setSortingOptionDefaultAction,
+  email: applicationPropTypes.email,
 };
 
-const mapStateToProps = (state) => ({
-  city: state.city,
-  offers: state.offers,
-  active: state.active,
+const mapStateToProps = ({DATA, STATE, USER}) => ({
+  offers: getSortingOption({DATA, STATE}),
+  city: STATE.city,
+  active: STATE.active,
+  email: USER.email,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getActiveOfferId(value) {
-    dispatch(ActionCreator.getActiveOfferId(value));
+  getActiveOfferIdAction(value) {
+    dispatch(getActiveOfferId(value));
   },
-  getOffers() {
-    dispatch(ActionCreator.getOffers());
+  getOffersAction() {
+    dispatch(getOffers());
+  },
+  setSortingOptionDefaultAction() {
+    dispatch(setSortingOptionDefault());
   },
 });
 
 export {WelcomeScreen};
-export default connect(mapStateToProps, mapDispatchToProps)(withSortingOption(WelcomeScreen));
+export default connect(mapStateToProps, mapDispatchToProps)(WelcomeScreen);

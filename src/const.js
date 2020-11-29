@@ -19,3 +19,23 @@ export const ReviewRatingTitle = {
   BEADLY: `beadly`,
   TERRIBLY: `terribly`,
 };
+
+export const AuthorizationStatus = {
+  AUTH: `AUTH`,
+  NO_AUTH: `NO_AUTH`,
+};
+
+export const AppRoute = {
+  ROOT: `/`,
+  LOGIN: `/login`,
+  FAVORITES: `/favorites`,
+  HOTELS: `/hotels/`,
+  HOTELS_ID: `/hotels/:id`,
+  HOTELS_NEARBY: `/hotels/:hotel_id/nearby`,
+
+};
+
+export const APIRoute = {
+  HOTELS: `/hotels`,
+  LOGIN: `/login`,
+};

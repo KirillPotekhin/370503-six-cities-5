@@ -4,7 +4,6 @@ import applicationPropTypes from "../../application-prop-types";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import {connect} from "react-redux";
-import {ActionCreator} from "../../store/action";
 
 class Map extends Component {
   constructor(props) {
@@ -32,7 +31,7 @@ class Map extends Component {
 
   renderPin(offers, actualOffer) {
     offers.map((offer) => {
-      this.marker[offer.id] = L.marker([offer.city.location.latitude, offer.city.location.longitude]);
+      this.marker[offer.id] = L.marker([offer.location.latitude, offer.location.longitude]);
       this.marker[offer.id].setIcon(this.icon);
       this.marker[offer.id].addTo(this.map);
     });
@@ -106,16 +105,10 @@ Map.propTypes = {
   actualOffer: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-  city: state.city,
-  active: state.active,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getActiveOfferId(value) {
-    dispatch(ActionCreator.getActiveOfferId(value));
-  },
+const mapStateToProps = ({STATE}) => ({
+  city: STATE.city,
+  active: STATE.active,
 });
 
 export {Map};
-export default connect(mapStateToProps, mapDispatchToProps)(Map);
+export default connect(mapStateToProps, null)(Map);

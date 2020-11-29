@@ -8,7 +8,7 @@ import applicationPropTypes from "../../application-prop-types";
 import getStarValue from "../../utils";
 import Map from "../map/map";
 import {connect} from "react-redux";
-import {ActionCreator} from "../../store/action";
+import {getActiveOfferId, getReviews, cityChange} from "../../store/action";
 
 class OfferScreen extends PureComponent {
   constructor(props) {
@@ -17,31 +17,29 @@ class OfferScreen extends PureComponent {
 
   getActualOffer() {
     const path = this.props.location.pathname.split(`/`);
-    const offer = this.props.offers.find((it) => it.id === path[path.length - 1]);
+    const offer = this.props.offers.find((it) => it.id === +path[path.length - 1]);
     return offer;
   }
 
   componentDidMount() {
-    this.props.getOffers();
-    this.props.getReviews();
-    this.props.getCities();
+    this.props.getReviewsAction();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.offers !== this.props.offers || this.props.city.name === ``) {
       const offer = this.getActualOffer();
       const actualCity = this.props.cities.find((it) => it.name === offer.city.name);
-      this.props.cityChange(actualCity);
+      this.props.cityChangeAction(actualCity);
     }
   }
 
   render() {
-    const {history, offers, reviews, getActiveOfferId} = this.props;
+    const {history, offers, reviews, getActiveOfferIdAction, email} = this.props;
     const offer = this.getActualOffer();
     if (!offer) {
       return null;
     }
-    const {id, isPremium, images, name, price, type, isFavorite, rating, bedrooms, adults, goods, host, avatar, description, city} = offer;
+    const {id, isPremium, images, title, price, type, isFavorite, rating, bedrooms, maxGuestsNumber, goods, host, description, city} = offer;
     const actualReviews = reviews.filter((review) => review.id === id).sort((a, b) => b.date - a.date);
     const actualOffers = offers.filter((it) => it.city.name === city.name && it.id !== id).slice(0, 3);
 
@@ -58,11 +56,11 @@ class OfferScreen extends PureComponent {
               <nav className="header__nav">
                 <ul className="header__nav-list">
                   <li className="header__nav-item user">
-                    <a className="header__nav-link header__nav-link--profile" href="#">
+                    <Link to="/favorites" className="header__nav-link header__nav-link--profile" href="#">
                       <div className="header__avatar-wrapper user__avatar-wrapper">
                       </div>
-                      <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    </a>
+                      {email !== `` ? <span className="header__user-name user__name">{email}</span> : <span className="header__login">Sign in</span>}
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -74,9 +72,9 @@ class OfferScreen extends PureComponent {
           <section className="property">
             <div className="property__gallery-container container">
               <div className="property__gallery">
-                {images.map((image, i) => (
-                  <div key={`${image.src}${i}offerscreen`} className="property__image-wrapper">
-                    <img className="property__image" src={image.src} alt={`${name} ${i}`} />
+                {images.slice(0, 6).map((image, i) => (
+                  <div key={`${image}${i}offerscreen`} className="property__image-wrapper">
+                    <img className="property__image" src={image} alt={`${title} ${i}`} />
                   </div>
                 ))}
               </div>
@@ -113,7 +111,7 @@ class OfferScreen extends PureComponent {
                     {bedrooms} Bedrooms
                   </li>
                   <li className="property__feature property__feature--adults">
-                    Max {adults} adults
+                    Max {maxGuestsNumber} adults
                   </li>
                 </ul>
                 <div className="property__price">
@@ -134,10 +132,10 @@ class OfferScreen extends PureComponent {
                   <h2 className="property__host-title">Meet the host</h2>
                   <div className="property__host-user user">
                     <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                      <img className="property__avatar user__avatar" src={avatar} width="74" height="74" alt={`${host} avatar`} />
+                      <img className="property__avatar user__avatar" src={`/${host.avatar}`} width="74" height="74" alt={`${host.name} avatar`} />
                     </div>
                     <span className="property__user-name">
-                      {host}
+                      {host.name}
                     </span>
                   </div>
                   <div className="property__description">
@@ -167,15 +165,15 @@ class OfferScreen extends PureComponent {
                   offers={actualOffers}
                   onClickCard={(offerId) => {
                     return function () {
-                      history.push(`/offer/${offerId}`);
+                      history.push(`/hotels/${offerId}`);
                     };
                   }}
                   handlerMouseEnter={(evt) => {
                     evt.preventDefault();
                     const activeId = evt.currentTarget.id;
-                    getActiveOfferId(activeId);
+                    getActiveOfferIdAction(+activeId);
                   }}
-                  handlerMouseLeave={() => getActiveOfferId(``)}
+                  handlerMouseLeave={() => getActiveOfferIdAction(``)}
                 />
               </div>
             </section>
@@ -191,38 +189,32 @@ OfferScreen.propTypes = {
   history: PropTypes.object.isRequired,
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
   reviews: PropTypes.arrayOf(applicationPropTypes.reviewItem).isRequired,
-  getActiveOfferId: applicationPropTypes.getActiveOfferId,
-  getOffers: applicationPropTypes.getOffers,
-  getReviews: applicationPropTypes.getReviews,
-  getCities: applicationPropTypes.getCities,
+  getActiveOfferIdAction: applicationPropTypes.getActiveOfferIdAction,
+  getReviewsAction: applicationPropTypes.getReviewsAction,
   cities: applicationPropTypes.cities,
-  cityChange: applicationPropTypes.cityChange,
+  cityChangeAction: applicationPropTypes.cityChangeAction,
   city: applicationPropTypes.city,
+  email: applicationPropTypes.email,
 };
 
-const mapStateToProps = (state) => ({
-  offers: state.offers,
-  reviews: state.reviews,
-  active: state.active,
-  cities: state.cities,
-  city: state.city,
+const mapStateToProps = ({DATA, STATE, USER}) => ({
+  offers: DATA.offers,
+  reviews: DATA.reviews,
+  cities: DATA.cities,
+  city: STATE.city,
+  active: STATE.active,
+  email: USER.email,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getActiveOfferId(value) {
-    dispatch(ActionCreator.getActiveOfferId(value));
+  getActiveOfferIdAction(value) {
+    dispatch(getActiveOfferId(value));
   },
-  getOffers() {
-    dispatch(ActionCreator.getOffers());
+  getReviewsAction() {
+    dispatch(getReviews());
   },
-  getReviews() {
-    dispatch(ActionCreator.getReviews());
-  },
-  cityChange(city) {
-    dispatch(ActionCreator.cityChange(city));
-  },
-  getCities() {
-    dispatch(ActionCreator.getCities());
+  cityChangeAction(city) {
+    dispatch(cityChange(city));
   },
 });
 

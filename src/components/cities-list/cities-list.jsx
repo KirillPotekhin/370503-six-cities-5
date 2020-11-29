@@ -1,7 +1,8 @@
 import React, {PureComponent} from "react";
+import PropTypes from "prop-types";
 import applicationPropTypes from "../../application-prop-types";
 import {connect} from "react-redux";
-import {ActionCreator} from "../../store/action";
+import {cityChange} from "../../store/action";
 
 class CitiesList extends PureComponent {
   constructor(props) {
@@ -10,12 +11,7 @@ class CitiesList extends PureComponent {
   }
 
   onClickCityName(value) {
-    return () => this.props.cityChange(value);
-  }
-
-  componentDidMount() {
-    this.props.getCities();
-    this.props.getDefaultCity();
+    return () => this.props.cityChangeAction(value);
   }
 
   render() {
@@ -36,28 +32,20 @@ class CitiesList extends PureComponent {
 }
 
 CitiesList.propTypes = {
-  cities: applicationPropTypes.cities,
+  cities: PropTypes.arrayOf(applicationPropTypes.city).isRequired,
   city: applicationPropTypes.city,
-  getCities: applicationPropTypes.getCities,
-  cityChange: applicationPropTypes.cityChange,
-  getDefaultCity: applicationPropTypes.getDefaultCity,
+  cityChangeAction: applicationPropTypes.cityChangeAction,
 };
 
-const mapStateToProps = (state) => ({
-  cities: state.cities,
-  city: state.city,
+const mapStateToProps = ({DATA, STATE}) => ({
+  cities: DATA.cities,
+  city: STATE.city,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  cityChange(cityValue) {
-    dispatch(ActionCreator.cityChange(cityValue));
+  cityChangeAction(cityValue) {
+    dispatch(cityChange(cityValue));
   },
-  getCities() {
-    dispatch(ActionCreator.getCities());
-  },
-  getDefaultCity() {
-    dispatch(ActionCreator.getDefaultCity());
-  }
 });
 
 export {CitiesList};
