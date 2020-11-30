@@ -19,15 +19,9 @@ class FavoritesOfferScreen extends PureComponent {
     this.props.fetchOffersFavoritesListAction();
   }
 
-  componentDidUpdate() {
-    this.props.fetchOffersFavoritesListAction();
-  }
-
   render() {
     const {offers, history, getActiveOfferIdAction, email, offersFavorites, postOfferFavoriteStatusAction, active} = this.props;
-    // const favorites = offers.filter((it) => it.isFavorite);
     const favorites = offersFavorites;
-    console.log(`favorites`, favorites);
     const cities = new Set();
     favorites.forEach((it) => cities.add(it.city.name));
     const filteredFavorites = [];
@@ -114,7 +108,7 @@ class FavoritesOfferScreen extends PureComponent {
 }
 
 FavoritesOfferScreen.propTypes = {
-  history: PropTypes.any,
+  history: applicationPropTypes.history,
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
   getActiveOfferIdAction: applicationPropTypes.getActiveOfferIdAction,
   email: applicationPropTypes.email,

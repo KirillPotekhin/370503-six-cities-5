@@ -20,6 +20,7 @@ export const ActionType = {
   POST_REVIEW_FAILED: `POST_REVIEW_FAILED`,
   LOAD_OFFERS_FAVORITES: `LOAD_OFFERS_FAVORITES`,
   SET_FAVORITE_STATUS_TO_OFFER: `SET_FAVORITE_STATUS_TO_OFFER`,
+  SHOW_ERROR_MESSAGES: `SHOW_ERROR_MESSAGES`,
 };
 
 export const cityChange = (string) => ({
@@ -118,6 +119,11 @@ export const postReviewFailed = () => ({
 export const setFavoriteStatusToOffer = (offer) => ({
   type: ActionType.SET_FAVORITE_STATUS_TO_OFFER,
   payload: offer,
+});
+
+export const showErrorMessages = (message) => ({
+  type: ActionType.SHOW_ERROR_MESSAGES,
+  payload: message,
 });
 
 export const adapterDataHotels = (data) => {

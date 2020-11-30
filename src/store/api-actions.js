@@ -1,4 +1,4 @@
-import {loadOffers, loadReviews, requireAuthorization, redirectToRoute, getUserEmail, loadOffersNearby, getOpenedHotel, postReviewStart, postReviewSucces, postReviewFailed, loadOffersFavorites, setFavoriteStatusToOffer} from "./action";
+import {loadOffers, loadReviews, requireAuthorization, redirectToRoute, getUserEmail, loadOffersNearby, getOpenedHotel, postReviewStart, postReviewSucces, postReviewFailed, loadOffersFavorites, setFavoriteStatusToOffer, showErrorMessages} from "./action";
 import {AuthorizationStatus, AppRoute, APIRoute} from "../const";
 import {adapterDataHotels, getDefaultCity, adapterDataReviews} from "../store/action";
 
@@ -21,6 +21,10 @@ export const fetchOffersFavoritesList = () => (dispatch, _getState, api) => (
 );
 
 export const postOfferFavoriteStatus = (id, offers) => (dispatch, _getState, api) => {
+  const state = _getState();
+  if (state.USER.authorizationStatus === AuthorizationStatus.NO_AUTH) {
+    dispatch(redirectToRoute(AppRoute.LOGIN));
+  }
   if (id) {
     const offer = offers.find((item) => item.id === id);
     const isFavoriteStatus = offer.isFavorite;
@@ -28,6 +32,7 @@ export const postOfferFavoriteStatus = (id, offers) => (dispatch, _getState, api
       .then(({data}) => {
         const hotelInfo = adapterDataHotels([data]).offers[0];
         dispatch(setFavoriteStatusToOffer(hotelInfo));
+        dispatch(fetchOffersFavoritesList());
       });
   }
 };
@@ -54,8 +59,8 @@ export const postReview = (id, {comment, rating}) => (dispatch, _getState, api) 
       const adaptedReviews = adapterDataReviews(data);
       dispatch(postReviewSucces(adaptedReviews));
     })
-    .catch(() => {
-      console.log(`Ошибка отправки формы`);
+    .catch((error) => {
+      dispatch(showErrorMessages(error));
       dispatch(postReviewFailed());
     });
 };

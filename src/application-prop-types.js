@@ -80,6 +80,8 @@ const applicationPropTypes = {
   fetchOffersFavoritesListAction: PropTypes.func.isRequired,
   rating: PropTypes.string.isRequired,
   onClickFavoritesButton: PropTypes.func,
+  errorMessage: PropTypes.string,
+  history: PropTypes.object.isRequired,
 };
 
 export default applicationPropTypes;

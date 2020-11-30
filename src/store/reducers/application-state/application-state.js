@@ -16,6 +16,7 @@ const initialState = {
   openedHotel: null,
   postReviewLoading: false,
   postReviewLoaded: false,
+  errorMessage: ``,
 };
 
 const applicationState = (state = initialState, action) => {
@@ -65,12 +66,25 @@ const applicationState = (state = initialState, action) => {
       return extend(state, {
         postReviewLoading: false,
         postReviewLoaded: true,
+        errorMessage: ``,
       });
 
     case ActionType.POST_REVIEW_FAILED:
       return extend(state, {
         postReviewLoading: false,
       });
+
+    case ActionType.SHOW_ERROR_MESSAGES:
+      return extend(state, {
+        errorMessage: action.payload,
+      });
+
+    case ActionType.SET_FAVORITE_STATUS_TO_OFFER:
+      if (state.openedHotel && state.openedHotel.id === action.payload.id) {
+        return extend(state, {
+          openedHotel: extend(state.openedHotel, {isFavorite: action.payload.isFavorite})
+        });
+      }
   }
 
   return state;

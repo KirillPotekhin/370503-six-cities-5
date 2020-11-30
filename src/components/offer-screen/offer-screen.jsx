@@ -57,16 +57,13 @@ class OfferScreen extends PureComponent {
   }
 
   render() {
-    const {history, openedHotel, reviews, getActiveOfferIdAction, email, offersNearby, authorizationStatus, postOfferFavoriteStatusAction, active} = this.props;
+    const {history, openedHotel, reviews, getActiveOfferIdAction, email, offersNearby, authorizationStatus, postOfferFavoriteStatusAction, active, errorMessage} = this.props;
     if (openedHotel === null) {
       return null;
     }
     const {id, isPremium, images, title, price, type, isFavorite, rating, bedrooms, maxGuestsNumber, goods, host, description} = openedHotel;
     const sortedReviews = reviews.sort((a, b) => (+new Date(b.date)) - (+new Date(a.date)));
     const actualOffers = offersNearby.slice(0, 3);
-    console.log([openedHotel]);
-    const offer = [openedHotel].find((item) => item.id === id);
-    console.log(offer);
     return (
       <div className="page">
         <header className="header">
@@ -113,8 +110,8 @@ class OfferScreen extends PureComponent {
                   <h1 className="property__name">
                     {name}
                   </h1>
-                  <button className={`property__bookmark-button ${isFavorite ? `place-card__bookmark-button--active` : ``} button`} type="button" onClick={this.onClickFavoritesButton(id, [openedHotel])}>
-                    <svg className="property__bookmark-icon" width="31" height="33">
+                  <button className={`property__bookmark-button button ${isFavorite ? `property__bookmark-button--active` : ``}`} type="button" onClick={this.onClickFavoritesButton(id, [openedHotel])}>
+                    <svg className="place-card__bookmark-icon" width="31" height="33">
                       <use xlinkHref="#icon-bookmark"></use>
                     </svg>
                     <span className="visually-hidden">To bookmarks</span>
@@ -173,7 +170,7 @@ class OfferScreen extends PureComponent {
                   <ul className="reviews__list">
                     <ReviewsList reviews={sortedReviews} />
                   </ul>
-                  {authorizationStatus === AuthorizationStatus.AUTH && <FeedbackForm id={id}/>}
+                  {authorizationStatus === AuthorizationStatus.AUTH && <FeedbackForm errorMessage={errorMessage} id={id}/>}
                 </section>
               </div>
             </div>
@@ -226,11 +223,15 @@ OfferScreen.propTypes = {
   fetchOffersNearbyAction: applicationPropTypes.fetchOffersNearbyAction,
   offersNearby: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
   fetchOfferAction: applicationPropTypes.fetchOfferAction,
-  openedHotel: PropTypes.any,
+  openedHotel: PropTypes.oneOfType([
+    applicationPropTypes.offer,
+    PropTypes.oneOf([null]),
+  ]),
   authorizationStatus: applicationPropTypes.authorizationStatus,
   postOfferFavoriteStatusAction: applicationPropTypes.postOfferFavoriteStatusAction,
   active: applicationPropTypes.active,
   onClickFavoritesButton: applicationPropTypes.onClickFavoritesButton,
+  errorMessage: applicationPropTypes.errorMessage,
 };
 
 const mapStateToProps = ({DATA, STATE, USER}) => ({
@@ -244,6 +245,7 @@ const mapStateToProps = ({DATA, STATE, USER}) => ({
   openedHotel: STATE.openedHotel,
   authorizationStatus: USER.authorizationStatus,
   postReviewLoaded: STATE.postReviewLoaded,
+  errorMessage: STATE.errorMessage,
 });
 
 const mapDispatchToProps = (dispatch) => ({

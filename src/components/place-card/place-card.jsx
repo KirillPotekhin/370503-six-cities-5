@@ -79,7 +79,7 @@ PlaceCard.propTypes = {
   onClickCard: PropTypes.func.isRequired,
   handlerMouseEnter: PropTypes.func.isRequired,
   handlerMouseLeave: PropTypes.func.isRequired,
-  onClickFavoritesButton: PropTypes.func,
+  onClickFavoritesButton: applicationPropTypes.onClickFavoritesButton,
   active: applicationPropTypes.active,
 };
 
