@@ -30,8 +30,8 @@ const withData = (Component) => {
           });
     }
 
-    handleFieldChange(evt) {
-      const {name, value} = evt.target;
+    handleFieldChange(evt, name) {
+      const {value} = evt.target;
       return (this.setState({[name]: value}));
     }
 

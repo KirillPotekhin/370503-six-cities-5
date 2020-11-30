@@ -4,12 +4,15 @@ import applicationPropTypes from "../../application-prop-types";
 import withData from "../../hocs/with-data";
 
 const FeedbackForm = (props) => {
-  const {onSubmitReview, onRatingChange, onTextareaChange, postReviewLoading, review} = props;
+  const {onSubmitReview, onRatingChange, postReviewLoading, review} = props;
+  const onTextareaChange = (evt) => {
+    props.onTextareaChange(evt, `review`);
+  };
   return (
     <form className="reviews__form form" action="#" method="post" onSubmit={onSubmitReview}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating" name="rating" onChange={onRatingChange}>
-        <RatingList />
+        <RatingList {...props}/>
       </div>
       <textarea className="reviews__textarea form__textarea" id="review" name="review" minLength="50" placeholder="Tell how was your stay, what you like and what can be improved" onChange={onTextareaChange} value={review}></textarea>
       <div className="reviews__button-wrapper">

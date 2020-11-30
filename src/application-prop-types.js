@@ -78,6 +78,7 @@ const applicationPropTypes = {
   postReviewLoading: PropTypes.bool.isRequired,
   postOfferFavoriteStatusAction: PropTypes.func.isRequired,
   fetchOffersFavoritesListAction: PropTypes.func.isRequired,
+  rating: PropTypes.string.isRequired,
 };
 
 export default applicationPropTypes;

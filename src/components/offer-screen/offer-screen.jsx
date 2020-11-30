@@ -10,7 +10,7 @@ import Map from "../map/map";
 import {connect} from "react-redux";
 import {getActiveOfferId, cityChange} from "../../store/action";
 import {APIRoute, AuthorizationStatus} from "../../const";
-import {fetchReviewList, fetchOffersNearby, fetchOffer} from "../../store/api-actions";
+import {fetchReviewList, fetchOffersNearby, fetchOffer, postOfferFavoriteStatus} from "../../store/api-actions";
 
 class OfferScreen extends PureComponent {
   constructor(props) {
@@ -51,7 +51,7 @@ class OfferScreen extends PureComponent {
   }
 
   render() {
-    const {history, openedHotel, reviews, getActiveOfferIdAction, email, offersNearby, authorizationStatus} = this.props;
+    const {history, openedHotel, reviews, getActiveOfferIdAction, email, offersNearby, authorizationStatus, postOfferFavoriteStatusAction} = this.props;
     if (openedHotel === null) {
       return null;
     }
@@ -183,6 +183,9 @@ class OfferScreen extends PureComponent {
                       history.push(`${APIRoute.HOTELS}/${offerId}`);
                     };
                   }}
+                  onClickFavoritesButton={(idNearby) => {
+                    postOfferFavoriteStatusAction(idNearby, actualOffers);
+                  }}
                   handlerMouseEnter={(evt) => {
                     evt.preventDefault();
                     const activeId = evt.currentTarget.id;
@@ -215,6 +218,7 @@ OfferScreen.propTypes = {
   fetchOfferAction: applicationPropTypes.fetchOfferAction,
   openedHotel: PropTypes.any,
   authorizationStatus: applicationPropTypes.authorizationStatus,
+  postOfferFavoriteStatusAction: applicationPropTypes.postOfferFavoriteStatusAction,
 };
 
 const mapStateToProps = ({DATA, STATE, USER}) => ({
@@ -245,7 +249,10 @@ const mapDispatchToProps = (dispatch) => ({
   },
   fetchOfferAction(id) {
     dispatch(fetchOffer(id));
-  }
+  },
+  postOfferFavoriteStatusAction(id, offers) {
+    dispatch(postOfferFavoriteStatus(id, offers));
+  },
 });
 
 export {OfferScreen};
