@@ -1,4 +1,4 @@
-import {loadOffers, loadReviews, requireAuthorization, redirectToRoute, getUserEmail, loadOffersNearby, getOpenedHotel, postReviewStart, postReviewSucces, postReviewFailed} from "./action";
+import {loadOffers, loadReviews, requireAuthorization, redirectToRoute, getUserEmail, loadOffersNearby, getOpenedHotel, postReviewStart, postReviewSucces, postReviewFailed, loadOffersFavorites, setFavoriteStatusToOffer} from "./action";
 import {AuthorizationStatus, AppRoute, APIRoute} from "../const";
 import {adapterDataHotels, getDefaultCity, adapterDataReviews} from "../store/action";
 
@@ -11,6 +11,27 @@ export const fetchOffersList = () => (dispatch, _getState, api) => (
     })
     .then(() => dispatch(requireAuthorization(AuthorizationStatus.NO_AUTH)))
 );
+
+export const fetchOffersFavoritesList = () => (dispatch, _getState, api) => (
+  api.get(APIRoute.FAVORITES)
+    .then(({data}) => {
+      const information = adapterDataHotels(data);
+      dispatch(loadOffersFavorites(information));
+    })
+);
+
+export const postOfferFavoriteStatus = (id, offers) => (dispatch, _getState, api) => {
+  if (id) {
+    const offer = offers.find((item) => item.id === id);
+    const isFavoriteStatus = offer.isFavorite;
+    api.post(`${APIRoute.FAVORITES}/${id}/${+!isFavoriteStatus}`)
+      .then(({data}) => {
+        const hotelInfo = adapterDataHotels([data]).offers[0];
+        dispatch(setFavoriteStatusToOffer(hotelInfo));
+      });
+  }
+  
+};
 
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(APIRoute.LOGIN)
@@ -60,6 +81,6 @@ export const fetchOffer = (id) => (dispatch, _getState, api) => (
   api.get(`${APIRoute.HOTELS}/${id}`)
     .then(({data}) => {
       const information = adapterDataHotels([data]);
-      dispatch(getOpenedHotel(information.offers[0]));
+      dispatch(getOpenedHotel(information));
     })
 );

@@ -31,7 +31,7 @@ class Review extends PureComponent {
           <p className="reviews__text">
             {comment}
           </p>
-          <time className="reviews__time" dateTime="2019-04-24">{new Date(date).toLocaleString(`en-US`, {day: `numeric`})} {new Date(date).toLocaleString(`en-US`, {month: `long`})} {new Date(date).getFullYear()}</time>
+          <time className="reviews__time" dateTime="2019-04-24">{new Date(date).toLocaleString(`en-US`, {month: `long`})} {new Date(date).getFullYear()}</time>
         </div>
       </Fragment>
     );

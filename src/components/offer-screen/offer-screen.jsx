@@ -55,10 +55,8 @@ class OfferScreen extends PureComponent {
     if (openedHotel === null) {
       return null;
     }
-    console.log(`zzzzzz`, this.props.postReviewLoaded);
-    // const {id, isPremium, images, title, price, type, isFavorite, rating, bedrooms, maxGuestsNumber, goods, host, description, city} = offer;
     const {id, isPremium, images, title, price, type, isFavorite, rating, bedrooms, maxGuestsNumber, goods, host, description} = openedHotel;
-    const sortedReviews = reviews.sort((a, b) => +new Date(b) - +new Date(a));
+    const sortedReviews = reviews.sort((a, b) => (+new Date(b.date)) - (+new Date(a.date)));
     const actualOffers = offersNearby.slice(0, 3);
     return (
       <div className="page">

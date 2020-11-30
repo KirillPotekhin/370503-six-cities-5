@@ -7,6 +7,7 @@ const initialState = {
   reviews: [],
   cities: [],
   offersNearby: [],
+  offersFavorites: [],
 };
 
 const applicationData = (state = initialState, action) => {
@@ -31,6 +32,17 @@ const applicationData = (state = initialState, action) => {
       return extend(state, {
         reviews: action.payload,
       });
+
+    case ActionType.LOAD_OFFERS_FAVORITES:
+      return extend(state, {
+        offersFavorites: action.payload.offers,
+      });
+
+    case ActionType.SET_FAVORITE_STATUS_TO_OFFER:
+      return extend(state, {
+        offers: state.offers.map((offer) => offer.id === action.payload.id ? action.payload : offer),
+      });
+
   }
 
   return state;

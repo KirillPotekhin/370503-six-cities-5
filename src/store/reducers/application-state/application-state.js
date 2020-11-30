@@ -52,7 +52,7 @@ const applicationState = (state = initialState, action) => {
 
     case ActionType.GET_OPENED_HOTEL:
       return extend(state, {
-        openedHotel: action.payload,
+        openedHotel: action.payload.offers[0],
       });
 
     case ActionType.POST_REVIEW_START:

@@ -18,6 +18,8 @@ export const ActionType = {
   POST_REVIEW_START: `POST_REVIEW_START`,
   POST_REVIEW_SUCCES: `POST_REVIEW_SUCCES`,
   POST_REVIEW_FAILED: `POST_REVIEW_FAILED`,
+  LOAD_OFFERS_FAVORITES: `LOAD_OFFERS_FAVORITES`,
+  SET_FAVORITE_STATUS_TO_OFFER: `SET_FAVORITE_STATUS_TO_OFFER`,
 };
 
 export const cityChange = (string) => ({
@@ -66,6 +68,11 @@ export const loadOffersNearby = (offers) => ({
   payload: offers,
 });
 
+export const loadOffersFavorites = (offers) => ({
+  type: ActionType.LOAD_OFFERS_FAVORITES,
+  payload: offers,
+});
+
 export const requireAuthorization = (status) => ({
   type: ActionType.REQUIRED_AUTHORIZATION,
   payload: status,
@@ -106,6 +113,11 @@ export const postReviewSucces = (reviews) => ({
 
 export const postReviewFailed = () => ({
   type: ActionType.POST_REVIEW_FAILED,
+});
+
+export const setFavoriteStatusToOffer = (offer) => ({
+  type: ActionType.SET_FAVORITE_STATUS_TO_OFFER,
+  payload: offer,
 });
 
 export const adapterDataHotels = (data) => {

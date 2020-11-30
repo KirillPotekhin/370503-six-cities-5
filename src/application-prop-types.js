@@ -75,6 +75,9 @@ const applicationPropTypes = {
   authorizationStatus: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   postReviewLoaded: PropTypes.bool.isRequired,
+  postReviewLoading: PropTypes.bool.isRequired,
+  postOfferFavoriteStatusAction: PropTypes.func.isRequired,
+  fetchOffersFavoritesListAction: PropTypes.func.isRequired,
 };
 
 export default applicationPropTypes;

@@ -7,6 +7,7 @@ import {SizePreviewImage, APIRoute} from "../../const";
 import {connect} from "react-redux";
 import {getActiveOfferId} from "../../store/action";
 import FavoritesEmpty from "../favorites-empty/favorites-empty";
+import {fetchOffersFavoritesList, postOfferFavoriteStatus} from "../../store/api-actions";
 
 class FavoritesOfferScreen extends PureComponent {
   constructor(props) {
@@ -14,9 +15,19 @@ class FavoritesOfferScreen extends PureComponent {
 
   }
 
+  componentDidMount() {
+    this.props.fetchOffersFavoritesListAction();
+  }
+
+  componentDidUpdate() {
+    this.props.fetchOffersFavoritesListAction();
+  }
+
   render() {
-    const {offers, history, getActiveOfferIdAction, email} = this.props;
-    const favorites = offers.filter((it) => it.isFavorite);
+    const {offers, history, getActiveOfferIdAction, email, offersFavorites, postOfferFavoriteStatusAction} = this.props;
+    // const favorites = offers.filter((it) => it.isFavorite);
+    const favorites = offersFavorites;
+    console.log(`favorites`, favorites);
     const cities = new Set();
     favorites.forEach((it) => cities.add(it.city.name));
     const filteredFavorites = [];
@@ -73,6 +84,9 @@ class FavoritesOfferScreen extends PureComponent {
                               history.push(`${APIRoute.HOTELS}/${offerId}`);
                             };
                           }}
+                          onClickFavoritesButton={(offerId) => {
+                            postOfferFavoriteStatusAction(offerId, offers);
+                          }}
                           handlerMouseEnter={(evt) => {
                             evt.preventDefault();
                             const activeId = evt.currentTarget.id;
@@ -103,17 +117,27 @@ FavoritesOfferScreen.propTypes = {
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
   getActiveOfferIdAction: applicationPropTypes.getActiveOfferIdAction,
   email: applicationPropTypes.email,
+  fetchOffersFavoritesListAction: applicationPropTypes.fetchOffersFavoritesListAction,
+  offersFavorites: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
+  postOfferFavoriteStatusAction: applicationPropTypes.postOfferFavoriteStatusAction,
 };
 
 
 const mapStateToProps = ({DATA, USER}) => ({
   offers: DATA.offers,
   email: USER.email,
+  offersFavorites: DATA.offersFavorites,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getActiveOfferIdAction(value) {
     dispatch(getActiveOfferId(value));
+  },
+  fetchOffersFavoritesListAction() {
+    dispatch(fetchOffersFavoritesList());
+  },
+  postOfferFavoriteStatusAction(id, offers) {
+    dispatch(postOfferFavoriteStatus(id, offers));
   },
 });
 
