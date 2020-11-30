@@ -15,6 +15,8 @@ import {fetchReviewList, fetchOffersNearby, fetchOffer, postOfferFavoriteStatus}
 class OfferScreen extends PureComponent {
   constructor(props) {
     super(props);
+
+    this.onClickFavoritesButton = this.onClickFavoritesButton.bind(this);
   }
 
   getActualOffer() {
@@ -26,6 +28,10 @@ class OfferScreen extends PureComponent {
   getPath() {
     const path = this.props.location.pathname.split(`/`);
     return path[path.length - 1];
+  }
+
+  onClickFavoritesButton(id, offer) {
+    return () => this.props.postOfferFavoriteStatusAction(id, offer);
   }
 
   componentDidMount() {
@@ -51,13 +57,16 @@ class OfferScreen extends PureComponent {
   }
 
   render() {
-    const {history, openedHotel, reviews, getActiveOfferIdAction, email, offersNearby, authorizationStatus, postOfferFavoriteStatusAction} = this.props;
+    const {history, openedHotel, reviews, getActiveOfferIdAction, email, offersNearby, authorizationStatus, postOfferFavoriteStatusAction, active} = this.props;
     if (openedHotel === null) {
       return null;
     }
     const {id, isPremium, images, title, price, type, isFavorite, rating, bedrooms, maxGuestsNumber, goods, host, description} = openedHotel;
     const sortedReviews = reviews.sort((a, b) => (+new Date(b.date)) - (+new Date(a.date)));
     const actualOffers = offersNearby.slice(0, 3);
+    console.log([openedHotel]);
+    const offer = [openedHotel].find((item) => item.id === id);
+    console.log(offer);
     return (
       <div className="page">
         <header className="header">
@@ -104,7 +113,7 @@ class OfferScreen extends PureComponent {
                   <h1 className="property__name">
                     {name}
                   </h1>
-                  <button className={`property__bookmark-button ${isFavorite ? `place-card__bookmark-button--active` : ``} button`} type="button">
+                  <button className={`property__bookmark-button ${isFavorite ? `place-card__bookmark-button--active` : ``} button`} type="button" onClick={this.onClickFavoritesButton(id, [openedHotel])}>
                     <svg className="property__bookmark-icon" width="31" height="33">
                       <use xlinkHref="#icon-bookmark"></use>
                     </svg>
@@ -177,6 +186,7 @@ class OfferScreen extends PureComponent {
               <h2 className="near-places__title">Other places in the neighbourhood</h2>
               <div className="near-places__list places__list">
                 <PlacesList
+                  active={active}
                   offers={actualOffers}
                   onClickCard={(offerId) => {
                     return function () {
@@ -219,6 +229,8 @@ OfferScreen.propTypes = {
   openedHotel: PropTypes.any,
   authorizationStatus: applicationPropTypes.authorizationStatus,
   postOfferFavoriteStatusAction: applicationPropTypes.postOfferFavoriteStatusAction,
+  active: applicationPropTypes.active,
+  onClickFavoritesButton: applicationPropTypes.onClickFavoritesButton,
 };
 
 const mapStateToProps = ({DATA, STATE, USER}) => ({

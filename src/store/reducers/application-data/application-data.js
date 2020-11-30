@@ -40,7 +40,9 @@ const applicationData = (state = initialState, action) => {
 
     case ActionType.SET_FAVORITE_STATUS_TO_OFFER:
       return extend(state, {
-        offers: state.offers.map((offer) => offer.id === action.payload.id ? action.payload : offer),
+        offers: state.offers.map((offer) => offer.id === action.payload.id ?
+          extend(offer, {isFavorite: action.payload.isFavorite}) :
+          offer),
       });
 
   }

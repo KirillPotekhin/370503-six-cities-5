@@ -30,7 +30,6 @@ export const postOfferFavoriteStatus = (id, offers) => (dispatch, _getState, api
         dispatch(setFavoriteStatusToOffer(hotelInfo));
       });
   }
-  
 };
 
 export const checkAuth = () => (dispatch, _getState, api) => (

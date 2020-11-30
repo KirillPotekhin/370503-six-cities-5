@@ -24,7 +24,7 @@ class FavoritesOfferScreen extends PureComponent {
   }
 
   render() {
-    const {offers, history, getActiveOfferIdAction, email, offersFavorites, postOfferFavoriteStatusAction} = this.props;
+    const {offers, history, getActiveOfferIdAction, email, offersFavorites, postOfferFavoriteStatusAction, active} = this.props;
     // const favorites = offers.filter((it) => it.isFavorite);
     const favorites = offersFavorites;
     console.log(`favorites`, favorites);
@@ -74,6 +74,7 @@ class FavoritesOfferScreen extends PureComponent {
                       </div>
                       <div className="favorites__places">
                         <PlacesList
+                          active={active}
                           offers={filteredFavorites[i]}
                           classNameHeaderCard={`favorites`}
                           widthPreview={SizePreviewImage.WIDTH_PREVIEW_FOR_FAVORITES}
@@ -84,8 +85,8 @@ class FavoritesOfferScreen extends PureComponent {
                               history.push(`${APIRoute.HOTELS}/${offerId}`);
                             };
                           }}
-                          onClickFavoritesButton={(offerId) => {
-                            postOfferFavoriteStatusAction(offerId, offers);
+                          onClickFavoritesButton={(id) => {
+                            postOfferFavoriteStatusAction(id, offers);
                           }}
                           handlerMouseEnter={(evt) => {
                             evt.preventDefault();
@@ -120,13 +121,15 @@ FavoritesOfferScreen.propTypes = {
   fetchOffersFavoritesListAction: applicationPropTypes.fetchOffersFavoritesListAction,
   offersFavorites: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
   postOfferFavoriteStatusAction: applicationPropTypes.postOfferFavoriteStatusAction,
+  active: applicationPropTypes.active,
 };
 
 
-const mapStateToProps = ({DATA, USER}) => ({
+const mapStateToProps = ({DATA, STATE, USER}) => ({
   offers: DATA.offers,
   email: USER.email,
   offersFavorites: DATA.offersFavorites,
+  active: STATE.active,
 });
 
 const mapDispatchToProps = (dispatch) => ({
