@@ -1,11 +1,12 @@
 import {extend} from "../../../utils";
 import {ActionType} from "../../action";
-import reviews from "../../../mocks/reviews";
 
 const initialState = {
   offers: [],
   reviews: [],
   cities: [],
+  offersNearby: [],
+  offersFavorites: [],
 };
 
 const applicationData = (state = initialState, action) => {
@@ -21,10 +22,31 @@ const applicationData = (state = initialState, action) => {
         reviews: action.payload,
       });
 
-    case ActionType.GET_REVIEWS:
+    case ActionType.LOAD_OFFERS_NEARBY:
       return extend(state, {
-        reviews,
+        offersNearby: action.payload.offers,
       });
+
+    case ActionType.POST_REVIEW_SUCCES:
+      return extend(state, {
+        reviews: action.payload,
+      });
+
+    case ActionType.LOAD_OFFERS_FAVORITES:
+      return extend(state, {
+        offersFavorites: action.payload.offers,
+      });
+
+    case ActionType.SET_FAVORITE_STATUS_TO_OFFER:
+      return extend(state, {
+        offers: state.offers.map((offer) => offer.id === action.payload.id ?
+          extend(offer, {isFavorite: action.payload.isFavorite}) :
+          offer),
+        offersNearby: state.offersNearby.map((offer) => offer.id === action.payload.id ?
+          extend(offer, {isFavorite: action.payload.isFavorite}) :
+          offer),
+      });
+
   }
 
   return state;

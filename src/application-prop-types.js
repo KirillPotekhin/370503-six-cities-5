@@ -25,12 +25,16 @@ const applicationPropTypes = {
     isFavorite: PropTypes.bool.isRequired,
   }).isRequired,
   reviewItem: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    rating: PropTypes.string.isRequired,
-    avatar: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-    date: PropTypes.number.isRequired,
+    comment: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    rating: PropTypes.number.isRequired,
+    user: PropTypes.shape({
+      avatar: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+      isPro: PropTypes.bool.isRequired,
+      name: PropTypes.string.isRequired,
+    }).isRequired,
   }).isRequired,
   city: PropTypes.shape({
     location: PropTypes.shape({
@@ -66,6 +70,18 @@ const applicationPropTypes = {
   setSortingOptionDefaultAction: PropTypes.func.isRequired,
   email: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  fetchOffersNearbyAction: PropTypes.func.isRequired,
+  fetchOfferAction: PropTypes.func.isRequired,
+  authorizationStatus: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  postReviewLoaded: PropTypes.bool.isRequired,
+  postReviewLoading: PropTypes.bool.isRequired,
+  postOfferFavoriteStatusAction: PropTypes.func.isRequired,
+  fetchOffersFavoritesListAction: PropTypes.func.isRequired,
+  rating: PropTypes.string.isRequired,
+  onClickFavoritesButton: PropTypes.func,
+  errorMessage: PropTypes.string,
+  history: PropTypes.object.isRequired,
 };
 
 export default applicationPropTypes;

@@ -8,7 +8,7 @@ const ReviewsList = (props) => {
   return (
     <Fragment>
       {reviews.slice(0, 10).map((reviewItem, i) => (
-        <li key={`${reviewItem.text}${i}`} className="reviews__item">
+        <li key={`${reviewItem.comment}${i}`} className="reviews__item">
           <Review
             reviewItem={reviewItem}
           />

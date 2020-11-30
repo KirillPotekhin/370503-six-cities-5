@@ -11,6 +11,11 @@ class PlaceCard extends PureComponent {
     this.handlerMouseEnter = this.props.handlerMouseEnter.bind(this);
     this.handlerMouseLeave = this.props.handlerMouseLeave.bind(this);
     this.onClickCard = this.props.onClickCard.bind(this);
+    this.onClickFavoritesButton = this.onClickFavoritesButton.bind(this);
+  }
+
+  onClickFavoritesButton(active) {
+    return () => this.props.onClickFavoritesButton(active);
   }
 
   render() {
@@ -18,7 +23,7 @@ class PlaceCard extends PureComponent {
     const {id, title, price, type, rating, isFavorite, previewImage, isPremium} = offer;
     const pretext = isFavorite ? `In` : `To`;
     return (
-      <article id={id} className={`${classNameHeaderCard && `${classNameHeaderCard}__card`} ${!classNameHeaderCard && `cities__place-card`} place-card`} onClick={this.onClickCard(id)} onMouseEnter={this.handlerMouseEnter} onMouseLeave={this.handlerMouseLeave}>
+      <article id={id} className={`${classNameHeaderCard && `${classNameHeaderCard}__card`} ${!classNameHeaderCard && `cities__place-card`} place-card`} onMouseEnter={this.handlerMouseEnter} onMouseLeave={this.handlerMouseLeave}>
         {isPremium ?
           <div className="place-card__mark">
             <span>Premium</span>
@@ -35,7 +40,7 @@ class PlaceCard extends PureComponent {
               <b className="place-card__price-value">&euro;{price}</b>
               <span className="place-card__price-text">&#47;&nbsp;night</span>
             </div>
-            <button className={`place-card__bookmark-button ${isFavorite && `place-card__bookmark-button--active`} button`} type="button">
+            <button className={`place-card__bookmark-button ${isFavorite && `place-card__bookmark-button--active`} button`} type="button" onClick={this.onClickFavoritesButton(this.props.active)}>
               <svg className="place-card__bookmark-icon" width="18" height="19">
                 <use xlinkHref="#icon-bookmark"></use>
               </svg>
@@ -48,7 +53,7 @@ class PlaceCard extends PureComponent {
               <span className="visually-hidden">Rating</span>
             </div>
           </div>
-          <h2 className="place-card__name">
+          <h2 className="place-card__name" onClick={this.onClickCard(id)}>
             <a href="#">{title}</a>
           </h2>
           <p className="place-card__type">{type}</p>
@@ -74,6 +79,8 @@ PlaceCard.propTypes = {
   onClickCard: PropTypes.func.isRequired,
   handlerMouseEnter: PropTypes.func.isRequired,
   handlerMouseLeave: PropTypes.func.isRequired,
+  onClickFavoritesButton: applicationPropTypes.onClickFavoritesButton,
+  active: applicationPropTypes.active,
 };
 
 export default PlaceCard;

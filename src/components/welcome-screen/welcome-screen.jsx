@@ -11,7 +11,8 @@ import {getActiveOfferId, getOffers} from "../../store/action";
 import PlacesListEmpty from "../places-list-empty/places-list-empty";
 import {getSortingOption} from "../../store/selectors/offers/sorted-offers";
 import {setSortingOptionDefault} from "../../store/action";
-import {AppRoute} from "../../const";
+import {APIRoute} from "../../const";
+import {postOfferFavoriteStatus} from "../../store/api-actions";
 
 class WelcomeScreen extends PureComponent {
   constructor(props) {
@@ -26,7 +27,7 @@ class WelcomeScreen extends PureComponent {
   }
 
   render() {
-    const {history, offers, city, getActiveOfferIdAction, email} = this.props;
+    const {history, offers, city, getActiveOfferIdAction, email, postOfferFavoriteStatusAction, active} = this.props;
     return (
       <div className={`page page--gray page--main ${!offers.length && `page__main--index-empty`}`}>
         <header className="header">
@@ -70,11 +71,15 @@ class WelcomeScreen extends PureComponent {
                   />
                   <div className="cities__places-list places__list tabs__content">
                     <PlacesList
+                      active={active}
                       offers={offers}
                       onClickCard={(offerId) => {
                         return function () {
-                          history.push(`${AppRoute.HOTELS}${offerId}`);
+                          history.push(`${APIRoute.HOTELS}/${offerId}`);
                         };
+                      }}
+                      onClickFavoritesButton={(id) => {
+                        postOfferFavoriteStatusAction(id, offers);
                       }}
                       handlerMouseEnter={(evt) => {
                         evt.preventDefault();
@@ -109,6 +114,7 @@ WelcomeScreen.propTypes = {
   active: applicationPropTypes.active,
   setSortingOptionDefaultAction: applicationPropTypes.setSortingOptionDefaultAction,
   email: applicationPropTypes.email,
+  postOfferFavoriteStatusAction: applicationPropTypes.postOfferFavoriteStatusAction,
 };
 
 const mapStateToProps = ({DATA, STATE, USER}) => ({
@@ -127,6 +133,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setSortingOptionDefaultAction() {
     dispatch(setSortingOptionDefault());
+  },
+  postOfferFavoriteStatusAction(id, offers) {
+    dispatch(postOfferFavoriteStatus(id, offers));
   },
 });
 

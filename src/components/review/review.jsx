@@ -10,12 +10,12 @@ class Review extends PureComponent {
 
   render() {
     const {reviewItem} = this.props;
-    const {name, rating, avatar, text, date} = reviewItem;
+    const {rating, user, comment, date} = reviewItem;
     return (
       <Fragment>
         <div className="reviews__user user">
           <div className="reviews__avatar-wrapper user__avatar-wrapper">
-            <img className="reviews__avatar user__avatar" src={avatar} width="54" height="54" alt={`${name} avatar`} />
+            <img className="reviews__avatar user__avatar" src={user.avatar} width="54" height="54" alt={`${user.name} avatar`} />
           </div>
           <span className="reviews__user-name">
             {name}
@@ -29,9 +29,9 @@ class Review extends PureComponent {
             </div>
           </div>
           <p className="reviews__text">
-            {text}
+            {comment}
           </p>
-          <time className="reviews__time" dateTime="2019-04-24">{new Date(date).getDay()} {new Date(date).toLocaleString(`en-US`, {month: `long`})} {new Date(date).getFullYear()}</time>
+          <time className="reviews__time" dateTime="2019-04-24">{new Date(date).toLocaleString(`en-US`, {month: `long`})} {new Date(date).getFullYear()}</time>
         </div>
       </Fragment>
     );

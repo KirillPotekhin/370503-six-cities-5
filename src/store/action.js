@@ -7,12 +7,20 @@ export const ActionType = {
   GET_DEFAULT_CITY: `GET_DEFAULT_CITY`,
   LOAD_OFFERS: `LOAD_OFFERS`,
   LOAD_REVIEWS: `LOAD_REVIEWS`,
+  LOAD_OFFERS_NEARBY: `LOAD_OFFERS_NEARBY`,
   REQUIRED_AUTHORIZATION: `REQUIRED_AUTHORIZATION`,
   GET_ACTIVE_CITY: `GET_ACTIVE_CITY`,
   SET_SORTING_OPTION: `SET_SORTING_OPTION`,
   SET_SORTING_OPTION_DEFAULT: `SET_SORTING_OPTION_DEFAULT`,
   REDIRECT_TO_ROUTE: `REDIRECT_TO_ROUTE`,
   GET_USER_EMAIL: `GET_USER_EMAIL`,
+  GET_OPENED_HOTEL: `GET_OPENED_HOTEL`,
+  POST_REVIEW_START: `POST_REVIEW_START`,
+  POST_REVIEW_SUCCES: `POST_REVIEW_SUCCES`,
+  POST_REVIEW_FAILED: `POST_REVIEW_FAILED`,
+  LOAD_OFFERS_FAVORITES: `LOAD_OFFERS_FAVORITES`,
+  SET_FAVORITE_STATUS_TO_OFFER: `SET_FAVORITE_STATUS_TO_OFFER`,
+  SHOW_ERROR_MESSAGES: `SHOW_ERROR_MESSAGES`,
 };
 
 export const cityChange = (string) => ({
@@ -56,6 +64,16 @@ export const loadReviews = (reviews) => ({
   payload: reviews,
 });
 
+export const loadOffersNearby = (offers) => ({
+  type: ActionType.LOAD_OFFERS_NEARBY,
+  payload: offers,
+});
+
+export const loadOffersFavorites = (offers) => ({
+  type: ActionType.LOAD_OFFERS_FAVORITES,
+  payload: offers,
+});
+
 export const requireAuthorization = (status) => ({
   type: ActionType.REQUIRED_AUTHORIZATION,
   payload: status,
@@ -80,7 +98,35 @@ export const getUserEmail = (data) => ({
   payload: data,
 });
 
-export const adapterData = (data) => {
+export const getOpenedHotel = (offer) => ({
+  type: ActionType.GET_OPENED_HOTEL,
+  payload: offer,
+});
+
+export const postReviewStart = () => ({
+  type: ActionType.POST_REVIEW_START,
+});
+
+export const postReviewSucces = (reviews) => ({
+  type: ActionType.POST_REVIEW_SUCCES,
+  payload: reviews,
+});
+
+export const postReviewFailed = () => ({
+  type: ActionType.POST_REVIEW_FAILED,
+});
+
+export const setFavoriteStatusToOffer = (offer) => ({
+  type: ActionType.SET_FAVORITE_STATUS_TO_OFFER,
+  payload: offer,
+});
+
+export const showErrorMessages = (message) => ({
+  type: ActionType.SHOW_ERROR_MESSAGES,
+  payload: message,
+});
+
+export const adapterDataHotels = (data) => {
   const offers = [];
   let offer = {};
   const citiesList = new Set();
@@ -125,4 +171,26 @@ export const adapterData = (data) => {
   const information = {offers, cities};
 
   return information;
+};
+
+export const adapterDataReviews = (data) => {
+  const reviews = [];
+  let review = {};
+
+  for (let i = 0; i < data.length; i++) {
+    review.comment = data[i].comment;
+    review.date = data[i].date;
+    review.id = data[i].id;
+    review.rating = data[i].rating;
+    review.user = {};
+    review.user.avatar = data[i].user.avatar_url;
+    review.user.id = data[i].user.id;
+    review.user.isPro = data[i].user.is_pro;
+    review.user.name = data[i].user.name;
+
+    reviews.push(review);
+    review = {};
+  }
+
+  return reviews;
 };

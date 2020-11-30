@@ -13,6 +13,10 @@ const initialState = {
   },
   active: ``,
   sortingOption: SortingOption.POPULAR,
+  openedHotel: null,
+  postReviewLoading: false,
+  postReviewLoaded: false,
+  errorMessage: ``,
 };
 
 const applicationState = (state = initialState, action) => {
@@ -46,6 +50,41 @@ const applicationState = (state = initialState, action) => {
       return extend(state, {
         sortingOption: SortingOption.POPULAR,
       });
+
+    case ActionType.GET_OPENED_HOTEL:
+      return extend(state, {
+        openedHotel: action.payload.offers[0],
+      });
+
+    case ActionType.POST_REVIEW_START:
+      return extend(state, {
+        postReviewLoading: true,
+        postReviewLoaded: false,
+      });
+
+    case ActionType.POST_REVIEW_SUCCES:
+      return extend(state, {
+        postReviewLoading: false,
+        postReviewLoaded: true,
+        errorMessage: ``,
+      });
+
+    case ActionType.POST_REVIEW_FAILED:
+      return extend(state, {
+        postReviewLoading: false,
+      });
+
+    case ActionType.SHOW_ERROR_MESSAGES:
+      return extend(state, {
+        errorMessage: action.payload,
+      });
+
+    case ActionType.SET_FAVORITE_STATUS_TO_OFFER:
+      if (state.openedHotel && state.openedHotel.id === action.payload.id) {
+        return extend(state, {
+          openedHotel: extend(state.openedHotel, {isFavorite: action.payload.isFavorite})
+        });
+      }
   }
 
   return state;

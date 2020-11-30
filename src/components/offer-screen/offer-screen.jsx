@@ -8,42 +8,62 @@ import applicationPropTypes from "../../application-prop-types";
 import getStarValue from "../../utils";
 import Map from "../map/map";
 import {connect} from "react-redux";
-import {getActiveOfferId, getReviews, cityChange} from "../../store/action";
-import {AppRoute} from "../../const";
+import {getActiveOfferId, cityChange} from "../../store/action";
+import {APIRoute, AuthorizationStatus} from "../../const";
+import {fetchReviewList, fetchOffersNearby, fetchOffer, postOfferFavoriteStatus} from "../../store/api-actions";
 
 class OfferScreen extends PureComponent {
   constructor(props) {
     super(props);
+
+    this.onClickFavoritesButton = this.onClickFavoritesButton.bind(this);
   }
 
   getActualOffer() {
-    const path = this.props.location.pathname.split(`/`);
+    const path = this.getPath();
     const offer = this.props.offers.find((it) => it.id === +path[path.length - 1]);
     return offer;
   }
 
+  getPath() {
+    const path = this.props.location.pathname.split(`/`);
+    return path[path.length - 1];
+  }
+
+  onClickFavoritesButton(id, offer) {
+    return () => this.props.postOfferFavoriteStatusAction(id, offer);
+  }
+
   componentDidMount() {
-    this.props.getReviewsAction();
+    const path = this.getPath();
+    this.props.getReviewsAction(path);
+    this.props.fetchOffersNearbyAction(path);
+    this.props.fetchOfferAction(path);
   }
 
   componentDidUpdate(prevProps) {
+    const path = this.getPath();
+
     if (prevProps.offers !== this.props.offers || this.props.city.name === ``) {
       const offer = this.getActualOffer();
       const actualCity = this.props.cities.find((it) => it.name === offer.city.name);
       this.props.cityChangeAction(actualCity);
     }
+    if (prevProps.openedHotel && prevProps.openedHotel.id !== +path) {
+      this.props.getReviewsAction(path);
+      this.props.fetchOffersNearbyAction(path);
+      this.props.fetchOfferAction(path);
+    }
   }
 
   render() {
-    const {history, offers, reviews, getActiveOfferIdAction, email} = this.props;
-    const offer = this.getActualOffer();
-    if (!offer) {
+    const {history, openedHotel, reviews, getActiveOfferIdAction, email, offersNearby, authorizationStatus, postOfferFavoriteStatusAction, active, errorMessage} = this.props;
+    if (openedHotel === null) {
       return null;
     }
-    const {id, isPremium, images, title, price, type, isFavorite, rating, bedrooms, maxGuestsNumber, goods, host, description, city} = offer;
-    const actualReviews = reviews.filter((review) => review.id === id).sort((a, b) => b.date - a.date);
-    const actualOffers = offers.filter((it) => it.city.name === city.name && it.id !== id).slice(0, 3);
-
+    const {id, isPremium, images, title, price, type, isFavorite, rating, bedrooms, maxGuestsNumber, goods, host, description} = openedHotel;
+    const sortedReviews = reviews.sort((a, b) => (+new Date(b.date)) - (+new Date(a.date)));
+    const actualOffers = offersNearby.slice(0, 3);
     return (
       <div className="page">
         <header className="header">
@@ -90,8 +110,8 @@ class OfferScreen extends PureComponent {
                   <h1 className="property__name">
                     {name}
                   </h1>
-                  <button className={`property__bookmark-button ${isFavorite ? `place-card__bookmark-button--active` : ``} button`} type="button">
-                    <svg className="property__bookmark-icon" width="31" height="33">
+                  <button className={`property__bookmark-button button ${isFavorite ? `property__bookmark-button--active` : ``}`} type="button" onClick={this.onClickFavoritesButton(id, [openedHotel])}>
+                    <svg className="place-card__bookmark-icon" width="31" height="33">
                       <use xlinkHref="#icon-bookmark"></use>
                     </svg>
                     <span className="visually-hidden">To bookmarks</span>
@@ -146,16 +166,16 @@ class OfferScreen extends PureComponent {
                   </div>
                 </div>
                 <section className="property__reviews reviews">
-                  <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{actualReviews.length}</span></h2>
+                  <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{sortedReviews.length}</span></h2>
                   <ul className="reviews__list">
-                    <ReviewsList reviews={actualReviews} />
+                    <ReviewsList reviews={sortedReviews} />
                   </ul>
-                  <FeedbackForm />
+                  {authorizationStatus === AuthorizationStatus.AUTH && <FeedbackForm errorMessage={errorMessage} id={id}/>}
                 </section>
               </div>
             </div>
             <section className="property__map map">
-              <Map offers={actualOffers} actualOffer={offer}/>
+              <Map offers={actualOffers} actualOffer={openedHotel}/>
             </section>
           </section>
           <div className="container">
@@ -163,11 +183,15 @@ class OfferScreen extends PureComponent {
               <h2 className="near-places__title">Other places in the neighbourhood</h2>
               <div className="near-places__list places__list">
                 <PlacesList
+                  active={active}
                   offers={actualOffers}
                   onClickCard={(offerId) => {
                     return function () {
-                      history.push(`${AppRoute.HOTELS}${offerId}`);
+                      history.push(`${APIRoute.HOTELS}/${offerId}`);
                     };
+                  }}
+                  onClickFavoritesButton={(idNearby) => {
+                    postOfferFavoriteStatusAction(idNearby, actualOffers);
                   }}
                   handlerMouseEnter={(evt) => {
                     evt.preventDefault();
@@ -192,10 +216,22 @@ OfferScreen.propTypes = {
   reviews: PropTypes.arrayOf(applicationPropTypes.reviewItem).isRequired,
   getActiveOfferIdAction: applicationPropTypes.getActiveOfferIdAction,
   getReviewsAction: applicationPropTypes.getReviewsAction,
-  cities: applicationPropTypes.cities,
+  cities: PropTypes.arrayOf(applicationPropTypes.city),
   cityChangeAction: applicationPropTypes.cityChangeAction,
   city: applicationPropTypes.city,
   email: applicationPropTypes.email,
+  fetchOffersNearbyAction: applicationPropTypes.fetchOffersNearbyAction,
+  offersNearby: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
+  fetchOfferAction: applicationPropTypes.fetchOfferAction,
+  openedHotel: PropTypes.oneOfType([
+    applicationPropTypes.offer,
+    PropTypes.oneOf([null]),
+  ]),
+  authorizationStatus: applicationPropTypes.authorizationStatus,
+  postOfferFavoriteStatusAction: applicationPropTypes.postOfferFavoriteStatusAction,
+  active: applicationPropTypes.active,
+  onClickFavoritesButton: applicationPropTypes.onClickFavoritesButton,
+  errorMessage: applicationPropTypes.errorMessage,
 };
 
 const mapStateToProps = ({DATA, STATE, USER}) => ({
@@ -205,17 +241,31 @@ const mapStateToProps = ({DATA, STATE, USER}) => ({
   city: STATE.city,
   active: STATE.active,
   email: USER.email,
+  offersNearby: DATA.offersNearby,
+  openedHotel: STATE.openedHotel,
+  authorizationStatus: USER.authorizationStatus,
+  postReviewLoaded: STATE.postReviewLoaded,
+  errorMessage: STATE.errorMessage,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getActiveOfferIdAction(value) {
     dispatch(getActiveOfferId(value));
   },
-  getReviewsAction() {
-    dispatch(getReviews());
+  getReviewsAction(id) {
+    dispatch(fetchReviewList(id));
   },
   cityChangeAction(city) {
     dispatch(cityChange(city));
+  },
+  fetchOffersNearbyAction(id) {
+    dispatch(fetchOffersNearby(id));
+  },
+  fetchOfferAction(id) {
+    dispatch(fetchOffer(id));
+  },
+  postOfferFavoriteStatusAction(id, offers) {
+    dispatch(postOfferFavoriteStatus(id, offers));
   },
 });
 
