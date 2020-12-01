@@ -1,7 +1,7 @@
 import React from "react";
 import RatingList from "../rating-list/rating-list";
 import applicationPropTypes from "../../application-prop-types";
-import withData from "../../hocs/with-data";
+import withData from "../../hocs/with-data/with-data";
 
 const FeedbackForm = (props) => {
   const {onSubmitReview, onRatingChange, postReviewLoading, review, errorMessage} = props;

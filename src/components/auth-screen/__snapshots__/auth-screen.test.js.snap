@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render AuthScreen connected to store component Should AuthScreen connected to store render correctly 1`] = `null`;
+
+exports[`Should AuthScreen render correctly 1`] = `null`;

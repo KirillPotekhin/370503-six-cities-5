@@ -1,7 +1,7 @@
 import React from "react";
 import {SortingOption} from "../../const";
 import applicationPropTypes from "../../application-prop-types";
-import withActiveFlag from "../../hocs/with-active-flag";
+import withActiveFlag from "../../hocs/with-active-flag/with-active-flag";
 import {connect} from "react-redux";
 
 const Sorting = (props) => {

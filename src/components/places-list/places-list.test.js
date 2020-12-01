@@ -1,4 +1,10 @@
-export default [
+import React from "react";
+import renderer from "react-test-renderer";
+import PlacesList from "./places-list";
+
+const noop = () => {};
+
+const offers = [
   {
     id: 1,
     city: {
@@ -185,3 +191,20 @@ export default [
     isFavorite: true,
   },
 ];
+
+it(`Should PlacesList render correctly`, () => {
+  const tree = renderer
+    .create(<PlacesList
+      key={`random`}
+      offers={offers}
+      offer={offers[0]}
+      active={1}
+      onClickCard={noop}
+      onClickFavoritesButton={noop}
+      handlerMouseEnter={noop}
+      handlerMouseLeave={noop}
+    />)
+    .toJSON();
+
+  expect(tree).toMatchSnapshot();
+});

@@ -1,7 +1,7 @@
 import React, {PureComponent} from "react";
 import {connect} from "react-redux";
-import {postReview} from "../store/api-actions";
-import applicationPropTypes from "../application-prop-types";
+import {postReview} from "../../store/api-actions";
+import applicationPropTypes from "../../application-prop-types";
 
 const withData = (Component) => {
   class WithData extends PureComponent {
