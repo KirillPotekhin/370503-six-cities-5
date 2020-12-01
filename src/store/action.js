@@ -1,15 +1,12 @@
 export const ActionType = {
   CITY_CHANGE: `CITY CHANGE`,
-  GET_OFFERS: `GET_OFFERS`,
   GET_CITIES: `GET_CITIES`,
   GET_ACTIVE_OFFER_ID: `GET_ACTIVE_OFFER_ID`,
-  GET_REVIEWS: `GET_REVIEWS`,
   GET_DEFAULT_CITY: `GET_DEFAULT_CITY`,
   LOAD_OFFERS: `LOAD_OFFERS`,
   LOAD_REVIEWS: `LOAD_REVIEWS`,
   LOAD_OFFERS_NEARBY: `LOAD_OFFERS_NEARBY`,
   REQUIRED_AUTHORIZATION: `REQUIRED_AUTHORIZATION`,
-  GET_ACTIVE_CITY: `GET_ACTIVE_CITY`,
   SET_SORTING_OPTION: `SET_SORTING_OPTION`,
   SET_SORTING_OPTION_DEFAULT: `SET_SORTING_OPTION_DEFAULT`,
   REDIRECT_TO_ROUTE: `REDIRECT_TO_ROUTE`,
@@ -23,17 +20,9 @@ export const ActionType = {
   SHOW_ERROR_MESSAGES: `SHOW_ERROR_MESSAGES`,
 };
 
-export const cityChange = (string) => ({
+export const cityChange = (value) => ({
   type: ActionType.CITY_CHANGE,
-  payload: string,
-});
-
-export const getOffers = () => ({
-  type: ActionType.GET_OFFERS,
-});
-
-export const getCities = () => ({
-  type: ActionType.GET_CITIES,
+  payload: value,
 });
 
 export const getActiveOfferId = (string) => ({
@@ -41,17 +30,9 @@ export const getActiveOfferId = (string) => ({
   payload: string,
 });
 
-export const getReviews = () => ({
-  type: ActionType.GET_REVIEWS,
-});
-
 export const getDefaultCity = (city) => ({
   type: ActionType.GET_DEFAULT_CITY,
   payload: city,
-});
-
-export const getActiveCity = () => ({
-  type: ActionType.GET_ACTIVE_CITY,
 });
 
 export const loadOffers = (offers) => ({
@@ -98,9 +79,9 @@ export const getUserEmail = (data) => ({
   payload: data,
 });
 
-export const getOpenedHotel = (offer) => ({
+export const getOpenedHotel = (data) => ({
   type: ActionType.GET_OPENED_HOTEL,
-  payload: offer,
+  payload: data,
 });
 
 export const postReviewStart = () => ({

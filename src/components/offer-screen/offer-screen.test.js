@@ -4,7 +4,7 @@ import {Switch, Router as BrowserRouter} from "react-router-dom";
 import renderer from "react-test-renderer";
 import configureStore from "redux-mock-store";
 import OfferScreen, {OfferScreen as OfferScreenWithoutStore} from "./offer-screen";
-import storeMock, {storeEmptyMock} from "../../__mocks__/storeMock";
+import storeMock from "../../__mocks__/storeMock";
 import browserHistory from "../../browser-history";
 
 const noop = () => {};
@@ -32,7 +32,7 @@ it(`Should OfferScreen render correctly`, () => {
                 openedHotel={storeMock.STATE.openedHotel}
                 authorizationStatus={storeMock.USER.authorizationStatus}
                 postOfferFavoriteStatusAction={noop}
-                active={storeMock.STATE.active}
+                active={``}
                 onClickFavoritesButton={noop}
                 errorMessage={storeMock.STATE.errorMessage}
 
