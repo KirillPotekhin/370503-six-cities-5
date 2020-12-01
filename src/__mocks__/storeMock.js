@@ -10,9 +10,9 @@ const storeMock = {
       },
       name: `Amsterdam`,
     },
-    active: ``,
+    active: 1,
     sortingOption: SortingOption.POPULAR,
-    openedOffer: {
+    openedHotel: {
       id: 1,
       city: {
         location: {

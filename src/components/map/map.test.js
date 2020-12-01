@@ -3,15 +3,15 @@ import renderer from "react-test-renderer";
 import {Provider} from "react-redux";
 import configureStore from "redux-mock-store";
 import Map, {Map as MapWithoutStore} from "./map";
-import storeMock from "../../__mocks__/storeMock";
+import {storeEmptyMock} from "../../__mocks__/storeMock";
 
 it(`Should Map render correctly`, () => {
   const tree = renderer
     .create(
         <MapWithoutStore
-          city={storeMock.STATE.city}
-          offers={storeMock.DATA.offers}
-          active={storeMock.STATE.active}
+          city={storeEmptyMock.STATE.city}
+          offers={storeEmptyMock.DATA.offers}
+          active={storeEmptyMock.STATE.active}
         />
     )
     .toJSON();
@@ -25,14 +25,14 @@ describe(`Render Map connected to store component`, () => {
   let MapComponent = null;
 
   beforeEach(() => {
-    store = mockStore(storeMock);
+    store = mockStore(storeEmptyMock);
 
     store.dispatch = jest.fn();
 
     MapComponent = renderer.create(
         <Provider store={store}>
           <Map
-            offers={storeMock.DATA.offers}
+            offers={storeEmptyMock.DATA.offers}
           />
         </Provider>
     );
