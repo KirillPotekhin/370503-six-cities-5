@@ -77,12 +77,4 @@ describe(`Render AuthScreen connected to store component`, () => {
     expect(AuthScreenComponent.toJSON()).toMatchSnapshot();
   });
 
-  it(`Should call dispatch when form Submit`, () => {
-    renderer.act(() => {
-      AuthScreenComponent.root.findByType(`form`).props.onSubmit();
-    });
-
-    expect(store.dispatch).toHaveBeenCalledTimes(1);
-  });
-
 });

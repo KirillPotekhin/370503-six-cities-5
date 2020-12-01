@@ -2,6 +2,7 @@ import React from "react";
 import {Provider} from "react-redux";
 import renderer from "react-test-renderer";
 import configureStore from "redux-mock-store";
+import {AuthorizationStatus} from "../../const";
 import App from "./app";
 
 const mockStore = configureStore([]);
@@ -19,6 +20,17 @@ beforeEach(() => {
         },
         name: `Amsterdam`,
       },
+    },
+    DATA: {
+      offers: [],
+      reviews: [],
+      cities: [],
+      offersNearby: [],
+      offersFavorites: [],
+    },
+    USER: {
+      authorizationStatus: AuthorizationStatus.NO_AUTH,
+      email: ``,
     }
   });
 
@@ -34,17 +46,3 @@ beforeEach(() => {
 it(`Should App connected to store render correctly`, () => {
   expect(AppComponent.toJSON()).toMatchSnapshot();
 });
-
-// describe(`Render App`, () => {
-//   it(`Render App`, () => {
-//     const tree = renderer
-//       .create(
-//           <Provider store={store}>
-//             <App />
-//           </Provider>
-//       )
-//       .toJSON();
-
-//     expect(tree).toMatchSnapshot();
-//   });
-// });
