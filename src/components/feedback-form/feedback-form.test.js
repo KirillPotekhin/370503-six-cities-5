@@ -21,11 +21,12 @@ beforeEach(() => {
         <FeedbackForm
           onSubmitReview={noop}
           onRatingChange={noop}
+          onTextareaChange={noop}
           postReviewLoading={false}
           postReviewLoaded={false}
+          rating={0}
           review={``}
           errorMessage={``}
-          onTextareaChange={noop}
           id={1}
         />
       </Provider>
