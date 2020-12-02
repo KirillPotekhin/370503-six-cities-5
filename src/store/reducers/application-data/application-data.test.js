@@ -5,6 +5,7 @@ import {applicationData} from "./application-data";
 import {ActionType, adapterDataHotels} from "../../action";
 import {APIRoute} from "../../../const";
 import {fetchOffersList} from "../../api-actions";
+import {extend} from "../../../utils";
 
 const api = createAPI(() => {});
 
@@ -96,6 +97,112 @@ const reviews = [
     }
   }
 ];
+
+const hotel = {
+  id: 1,
+  city: {
+    location: {
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
+      zoom: 12,
+    },
+    name: `Amsterdam`,
+  },
+  location: {
+    latitude: 52.37554,
+    longitude: 4.9019759999999994,
+    zoom: 12,
+  },
+  isPremium: true,
+  previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
+  images: [
+    `http://placehold.it/260x200/33bee5&text=view1`,
+    `http://placehold.it/260x200/33bee5&text=view2`,
+    `http://placehold.it/260x200/33bee5&text=view3`,
+    `http://placehold.it/260x200/33bee5&text=view4`,
+    `http://placehold.it/260x200/33bee5&text=view5`,
+    `http://placehold.it/260x200/33bee5&text=view6`,
+  ],
+  title: `Beautiful & luxurious studio at great location`,
+  rating: 5,
+  type: `Apartment`,
+  bedrooms: 3,
+  maxGuestsNumber: 4,
+  price: 195,
+  goods: [
+    `Wi-Fi`,
+    `Washing machine`,
+    `Towels`,
+    `Heating`,
+    `Coffee machine`,
+    `Baby seat`,
+    `Kitchen`,
+    `Dishwasher`,
+    `Cabel TV`,
+    `Fridge`,
+  ],
+  host: {
+    avatar: `https://api.adorable.io/avatars/120`,
+    name: `Angelina`,
+    isPro: false,
+    id: 25
+  },
+  description: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.`,
+  isFavorite: true,
+};
+
+const hotelFavotiteStatusAnother = {
+  id: 1,
+  city: {
+    location: {
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
+      zoom: 12,
+    },
+    name: `Amsterdam`,
+  },
+  location: {
+    latitude: 52.37554,
+    longitude: 4.9019759999999994,
+    zoom: 12,
+  },
+  isPremium: true,
+  previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
+  images: [
+    `http://placehold.it/260x200/33bee5&text=view1`,
+    `http://placehold.it/260x200/33bee5&text=view2`,
+    `http://placehold.it/260x200/33bee5&text=view3`,
+    `http://placehold.it/260x200/33bee5&text=view4`,
+    `http://placehold.it/260x200/33bee5&text=view5`,
+    `http://placehold.it/260x200/33bee5&text=view6`,
+  ],
+  title: `Beautiful & luxurious studio at great location`,
+  rating: 5,
+  type: `Apartment`,
+  bedrooms: 3,
+  maxGuestsNumber: 4,
+  price: 195,
+  goods: [
+    `Wi-Fi`,
+    `Washing machine`,
+    `Towels`,
+    `Heating`,
+    `Coffee machine`,
+    `Baby seat`,
+    `Kitchen`,
+    `Dishwasher`,
+    `Cabel TV`,
+    `Fridge`,
+  ],
+  host: {
+    avatar: `https://api.adorable.io/avatars/120`,
+    name: `Angelina`,
+    isPro: false,
+    id: 25
+  },
+  description: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.`,
+  isFavorite: false,
+};
 
 const hotelResponseServer = {
   "bedrooms": 3,
@@ -222,6 +329,51 @@ it(`Reducer should update offersFavorites by load offersFavorites`, () => {
     cities: [],
     offersNearby: [],
     offersFavorites: information.offers,
+  });
+});
+
+it(`Reducer should update reviews by postReviewSucces`, () => {
+  expect(applicationData({
+    offers: [],
+    reviews: [],
+    cities: [],
+    offersNearby: [],
+    offersFavorites: [],
+  }, {
+    type: ActionType.POST_REVIEW_SUCCES,
+    payload: reviews,
+  })).toEqual({
+    offers: [],
+    reviews,
+    cities: [],
+    offersNearby: [],
+    offersFavorites: [],
+  });
+});
+
+it(`Reducer should update offer by setFavoriteStatusToOffer`, () => {
+  expect(applicationData({
+    offers: [],
+    reviews: [],
+    cities: [],
+    offersNearby: [],
+    offersFavorites: [],
+  }, {
+    type: ActionType.SET_FAVORITE_STATUS_TO_OFFER,
+    payload: {
+      offers: [hotel].map((offer) => offer.id === hotelFavotiteStatusAnother.id ?
+        extend(offer, {isFavorite: hotelFavotiteStatusAnother.isFavorite}) :
+        offer),
+      offersNearby: [hotel].map((offer) => offer.id === hotelFavotiteStatusAnother.id ?
+        extend(offer, {isFavorite: hotelFavotiteStatusAnother.isFavorite}) :
+        offer),
+    },
+  })).toEqual({
+    offers: [hotelFavotiteStatusAnother],
+    reviews: [],
+    cities: [],
+    offersNearby: [hotelFavotiteStatusAnother],
+    offersFavorites: [],
   });
 });
 
