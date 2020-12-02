@@ -1,7 +1,12 @@
 
 import {user} from "./user";
 import {ActionType} from "../../action";
-import {AuthorizationStatus} from "../../../const";
+import {AuthorizationStatus, APIRoute, AppRoute} from "../../../const";
+import MockAdapter from "axios-mock-adapter";
+import {createAPI} from "../../../services/api";
+import {checkAuth, login} from "../../api-actions";
+
+const api = createAPI(() => {});
 
 it(`Reducer should requireAuthorization`, () => {
   expect(user({
@@ -33,4 +38,51 @@ it(`Reducer should getUserEmail`, () => {
     authorizationStatus: AuthorizationStatus.NO_AUTH,
     email: `Oliver.conner@gmail.com`,
   });
+});
+
+describe(`Async operation work correctly`, () => {
+  it(`Should make a correct API call to /login`, () => {
+    const apiMock = new MockAdapter(api);
+    const dispatch = jest.fn();
+    const questionLoader = checkAuth();
+
+    apiMock
+      .onGet(APIRoute.LOGIN)
+      .reply(200, [{fake: true}]);
+
+    return questionLoader(dispatch, () => {}, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.REQUIRED_AUTHORIZATION,
+          payload: AuthorizationStatus.AUTH,
+        });
+      });
+  });
+
+  it(`Should make a correct API call to /login`, () => {
+    const apiMock = new MockAdapter(api);
+    const dispatch = jest.fn();
+    const fakeUser = {login: `test@test.ru`, password: `123456`};
+    const offersLoader = login(fakeUser);
+
+    apiMock
+      .onPost(APIRoute.LOGIN)
+      .reply(200, [{fake: true}]);
+
+    return offersLoader(dispatch, () => {}, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(3);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.REQUIRED_AUTHORIZATION,
+          payload: AuthorizationStatus.AUTH,
+        });
+        expect(dispatch).toHaveBeenNthCalledWith(2, {
+          type: ActionType.REDIRECT_TO_ROUTE,
+          payload: AppRoute.ROOT,
+        });
+
+      });
+  });
+
 });

@@ -3,7 +3,7 @@ import {configure, shallow} from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import {ReviewRatingTitle} from "../../const";
 
-import {RatingItem} from "./rating-item";
+import RatingItem from "./rating-item";
 
 
 configure({adapter: new Adapter()});
@@ -11,8 +11,6 @@ configure({adapter: new Adapter()});
 const mockEvent = {
   preventDefault() {}
 };
-
-const MockComponent = () => <div />;
 
 it(`Should rating item change`, () => {
   const onRatingChange = jest.fn();
@@ -23,7 +21,7 @@ it(`Should rating item change`, () => {
         ratingTitle={ReviewRatingTitle.PERFECT}
         value={5}
         onRatingChange={onRatingChange}
-        rating={5}
+        rating={`5`}
       />
   );
 
