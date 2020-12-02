@@ -44,13 +44,13 @@ describe(`Async operation work correctly`, () => {
   it(`Should make a correct API call to /login`, () => {
     const apiMock = new MockAdapter(api);
     const dispatch = jest.fn();
-    const questionLoader = checkAuth();
+    const offersLoader = checkAuth();
 
     apiMock
       .onGet(APIRoute.LOGIN)
       .reply(200, [{fake: true}]);
 
-    return questionLoader(dispatch, () => {}, api)
+    return offersLoader(dispatch, () => {}, api)
       .then(() => {
         expect(dispatch).toHaveBeenCalledTimes(1);
         expect(dispatch).toHaveBeenNthCalledWith(1, {

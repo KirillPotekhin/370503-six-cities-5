@@ -93,6 +93,10 @@ const applicationPropTypes = {
   onClickFavoritesButton: PropTypes.func,
   errorMessage: PropTypes.string,
   history: PropTypes.object.isRequired,
+  login: PropTypes.string,
+  password: PropTypes.string,
+  onSubmitForm: PropTypes.func,
+  onChangeField: PropTypes.func,
 };
 
 export default applicationPropTypes;

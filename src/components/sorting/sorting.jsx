@@ -38,5 +38,6 @@ const mapStateToProps = ({STATE}) => ({
 const SortingComponent = withActiveFlag(Sorting);
 
 export {SortingComponent};
+export {Sorting};
 
 export default connect(mapStateToProps, null)(withActiveFlag(Sorting));

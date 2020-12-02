@@ -1,13 +1,11 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import {Provider} from "react-redux";
-import configureStore from "redux-mock-store";
-import AuthScreen, {AuthScreen as AuthScreenWithoutStore} from "./auth-screen";
+import {AuthScreen} from "./auth-screen";
 import {Route, Switch, Router as BrowserRouter} from "react-router-dom";
 import {AppRoute} from "../../const";
 import browserHistory from "../../browser-history";
 
-const noop = () => {};
+const noop = () => () => {};
 
 const city = {
   location: {
@@ -24,9 +22,12 @@ it(`Should AuthScreen render correctly`, () => {
         <BrowserRouter history={browserHistory}>
           <Switch>
             <Route exact path={AppRoute.LOGIN}>
-              <AuthScreenWithoutStore
+              <AuthScreen
                 city={city}
-                onSubmit={noop}
+                login={`hi@MediaList.ru`}
+                password={`sdfsdfsf`}
+                onSubmitForm={noop}
+                onChangeField={noop}
               />
             </Route>
           </Switch>
@@ -35,46 +36,4 @@ it(`Should AuthScreen render correctly`, () => {
     .toJSON();
 
   expect(tree).toMatchSnapshot();
-});
-
-describe(`Render AuthScreen connected to store component`, () => {
-  const mockStore = configureStore([]);
-  let store = null;
-  let AuthScreenComponent = null;
-
-  beforeEach(() => {
-    store = mockStore({
-      STATE: {
-        city: {
-          location: {
-            latitude: 52.3909553943508,
-            longitude: 4.85309666406198,
-            zoom: 12,
-          },
-          name: `Amsterdam`,
-        },
-      }
-    });
-
-    store.dispatch = jest.fn();
-
-    AuthScreenComponent = renderer.create(
-        <Provider store={store}>
-          <BrowserRouter history={browserHistory}>
-            <Switch>
-              <Route exact path={AppRoute.LOGIN}>
-                <AuthScreen
-                  onSubmit={noop}
-                />
-              </Route>
-            </Switch>
-          </BrowserRouter>
-        </Provider>
-    );
-  });
-
-  it(`Should AuthScreen connected to store render correctly`, () => {
-    expect(AuthScreenComponent.toJSON()).toMatchSnapshot();
-  });
-
 });

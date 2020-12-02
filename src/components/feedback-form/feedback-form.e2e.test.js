@@ -29,10 +29,11 @@ it(`Should work in form`, () => {
       />
   );
 
+
   const form = wrapper.find(`.form`);
   form.simulate(`submit`, mockEvent);
   expect(handlerSubmitReview).toHaveBeenCalledTimes(1);
-  const textarea = wrapper.find(`.form__textarea`);
+  const textarea = wrapper.find(`.reviews__textarea`);
   textarea.simulate(`change`, mockEvent);
   expect(handlerTextareaChange).toHaveBeenCalledTimes(1);
 });

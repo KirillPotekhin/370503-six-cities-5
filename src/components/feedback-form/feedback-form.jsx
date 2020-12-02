@@ -35,4 +35,6 @@ FeedbackForm.propTypes = {
   errorMessage: applicationPropTypes.errorMessage,
 };
 
+export {FeedbackForm};
+
 export default withData(FeedbackForm);

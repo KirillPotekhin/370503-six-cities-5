@@ -10,16 +10,29 @@ configure({adapter: new Adapter()});
 
 it(`Should auth form send`, () => {
   const handlerFormSubmit = jest.fn();
+  const handlerChangeField = jest.fn();
 
   const wrapper = shallow(
       <AuthScreen
-        onSubmit={handlerFormSubmit}
+        onSubmitForm={handlerFormSubmit}
+        onChangeField={handlerChangeField}
         city={storeMock.STATE.city}
-      />
+        login={`hi@mail.ru`}
+        password={`dssdfsfd`}
+      />, {
+        createNodeMock: () => {
+          return document.createElement(`div`);
+        }
+      }
   );
 
   const placeCardTitle = wrapper.find(`.form`);
   placeCardTitle.simulate(`submit`, {
+    preventDefault: handlerFormSubmit,
+  });
+  expect(handlerFormSubmit).toHaveBeenCalledTimes(1);
+  const formInput = wrapper.find(`.form__input`).at(0);
+  formInput.simulate(`change`, {
     preventDefault: handlerFormSubmit,
   });
   expect(handlerFormSubmit).toHaveBeenCalledTimes(1);
