@@ -22,6 +22,11 @@ const information = {
         },
         name: `Amsterdam`,
       },
+      location: {
+        latitude: 52.37554,
+        longitude: 4.9019759999999994,
+        zoom: 12,
+      },
       isPremium: true,
       previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
       images: [

@@ -12,7 +12,11 @@ it(`Should Map render correctly`, () => {
           city={storeEmptyMock.STATE.city}
           offers={storeEmptyMock.DATA.offers}
           active={storeEmptyMock.STATE.active}
-        />
+        />, {
+          createNodeMock: () => {
+            return document.createElement(`div`);
+          }
+        }
     )
     .toJSON();
 
@@ -34,7 +38,11 @@ describe(`Render Map connected to store component`, () => {
           <Map
             offers={storeEmptyMock.DATA.offers}
           />
-        </Provider>
+        </Provider>, {
+          createNodeMock: () => {
+            return document.createElement(`div`);
+          }
+        }
     );
   });
 

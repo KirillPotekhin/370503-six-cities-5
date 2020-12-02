@@ -35,11 +35,14 @@ it(`Should OfferScreen render correctly`, () => {
                 active={``}
                 onClickFavoritesButton={noop}
                 errorMessage={storeMock.STATE.errorMessage}
-
               />
             </Switch>
           </BrowserRouter>
-        </Provider>
+        </Provider>, {
+          createNodeMock: () => {
+            return document.createElement(`div`);
+          }
+        }
     ).toJSON();
 
   expect(tree).toMatchSnapshot();
@@ -68,11 +71,14 @@ beforeEach(() => {
               fetchOfferAction={noop}
               postOfferFavoriteStatusAction={noop}
               onClickFavoritesButton={noop}
-
             />
           </Switch>
         </BrowserRouter>
-      </Provider>
+      </Provider>, {
+        createNodeMock: () => {
+          return document.createElement(`div`);
+        }
+      }
   );
 });
 

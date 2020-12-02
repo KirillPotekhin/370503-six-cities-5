@@ -11,6 +11,11 @@ const applicationPropTypes = {
       }).isRequired,
       name: PropTypes.string.isRequired,
     }).isRequired,
+    location: PropTypes.shape({
+      latitude: PropTypes.number.isRequired,
+      longitude: PropTypes.number.isRequired,
+      zoom: PropTypes.number.isRequired,
+    }),
     isPremium: PropTypes.bool.isRequired,
     previewImage: PropTypes.string,
     images: PropTypes.arrayOf(PropTypes.string).isRequired,

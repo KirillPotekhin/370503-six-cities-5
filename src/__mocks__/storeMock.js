@@ -22,6 +22,11 @@ const storeMock = {
         },
         name: `Amsterdam`,
       },
+      location: {
+        latitude: 52.3909553943508,
+        longitude: 4.85309666406198,
+        zoom: 12,
+      },
       isPremium: true,
       previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
       images: [
@@ -75,6 +80,11 @@ const storeMock = {
           },
           name: `Amsterdam`,
         },
+        location: {
+          latitude: 52.385540000000006,
+          longitude: 4.902976,
+          zoom: 12,
+        },
         isPremium: true,
         previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
         images: [
@@ -120,6 +130,11 @@ const storeMock = {
             zoom: 12,
           },
           name: `Amsterdam`,
+        },
+        location: {
+          latitude: 52.37554,
+          longitude: 4.9019759999999994,
+          zoom: 12,
         },
         isPremium: true,
         previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
@@ -167,6 +182,11 @@ const storeMock = {
           },
           name: `Amsterdam`,
         },
+        location: {
+          latitude: 52.385540000000006,
+          longitude: 4.886976,
+          zoom: 12,
+        },
         isPremium: true,
         previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
         images: [
@@ -212,6 +232,11 @@ const storeMock = {
             zoom: 12,
           },
           name: `Paris`,
+        },
+        location: {
+          latitude: 48.851162,
+          longitude: 2.312317,
+          zoom: 12,
         },
         isPremium: true,
         previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
@@ -359,6 +384,11 @@ const storeMock = {
           },
           name: `Amsterdam`,
         },
+        location: {
+          latitude: 52.385540000000006,
+          longitude: 4.902976,
+          zoom: 12,
+        },
         isPremium: true,
         previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
         images: [
@@ -404,6 +434,11 @@ const storeMock = {
             zoom: 12,
           },
           name: `Amsterdam`,
+        },
+        location: {
+          latitude: 52.37554,
+          longitude: 4.9019759999999994,
+          zoom: 12,
         },
         isPremium: true,
         previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
@@ -451,6 +486,11 @@ const storeMock = {
           },
           name: `Amsterdam`,
         },
+        location: {
+          latitude: 52.385540000000006,
+          longitude: 4.886976,
+          zoom: 12,
+        },
         isPremium: true,
         previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
         images: [
@@ -496,6 +536,11 @@ const storeMock = {
             zoom: 12,
           },
           name: `Paris`,
+        },
+        location: {
+          latitude: 48.851162,
+          longitude: 2.312317,
+          zoom: 12,
         },
         isPremium: true,
         previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
@@ -546,6 +591,11 @@ const storeMock = {
           },
           name: `Amsterdam`,
         },
+        location: {
+          latitude: 52.385540000000006,
+          longitude: 4.902976,
+          zoom: 12,
+        },
         isPremium: true,
         previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
         images: [
@@ -591,6 +641,11 @@ const storeMock = {
             zoom: 12,
           },
           name: `Amsterdam`,
+        },
+        location: {
+          latitude: 52.37554,
+          longitude: 4.9019759999999994,
+          zoom: 12,
         },
         isPremium: true,
         previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
@@ -638,6 +693,11 @@ const storeMock = {
           },
           name: `Amsterdam`,
         },
+        location: {
+          latitude: 52.385540000000006,
+          longitude: 4.886976,
+          zoom: 12,
+        },
         isPremium: true,
         previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
         images: [
@@ -683,6 +743,11 @@ const storeMock = {
             zoom: 12,
           },
           name: `Paris`,
+        },
+        location: {
+          latitude: 48.851162,
+          longitude: 2.312317,
+          zoom: 12,
         },
         isPremium: true,
         previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
