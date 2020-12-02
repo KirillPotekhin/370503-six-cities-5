@@ -36,11 +36,6 @@ const applicationState = (state = initialState, action) => {
         city: action.payload,
       });
 
-    case ActionType.GET_ACTIVE_CITY:
-      return extend(state, {
-        city: state.city,
-      });
-
     case ActionType.SET_SORTING_OPTION:
       return extend(state, {
         sortingOption: action.payload,

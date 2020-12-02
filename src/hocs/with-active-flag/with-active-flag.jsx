@@ -1,6 +1,6 @@
 import React, {PureComponent} from "react";
-import applicationPropTypes from "../application-prop-types";
-import {setSortingOption} from "../store/action";
+import applicationPropTypes from "../../application-prop-types";
+import {setSortingOption} from "../../store/action";
 import {connect} from "react-redux";
 
 const withActiveFlag = (Component) => {

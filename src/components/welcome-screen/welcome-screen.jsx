@@ -7,7 +7,7 @@ import Map from "../map/map";
 import CitiesList from "../cities-list/cities-list";
 import Sorting from "../sorting/sorting";
 import {connect} from "react-redux";
-import {getActiveOfferId, getOffers} from "../../store/action";
+import {getActiveOfferId} from "../../store/action";
 import PlacesListEmpty from "../places-list-empty/places-list-empty";
 import {getSortingOption} from "../../store/selectors/offers/sorted-offers";
 import {setSortingOptionDefault} from "../../store/action";
@@ -108,7 +108,6 @@ class WelcomeScreen extends PureComponent {
 WelcomeScreen.propTypes = {
   history: PropTypes.object.isRequired,
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
-  getOffersAction: applicationPropTypes.getOffersAction,
   getActiveOfferIdAction: applicationPropTypes.getActiveOfferIdAction,
   city: applicationPropTypes.city,
   active: applicationPropTypes.active,
@@ -127,9 +126,6 @@ const mapStateToProps = ({DATA, STATE, USER}) => ({
 const mapDispatchToProps = (dispatch) => ({
   getActiveOfferIdAction(value) {
     dispatch(getActiveOfferId(value));
-  },
-  getOffersAction() {
-    dispatch(getOffers());
   },
   setSortingOptionDefaultAction() {
     dispatch(setSortingOptionDefault());

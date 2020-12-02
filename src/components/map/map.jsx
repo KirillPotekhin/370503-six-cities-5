@@ -103,7 +103,10 @@ Map.propTypes = {
   offers: PropTypes.arrayOf(applicationPropTypes.offer).isRequired,
   city: applicationPropTypes.city,
   active: applicationPropTypes.active,
-  actualOffer: PropTypes.object,
+  actualOffer: PropTypes.oneOfType([
+    applicationPropTypes.offer,
+    PropTypes.string,
+  ]),
 };
 
 const mapStateToProps = ({STATE}) => ({

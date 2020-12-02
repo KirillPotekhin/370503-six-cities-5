@@ -11,8 +11,14 @@ const applicationPropTypes = {
       }).isRequired,
       name: PropTypes.string.isRequired,
     }).isRequired,
+    location: PropTypes.shape({
+      latitude: PropTypes.number.isRequired,
+      longitude: PropTypes.number.isRequired,
+      zoom: PropTypes.number.isRequired,
+    }),
     isPremium: PropTypes.bool.isRequired,
-    images: PropTypes.array.isRequired,
+    previewImage: PropTypes.string,
+    images: PropTypes.arrayOf(PropTypes.string).isRequired,
     title: PropTypes.string,
     rating: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
@@ -20,7 +26,12 @@ const applicationPropTypes = {
     maxGuestsNumber: PropTypes.number.isRequired,
     price: PropTypes.number.isRequired,
     goods: PropTypes.arrayOf(PropTypes.string).isRequired,
-    host: PropTypes.object.isRequired,
+    host: PropTypes.shape({
+      avatar: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      isPro: PropTypes.bool.isRequired,
+      id: PropTypes.number.isRequired,
+    }).isRequired,
     description: PropTypes.string.isRequired,
     isFavorite: PropTypes.bool.isRequired,
   }).isRequired,
@@ -82,6 +93,10 @@ const applicationPropTypes = {
   onClickFavoritesButton: PropTypes.func,
   errorMessage: PropTypes.string,
   history: PropTypes.object.isRequired,
+  login: PropTypes.string,
+  password: PropTypes.string,
+  onSubmitForm: PropTypes.func,
+  onChangeField: PropTypes.func,
 };
 
 export default applicationPropTypes;

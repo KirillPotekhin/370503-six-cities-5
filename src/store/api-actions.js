@@ -60,7 +60,7 @@ export const postReview = (id, {comment, rating}) => (dispatch, _getState, api) 
       dispatch(postReviewSucces(adaptedReviews));
     })
     .catch((error) => {
-      dispatch(showErrorMessages(error));
+      dispatch(showErrorMessages(`${error}`));
       dispatch(postReviewFailed());
     });
 };
