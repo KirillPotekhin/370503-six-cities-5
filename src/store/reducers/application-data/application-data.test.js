@@ -2,7 +2,7 @@
 import MockAdapter from "axios-mock-adapter";
 import {createAPI} from "../../../services/api";
 import {applicationData} from "./application-data";
-import {ActionType} from "../../action";
+import {ActionType, adapterDataHotels} from "../../action";
 import {APIRoute} from "../../../const";
 import {fetchOffersList} from "../../api-actions";
 
@@ -151,9 +151,35 @@ it(`Reducer should update offers by load offers`, () => {
     offersFavorites: [],
   }, {
     type: ActionType.LOAD_OFFERS,
-    payload: information.offers,
+    payload: {
+      offers: information.offers,
+      cities: information.cities,
+    },
   })).toEqual({
-    offers,
+    offers: information.offers,
+    reviews: [],
+    cities: information.cities,
+    offersNearby: [],
+    offersFavorites: [],
+  });
+});
+
+it(`Reducer should update reviews by load reviews`, () => {
+  expect(applicationData({
+    offers: [],
+    reviews: [],
+    cities: [],
+    offersNearby: [],
+    offersFavorites: [],
+  }, {
+    type: ActionType.LOAD_REVIEWS,
+    payload: reviews,
+  })).toEqual({
+    offers: [],
+    reviews,
+    cities: [],
+    offersNearby: [],
+    offersFavorites: [],
   });
 });
 
@@ -168,11 +194,21 @@ describe(`Async operation work correctly`, () => {
       .reply(200, [hotelResponseServer]);
 
     return offersLoader(dispatch, () => {}, api)
-      .then(() => {
+      .then(({data}) => {
+        const information = adapterDataHotels(data);
         expect(dispatch).toHaveBeenCalledTimes(1);
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.LOAD_OFFERS,
-          payload: [hotelResponseServer],
+          payload: {
+            offers: information.offers,
+            cities: information.cities,
+          },
+        });
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.GET_DEFAULT_CITY,
+          payload: {
+            city: information.cities[0],
+          }
         });
       });
   });
