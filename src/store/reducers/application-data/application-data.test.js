@@ -300,7 +300,7 @@ it(`Reducer should update offersNearby by load offersNearby`, () => {
   }, {
     type: ActionType.LOAD_OFFERS_NEARBY,
     payload: {
-      offersNearby: information.offers,
+      offers: information.offers,
     },
   })).toEqual({
     offers: [],
@@ -321,7 +321,7 @@ it(`Reducer should update offersFavorites by load offersFavorites`, () => {
   }, {
     type: ActionType.LOAD_OFFERS_FAVORITES,
     payload: {
-      offersFavorites: information.offers,
+      offers: information.offers,
     },
   })).toEqual({
     offers: [],
@@ -353,7 +353,58 @@ it(`Reducer should update reviews by postReviewSucces`, () => {
 
 it(`Reducer should update offer by setFavoriteStatusToOffer`, () => {
   expect(applicationData({
-    offers: [],
+    offers: [{
+      id: 1,
+      city: {
+        location: {
+          latitude: 52.3909553943508,
+          longitude: 4.85309666406198,
+          zoom: 12,
+        },
+        name: `Amsterdam`,
+      },
+      location: {
+        latitude: 52.37554,
+        longitude: 4.9019759999999994,
+        zoom: 12,
+      },
+      isPremium: true,
+      previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
+      images: [
+        `http://placehold.it/260x200/33bee5&text=view1`,
+        `http://placehold.it/260x200/33bee5&text=view2`,
+        `http://placehold.it/260x200/33bee5&text=view3`,
+        `http://placehold.it/260x200/33bee5&text=view4`,
+        `http://placehold.it/260x200/33bee5&text=view5`,
+        `http://placehold.it/260x200/33bee5&text=view6`,
+      ],
+      title: `Beautiful & luxurious studio at great location`,
+      rating: 5,
+      type: `Apartment`,
+      bedrooms: 3,
+      maxGuestsNumber: 4,
+      price: 195,
+      goods: [
+        `Wi-Fi`,
+        `Washing machine`,
+        `Towels`,
+        `Heating`,
+        `Coffee machine`,
+        `Baby seat`,
+        `Kitchen`,
+        `Dishwasher`,
+        `Cabel TV`,
+        `Fridge`,
+      ],
+      host: {
+        avatar: `https://api.adorable.io/avatars/120`,
+        name: `Angelina`,
+        isPro: false,
+        id: 25
+      },
+      description: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.`,
+      isFavorite: true,
+    }],
     reviews: [],
     cities: [],
     offersNearby: [],
@@ -361,49 +412,117 @@ it(`Reducer should update offer by setFavoriteStatusToOffer`, () => {
   }, {
     type: ActionType.SET_FAVORITE_STATUS_TO_OFFER,
     payload: {
-      offers: [hotel].map((offer) => offer.id === hotelFavotiteStatusAnother.id ?
-        extend(offer, {isFavorite: hotelFavotiteStatusAnother.isFavorite}) :
-        offer),
-      offersNearby: [hotel].map((offer) => offer.id === hotelFavotiteStatusAnother.id ?
-        extend(offer, {isFavorite: hotelFavotiteStatusAnother.isFavorite}) :
-        offer),
+      offers: [{
+        id: 1,
+        city: {
+          location: {
+            latitude: 52.3909553943508,
+            longitude: 4.85309666406198,
+            zoom: 12,
+          },
+          name: `Amsterdam`,
+        },
+        location: {
+          latitude: 52.37554,
+          longitude: 4.9019759999999994,
+          zoom: 12,
+        },
+        isPremium: true,
+        previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
+        images: [
+          `http://placehold.it/260x200/33bee5&text=view1`,
+          `http://placehold.it/260x200/33bee5&text=view2`,
+          `http://placehold.it/260x200/33bee5&text=view3`,
+          `http://placehold.it/260x200/33bee5&text=view4`,
+          `http://placehold.it/260x200/33bee5&text=view5`,
+          `http://placehold.it/260x200/33bee5&text=view6`,
+        ],
+        title: `Beautiful & luxurious studio at great location`,
+        rating: 5,
+        type: `Apartment`,
+        bedrooms: 3,
+        maxGuestsNumber: 4,
+        price: 195,
+        goods: [
+          `Wi-Fi`,
+          `Washing machine`,
+          `Towels`,
+          `Heating`,
+          `Coffee machine`,
+          `Baby seat`,
+          `Kitchen`,
+          `Dishwasher`,
+          `Cabel TV`,
+          `Fridge`,
+        ],
+        host: {
+          avatar: `https://api.adorable.io/avatars/120`,
+          name: `Angelina`,
+          isPro: false,
+          id: 25
+        },
+        description: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.`,
+        isFavorite: true,
+      }],
+      isFavorite: true,
+      offersNearby: [],
     },
   })).toEqual({
-    offers: [hotelFavotiteStatusAnother],
+    offers: [{
+      id: 1,
+      city: {
+        location: {
+          latitude: 52.3909553943508,
+          longitude: 4.85309666406198,
+          zoom: 12,
+        },
+        name: `Amsterdam`,
+      },
+      location: {
+        latitude: 52.37554,
+        longitude: 4.9019759999999994,
+        zoom: 12,
+      },
+      isPremium: true,
+      previewImage: `http://placehold.it/260x200/33bee5&text=view1`,
+      images: [
+        `http://placehold.it/260x200/33bee5&text=view1`,
+        `http://placehold.it/260x200/33bee5&text=view2`,
+        `http://placehold.it/260x200/33bee5&text=view3`,
+        `http://placehold.it/260x200/33bee5&text=view4`,
+        `http://placehold.it/260x200/33bee5&text=view5`,
+        `http://placehold.it/260x200/33bee5&text=view6`,
+      ],
+      title: `Beautiful & luxurious studio at great location`,
+      rating: 5,
+      type: `Apartment`,
+      bedrooms: 3,
+      maxGuestsNumber: 4,
+      price: 195,
+      goods: [
+        `Wi-Fi`,
+        `Washing machine`,
+        `Towels`,
+        `Heating`,
+        `Coffee machine`,
+        `Baby seat`,
+        `Kitchen`,
+        `Dishwasher`,
+        `Cabel TV`,
+        `Fridge`,
+      ],
+      host: {
+        avatar: `https://api.adorable.io/avatars/120`,
+        name: `Angelina`,
+        isPro: false,
+        id: 25
+      },
+      description: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.`,
+      isFavorite: true,
+    }],
     reviews: [],
     cities: [],
-    offersNearby: [hotelFavotiteStatusAnother],
+    offersNearby: [],
     offersFavorites: [],
-  });
-});
-
-describe(`Async operation work correctly`, () => {
-  it(`Should make a correct API call to /hotels`, () => {
-    const apiMock = new MockAdapter(api);
-    const dispatch = jest.fn();
-    const offersLoader = fetchOffersList();
-
-    apiMock
-      .onGet(APIRoute.HOTELS)
-      .reply(200, [hotelResponseServer]);
-
-    return offersLoader(dispatch, () => {}, api)
-      .then(({data}) => {
-        const information = adapterDataHotels(data);
-        expect(dispatch).toHaveBeenCalledTimes(1);
-        expect(dispatch).toHaveBeenNthCalledWith(1, {
-          type: ActionType.LOAD_OFFERS,
-          payload: {
-            offers: information.offers,
-            cities: information.cities,
-          },
-        });
-        expect(dispatch).toHaveBeenNthCalledWith(1, {
-          type: ActionType.GET_DEFAULT_CITY,
-          payload: {
-            city: information.cities[0],
-          }
-        });
-      });
   });
 });

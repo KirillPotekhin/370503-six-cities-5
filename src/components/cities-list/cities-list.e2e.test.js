@@ -9,20 +9,17 @@ import {CitiesList} from "./cities-list";
 configure({adapter: new Adapter()});
 
 it(`Should active tab item click`, () => {
-  const handleCityTitleClick = jest.fn();
   const onClickCityName = jest.fn();
 
   const wrapper = mount(
       <CitiesList
-        onClick={handleCityTitleClick}
         cityChangeAction={onClickCityName}
         cities={storeMock.DATA.cities}
         city={storeMock.DATA.cities[1]}
       />
   );
 
-  const tabsLink = wrapper.find(`a.locations__item-link`);
+  const tabsLink = wrapper.find(`a.locations__item-link`).at(0);
   tabsLink.simulate(`click`);
-  expect(handleCityTitleClick).toHaveBeenCalledTimes(1);
   expect(onClickCityName).toHaveBeenCalledTimes(1);
 });
