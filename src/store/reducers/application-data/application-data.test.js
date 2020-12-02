@@ -183,6 +183,48 @@ it(`Reducer should update reviews by load reviews`, () => {
   });
 });
 
+it(`Reducer should update offersNearby by load offersNearby`, () => {
+  expect(applicationData({
+    offers: [],
+    reviews: [],
+    cities: [],
+    offersNearby: [],
+    offersFavorites: [],
+  }, {
+    type: ActionType.LOAD_OFFERS_NEARBY,
+    payload: {
+      offersNearby: information.offers,
+    },
+  })).toEqual({
+    offers: [],
+    reviews: [],
+    cities: [],
+    offersNearby: information.offers,
+    offersFavorites: [],
+  });
+});
+
+it(`Reducer should update offersFavorites by load offersFavorites`, () => {
+  expect(applicationData({
+    offers: [],
+    reviews: [],
+    cities: [],
+    offersNearby: [],
+    offersFavorites: [],
+  }, {
+    type: ActionType.LOAD_OFFERS_FAVORITES,
+    payload: {
+      offersFavorites: information.offers,
+    },
+  })).toEqual({
+    offers: [],
+    reviews: [],
+    cities: [],
+    offersNearby: [],
+    offersFavorites: information.offers,
+  });
+});
+
 describe(`Async operation work correctly`, () => {
   it(`Should make a correct API call to /hotels`, () => {
     const apiMock = new MockAdapter(api);
