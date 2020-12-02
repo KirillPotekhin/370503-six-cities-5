@@ -1,43 +1,31 @@
-import React, {PureComponent} from "react";
+import React, {useState} from "react";
 import applicationPropTypes from "../../application-prop-types";
 import {setSortingOption} from "../../store/action";
 import {connect} from "react-redux";
 
 const withActiveFlag = (Component) => {
-  class WithActiveFlag extends PureComponent {
-    constructor(props) {
-      super(props);
 
-      this.state = {
-        isActive: false,
-      };
+  const WithActiveFlag = (props) => {
+    const [isActive, setIsActive] = useState(false);
+    const handleActiveChange = () => {
+      setIsActive((prevState) => ({isActive: !prevState.isActive}));
+    };
 
-      this.handleActiveChange = this.handleActiveChange.bind(this);
-      this.setSortingDropDown = this.setSortingDropDown.bind(this);
-    }
-
-    handleActiveChange() {
-      this.setState((prevState) => ({isActive: !prevState.isActive}));
-    }
-
-    setSortingDropDown(value) {
+    const setSortingDropDown = (value) => {
       return () => {
-        this.handleActiveChange();
-        this.props.setSortingOptionAction(value);
+        handleActiveChange();
+        props.setSortingOptionAction(value);
       };
-    }
-
-    render() {
-      return (
-        <Component
-          {...this.props}
-          isActive={this.state.isActive}
-          onActiveChange={() => this.handleActiveChange}
-          onClickSortingOption={this.setSortingDropDown}
-        />
-      );
-    }
-  }
+    };
+    return (
+      <Component
+        {...props}
+        isActive={isActive}
+        onActiveChange={() => handleActiveChange}
+        onClickSortingOption={setSortingDropDown}
+      />
+    );
+  };
 
   WithActiveFlag.propTypes = {
     setSortingOptionAction: applicationPropTypes.setSortingOptionAction,
@@ -53,4 +41,3 @@ const withActiveFlag = (Component) => {
 };
 
 export default withActiveFlag;
-

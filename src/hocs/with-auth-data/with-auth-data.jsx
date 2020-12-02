@@ -1,53 +1,41 @@
-import React, {PureComponent} from "react";
+import React, {useState} from "react";
 import {connect} from "react-redux";
 import applicationPropTypes from "../../application-prop-types";
 import {login} from "../../store/api-actions";
 
 const withAuthData = (Component) => {
-  class WithAuthData extends PureComponent {
-    constructor(props) {
-      super(props);
 
-      this.handleSubmit = this.handleSubmit.bind(this);
-      this.onChangeField = this.onChangeField.bind(this);
-      this.state = {
-        login: ``,
-        password: ``
-      };
-    }
-
-    handleSubmit(evt) {
-      const {onSubmit} = this.props;
+  const WithAuthData = (props) => {
+    const [loginForm, setLoginForm] = useState({login: ``, password: ``});
+    const handleSubmit = (evt) => {
+      const {onSubmit} = props;
 
       evt.preventDefault();
 
       onSubmit({
-        login: this.state.login,
-        password: this.state.password,
+        login: loginForm.login,
+        password: loginForm.password,
       });
-    }
+    };
 
-    onChangeField(field) {
+    const onChangeField = (field) => {
       return (e) => {
-        this.setState({
+        setLoginForm({
           [field]: e.target.value
         });
       };
-    }
-
-    render() {
-      return (
-        <Component
-          login={this.state.login}
-          password={this.state.password}
-          onSubmitForm={this.handleSubmit}
-          onChangeField={this.onChangeField}
-          city={this.props.city}
-          {...this.props}
-        />
-      );
-    }
-  }
+    };
+    return (
+      <Component
+        login={loginForm.login}
+        password={loginForm.PureComponentpassword}
+        onSubmitForm={handleSubmit}
+        onChangeField={onChangeField}
+        city={props.city}
+        {...props}
+      />
+    );
+  };
 
   WithAuthData.propTypes = {
     onSubmit: applicationPropTypes.onSubmit,
