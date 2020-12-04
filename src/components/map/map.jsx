@@ -6,6 +6,20 @@ import L from "leaflet";
 import {connect} from "react-redux";
 import {SizeMap, IconUrl} from "../../const";
 
+
+// const Map = (props) => {
+//   ref = createRef();
+//   this.marker = {};
+//   this.icon = L.icon({
+//     iconUrl: `${IconUrl.DEFAULT_ICON}`,
+//     iconSize: [30, 30]
+//   });
+//   this.iconActive = L.icon({
+//     iconUrl: `${IconUrl.ACTIVE_ICON}`,
+//     iconSize: [30, 30]
+//   });
+// };
+
 class Map extends Component {
   constructor(props) {
     super(props);
@@ -20,30 +34,6 @@ class Map extends Component {
       iconSize: [30, 30]
     });
   }
-
-  getEquality(prevOffers, actualOffers) {
-    const prevIdList = [];
-    prevOffers.map((it) => prevIdList.push(it.id));
-    const idList = [];
-    actualOffers.map((it) => idList.push(it.id));
-    const results = prevIdList.filter((i) => !idList.includes(i)).concat(idList.filter((i) => !prevIdList.includes(i)));
-    return !!results.length;
-  }
-
-  renderPin(offers, actualOffer) {
-    offers.map((offer) => {
-      this.marker[offer.id] = L.marker([offer.location.latitude, offer.location.longitude]);
-      this.marker[offer.id].setIcon(this.icon);
-      this.marker[offer.id].addTo(this.map);
-    });
-
-    if (actualOffer !== ``) {
-      this.marker[actualOffer.id] = L.marker([actualOffer.city.location.latitude, actualOffer.city.location.longitude]);
-      this.marker[actualOffer.id].setIcon(this.iconActive);
-      this.marker[actualOffer.id].addTo(this.map);
-    }
-  }
-
 
   componentDidUpdate(prevProps) {
     const {offers, actualOffer = ``} = this.props;
@@ -90,6 +80,29 @@ class Map extends Component {
         {attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`}).addTo(this.map);
 
     this.renderPin(offers, actualOffer);
+  }
+
+  getEquality(prevOffers, actualOffers) {
+    const prevIdList = [];
+    prevOffers.map((it) => prevIdList.push(it.id));
+    const idList = [];
+    actualOffers.map((it) => idList.push(it.id));
+    const results = prevIdList.filter((i) => !idList.includes(i)).concat(idList.filter((i) => !prevIdList.includes(i)));
+    return !!results.length;
+  }
+
+  renderPin(offers, actualOffer) {
+    offers.map((offer) => {
+      this.marker[offer.id] = L.marker([offer.location.latitude, offer.location.longitude]);
+      this.marker[offer.id].setIcon(this.icon);
+      this.marker[offer.id].addTo(this.map);
+    });
+
+    if (actualOffer !== ``) {
+      this.marker[actualOffer.id] = L.marker([actualOffer.city.location.latitude, actualOffer.city.location.longitude]);
+      this.marker[actualOffer.id].setIcon(this.iconActive);
+      this.marker[actualOffer.id].addTo(this.map);
+    }
   }
 
   render() {

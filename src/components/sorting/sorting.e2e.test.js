@@ -9,8 +9,9 @@ import configureStore from "redux-mock-store";
 configure({adapter: new Adapter()});
 
 it(`Should sorting`, () => {
-  const handlerActiveChangeclick = jest.fn();
+  const handleActiveChange = jest.fn();
   const handlerSortingOptionClick = jest.fn();
+  const onSortingDropDown = jest.fn();
 
   const mockStore = configureStore([]);
   let store = null;
@@ -20,17 +21,15 @@ it(`Should sorting`, () => {
 
   const wrapper = shallow(
       <Sorting
-        isActive={false}
-        onActiveChange={handlerActiveChangeclick}
-        onClickSortingOption={handlerSortingOptionClick}
+        setSortingOptionAction={handlerSortingOptionClick}
         sortingOption={storeMock.STATE.sortingOption}
       />
   );
 
   const sortingType = wrapper.find(`.places__sorting-type`).at(0);
   sortingType.simulate(`click`);
-  expect(handlerActiveChangeclick).toHaveBeenCalledTimes(1);
+  expect(handleActiveChange).toHaveBeenCalledTimes(1);
   const option = wrapper.find(`.places__option`).at(0);
   option.simulate(`click`);
-  expect(handlerSortingOptionClick).toHaveBeenCalledTimes(4);
+  expect(onSortingDropDown).toHaveBeenCalledTimes(4);
 });

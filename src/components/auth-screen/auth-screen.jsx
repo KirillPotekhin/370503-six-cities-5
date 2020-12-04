@@ -1,11 +1,33 @@
-import React from "react";
+import React, {useState, useCallback} from "react";
 import {Link} from "react-router-dom";
+import {connect} from "react-redux";
 import applicationPropTypes from "../../application-prop-types";
 import {AppRoute} from "../../const";
-import withAuthData from "../../hocs/with-auth-data/with-auth-data";
+import {login} from "../../store/api-actions";
+import {extend} from "../../utils";
 
 const AuthScreen = (props) => {
   const {city} = props;
+  const [loginForm, setLoginForm] = useState({login: ``, password: ``});
+
+  const onChangeField = useCallback((field) => {
+    return (evt) => {
+      setLoginForm(extend(loginForm, {
+        [field]: evt.target.value
+      }));
+    };
+  }, [loginForm.login, loginForm.password]);
+
+  const handleSubmit = useCallback((evt) => {
+    const {onSubmit} = props;
+
+    evt.preventDefault();
+    onSubmit({
+      login: loginForm.login,
+      password: loginForm.password,
+    });
+  }, [loginForm.login, loginForm.password]);
+
   return (
     <div className="page page--gray page--login">
       <header className="header">
@@ -35,7 +57,7 @@ const AuthScreen = (props) => {
         <div className="page__login-container container">
           <section className="login">
             <h1 className="login__title">Sign in</h1>
-            <form className="login__form form" action="#" method="post" onSubmit={props.onSubmitForm}>
+            <form className="login__form form" action="#" method="post" onSubmit={handleSubmit}>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
                 <input
@@ -43,8 +65,8 @@ const AuthScreen = (props) => {
                   type="email" name="email"
                   placeholder="Email"
                   required
-                  value={props.login}
-                  onChange={props.onChangeField(`login`)}
+                  value={loginForm.login}
+                  onChange={onChangeField(`login`)}
                 />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
@@ -55,8 +77,8 @@ const AuthScreen = (props) => {
                   name="password"
                   placeholder="Password"
                   required
-                  value={props.password}
-                  onChange={props.onChangeField(`password`)}
+                  value={loginForm.password}
+                  onChange={onChangeField(`password`)}
                 />
               </div>
               <button className="login__submit form__submit button" type="submit">Sign in</button>
@@ -77,12 +99,18 @@ const AuthScreen = (props) => {
 
 AuthScreen.propTypes = {
   city: applicationPropTypes.city,
-  login: applicationPropTypes.login,
-  password: applicationPropTypes.password,
-  onSubmitForm: applicationPropTypes.onSubmitForm,
-  onChangeField: applicationPropTypes.onChangeField,
-
+  onSubmit: applicationPropTypes.onSubmit,
 };
 
+const mapStateToProps = ({STATE}) => ({
+  city: STATE.city,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onSubmit(authData) {
+    dispatch(login(authData));
+  }
+});
+
 export {AuthScreen};
-export default withAuthData(AuthScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(AuthScreen);

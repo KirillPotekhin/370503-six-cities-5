@@ -1,4 +1,4 @@
-import React, {PureComponent} from "react";
+import React, {useEffect} from "react";
 import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
 import PlacesList from "../places-list/places-list";
@@ -13,97 +13,89 @@ import {getSortingOption} from "../../store/selectors/offers/sorted-offers";
 import {setSortingOptionDefault} from "../../store/action";
 import {APIRoute} from "../../const";
 import {postOfferFavoriteStatus} from "../../store/api-actions";
+import browserHistory from "../../browser-history";
 
-class WelcomeScreen extends PureComponent {
-  constructor(props) {
-    super(props);
+const WelcomeScreen = (props) => {
+  const {offers, city, getActiveOfferIdAction, email, postOfferFavoriteStatusAction, active, setSortingOptionDefaultAction} = props;
+  useEffect(() => {
+    setSortingOptionDefaultAction();
+  }, [city.name]);
 
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.city !== this.props.city) {
-      this.props.setSortingOptionDefaultAction();
-    }
-  }
-
-  render() {
-    const {history, offers, city, getActiveOfferIdAction, email, postOfferFavoriteStatusAction, active} = this.props;
-    return (
-      <div className={`page page--gray page--main ${!offers.length && `page__main--index-empty`}`}>
-        <header className="header">
-          <div className="container">
-            <div className="header__wrapper">
-              <div className="header__left">
-                <a className="header__logo-link header__logo-link--active">
-                  <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
-                </a>
-              </div>
-              <nav className="header__nav">
-                <ul className="header__nav-list">
-                  <li className="header__nav-item user">
-                    <Link to="/favorites" className="header__nav-link header__nav-link--profile" href="#">
-                      <div className="header__avatar-wrapper user__avatar-wrapper">
-                      </div>
-                      {email !== `` ? <span className="header__user-name user__name">{email}</span> : <span className="header__login">Sign in</span>}
-                    </Link>
-                  </li>
-                </ul>
-              </nav>
+  return (
+    <div className={`page page--gray page--main ${!offers.length && `page__main--index-empty`}`}>
+      <header className="header">
+        <div className="container">
+          <div className="header__wrapper">
+            <div className="header__left">
+              <a className="header__logo-link header__logo-link--active">
+                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
+              </a>
             </div>
+            <nav className="header__nav">
+              <ul className="header__nav-list">
+                <li className="header__nav-item user">
+                  <Link to="/favorites" className="header__nav-link header__nav-link--profile" href="#">
+                    <div className="header__avatar-wrapper user__avatar-wrapper">
+                    </div>
+                    {email !== `` ? <span className="header__user-name user__name">{email}</span> : <span className="header__login">Sign in</span>}
+                  </Link>
+                </li>
+              </ul>
+            </nav>
           </div>
-        </header>
+        </div>
+      </header>
 
-        <main className="page__main page__main--index">
-          <h1 className="visually-hidden">Cities</h1>
-          <div className="tabs">
-            <section className="locations container">
-              <CitiesList />
-            </section>
-          </div>
-          <div className="cities">
-            <div className={`cities__places-container ${!offers.length && `cities__places-container--empty`} container`}>
-              {offers.length ?
-                <section className="cities__places places">
-                  <h2 className="visually-hidden">Places</h2>
-                  {city && <b className="places__found">{offers.length} places to stay in {city.name}</b>}
-                  <Sorting
-                    {...this.props}
+      <main className="page__main page__main--index">
+        <h1 className="visually-hidden">Cities</h1>
+        <div className="tabs">
+          <section className="locations container">
+            <CitiesList />
+          </section>
+        </div>
+        <div className="cities">
+          <div className={`cities__places-container ${!offers.length && `cities__places-container--empty`} container`}>
+            {offers.length ?
+              <section className="cities__places places">
+                <h2 className="visually-hidden">Places</h2>
+                {city && <b className="places__found">{offers.length} places to stay in {city.name}</b>}
+                <Sorting
+                  {...props}
+                />
+                <div className="cities__places-list places__list tabs__content">
+                  <PlacesList
+                    active={active}
+                    offers={offers}
+                    onClickCard={(offerId) => {
+                      return function () {
+                        browserHistory.push(`${APIRoute.HOTELS}/${offerId}`);
+                      };
+                    }}
+                    onClickFavoritesButton={(id) => {
+                      postOfferFavoriteStatusAction(id, offers);
+                    }}
+                    handlerMouseEnter={(evt) => {
+                      evt.preventDefault();
+                      const activeId = evt.currentTarget.id;
+                      getActiveOfferIdAction(+activeId);
+                    }}
+                    handlerMouseLeave={() => getActiveOfferIdAction(``)}
                   />
-                  <div className="cities__places-list places__list tabs__content">
-                    <PlacesList
-                      active={active}
-                      offers={offers}
-                      onClickCard={(offerId) => {
-                        return function () {
-                          history.push(`${APIRoute.HOTELS}/${offerId}`);
-                        };
-                      }}
-                      onClickFavoritesButton={(id) => {
-                        postOfferFavoriteStatusAction(id, offers);
-                      }}
-                      handlerMouseEnter={(evt) => {
-                        evt.preventDefault();
-                        const activeId = evt.currentTarget.id;
-                        getActiveOfferIdAction(+activeId);
-                      }}
-                      handlerMouseLeave={() => getActiveOfferIdAction(``)}
-                    />
-                  </div>
-                </section> :
-                <PlacesListEmpty city={city}/>}
-              <div className="cities__right-section">
-                {!!offers.length &&
+                </div>
+              </section> :
+              <PlacesListEmpty city={city} />}
+            <div className="cities__right-section">
+              {!!offers.length &&
                 <section className="cities__map map">
-                  {city && <Map offers={offers}/>}
+                  {city && <Map offers={offers} />}
                 </section>}
-              </div>
             </div>
           </div>
-        </main>
-      </div>
-    );
-  }
-}
+        </div>
+      </main>
+    </div>
+  );
+};
 
 WelcomeScreen.propTypes = {
   history: PropTypes.object.isRequired,

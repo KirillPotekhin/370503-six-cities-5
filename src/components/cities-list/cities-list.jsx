@@ -1,14 +1,14 @@
-import React from "react";
+import React, {useCallback} from "react";
 import PropTypes from "prop-types";
 import applicationPropTypes from "../../application-prop-types";
 import {connect} from "react-redux";
 import {cityChange} from "../../store/action";
 
 const CitiesList = (props) => {
-  const {cities, city} = props;
-  const onClickCityName = (value) => {
-    return () => props.cityChangeAction(value);
-  };
+  const {cities, city, cityChangeAction} = props;
+  const onClickCityName = useCallback((value) => {
+    return () => cityChangeAction(value);
+  }, [city.name]);
 
   return (
     <ul className="locations__list tabs__list">

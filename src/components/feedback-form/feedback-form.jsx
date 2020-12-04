@@ -1,20 +1,46 @@
-import React from "react";
+import React, {useState, useCallback, useEffect} from "react";
 import RatingList from "../rating-list/rating-list";
+import {connect} from "react-redux";
+import {postReview} from "../../store/api-actions";
 import applicationPropTypes from "../../application-prop-types";
-import withData from "../../hocs/with-data/with-data";
+import {extend} from "../../utils";
 
 const FeedbackForm = (props) => {
-  const {onSubmitReview, onRatingChange, postReviewLoading, review, errorMessage} = props;
-  const onTextareaChange = (evt) => {
-    props.onTextareaChange(evt, `review`);
-  };
+  const {postReviewLoading, errorMessage, postReviewLoaded} = props;
+  const [reviewInfo, setReviewInfo] = useState({rating: ``, review: ``});
+
+  useEffect(() => {
+    setReviewInfo({
+      rating: ``,
+      review: ``
+    });
+  }, [postReviewLoaded]);
+
+  const handleSubmit = useCallback((evt) => {
+    const {onSubmit} = props;
+
+    evt.preventDefault();
+    onSubmit(
+        props.id,
+        {
+          comment: reviewInfo.review,
+          rating: reviewInfo.rating,
+        });
+  }, [reviewInfo.review, reviewInfo.rating]);
+
+  const handleFieldChange = useCallback((name) => {
+    return (evt) => (setReviewInfo(extend(reviewInfo, {
+      [name]: evt.target.value
+    })));
+  }, [reviewInfo.review, reviewInfo.rating]);
+
   return (
-    <form className="reviews__form form" action="#" method="post" onSubmit={onSubmitReview}>
+    <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmit}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
-      <div className="reviews__rating-form form__rating" name="rating" onChange={onRatingChange}>
-        <RatingList {...props}/>
+      <div className="reviews__rating-form form__rating" name="rating" onChange={handleFieldChange(`rating`)}>
+        <RatingList rating={reviewInfo.rating} onRatingChange={handleFieldChange(`rating`)}/>
       </div>
-      <textarea className="reviews__textarea form__textarea" id="review" name="review" minLength="50" placeholder="Tell how was your stay, what you like and what can be improved" onChange={onTextareaChange} value={review}></textarea>
+      <textarea className="reviews__textarea form__textarea" id="review" name="review" minLength="50" placeholder="Tell how was your stay, what you like and what can be improved" onChange={handleFieldChange(`review`)} value={reviewInfo.review}></textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           {errorMessage !== `` && errorMessage}
@@ -27,14 +53,23 @@ const FeedbackForm = (props) => {
 };
 
 FeedbackForm.propTypes = {
-  onSubmitReview: applicationPropTypes.onSubmitReview,
-  onRatingChange: applicationPropTypes.onRatingChange,
-  onTextareaChange: applicationPropTypes.onTextareaChange,
-  postReviewLoading: applicationPropTypes.postReviewLoading,
-  review: applicationPropTypes.review,
   errorMessage: applicationPropTypes.errorMessage,
+  id: applicationPropTypes.id,
+  onSubmit: applicationPropTypes.onSubmit,
+  postReviewLoaded: applicationPropTypes.postReviewLoaded,
+  postReviewLoading: applicationPropTypes.postReviewLoading,
 };
 
-export {FeedbackForm};
+const mapStateToProps = ({STATE}) => ({
+  postReviewLoading: STATE.postReviewLoading,
+  postReviewLoaded: STATE.postReviewLoaded,
+});
 
-export default withData(FeedbackForm);
+const mapDispatchToProps = (dispatch) => ({
+  onSubmit(id, {comment, rating}) {
+    dispatch(postReview(id, {comment, rating}));
+  }
+});
+
+export {FeedbackForm};
+export default connect(mapStateToProps, mapDispatchToProps)(FeedbackForm);
